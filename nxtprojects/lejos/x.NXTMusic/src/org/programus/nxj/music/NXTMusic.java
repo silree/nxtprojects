@@ -1,5 +1,6 @@
 /*
  * NXT Music
+ * 	by Programus, 2009.09.30
  * ====================
  * Inputs:
  * 	Port 1 - Ultrasonic Sensor 
