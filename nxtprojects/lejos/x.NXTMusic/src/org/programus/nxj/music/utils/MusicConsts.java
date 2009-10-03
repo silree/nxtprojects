@@ -15,7 +15,17 @@ public class MusicConsts {
 //		"XYLOPHONE", 
 //		"Electric Sound", 
 //	}; 
+	public static int BASE_PITCH = 3; 	// the lowest pitch
 	public static int[][][] NOTE_FREQ = {
+		{ // 3
+			{262 >> 1, 277 >> 1}, // C
+			{294 >> 1, 311 >> 1}, // D
+			{330 >> 1}, // E
+			{349 >> 1, 370 >> 1}, // F
+			{392 >> 1, 415 >> 1}, // G
+			{440 >> 1, 466 >> 1}, // A
+			{494 >> 1}, // B
+		}, 
 		{ // 4
 			{262, 277}, // C
 			{294, 311}, // D

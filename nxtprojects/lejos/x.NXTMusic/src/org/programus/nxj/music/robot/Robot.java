@@ -55,7 +55,7 @@ public class Robot {
 		if (pitch >= MusicConsts.NOTE_FREQ.length) {
 			pitch = MusicConsts.NOTE_FREQ.length - 1; 
 		}
-		LCD.drawString("Pitch:" + (pitch + 4), 0, 3); 
+		LCD.drawString("Pitch:" + (pitch + MusicConsts.BASE_PITCH), 0, 3); 
 		return pitch; 
 	}
 	
