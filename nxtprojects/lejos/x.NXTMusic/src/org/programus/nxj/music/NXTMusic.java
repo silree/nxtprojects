@@ -1,3 +1,23 @@
+/*
+ * NXT Music
+ * ====================
+ * Inputs:
+ * 	Port 1 - Ultrasonic Sensor 
+ * 	Port 2 - Touch Sensor
+ * 	Motor B - Pitch input
+ * 	Motor C - Note input
+ * Outputs:
+ * 	NXT Sound output
+ * --------------------
+ * Function: 
+ * 	NXT Music can be used to play musics. 
+ * 
+ * 	Use the Note input to input the note like C, B, etc. 
+ * 	For notes like c#, B#, E#, etc., you can put something near the ultrasonic sensor 
+ * 	(I use my head as the something). 
+ * 	And adjust the pitch by pushing or pulling pitch motor. 
+ * 	Once you pressed the touch sensor, the note will be played. 
+ */
 package org.programus.nxj.music;
 
 import lejos.nxt.Button;
