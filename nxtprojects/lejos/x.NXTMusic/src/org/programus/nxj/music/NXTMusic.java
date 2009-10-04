@@ -5,6 +5,7 @@
  * Inputs:
  * 	Port 1 - Ultrasonic Sensor 
  * 	Port 2 - Touch Sensor
+ * 	Port 3 - Color Sensor (LEGO)
  * 	Motor B - Pitch input
  * 	Motor C - Note input
  * Outputs:

@@ -2,19 +2,7 @@ package org.programus.nxj.music.utils;
 
 
 public class MusicConsts {
-	public static int MIN_DURATION = 500; 
-//	public static int[][] INSTS = {
-//		Sound.PIANO, 
-//		Sound.FLUTE, 
-//		Sound.XYLOPHONE, 
-//		null, // original electric sound
-//	}; 
-//	public static String[] INST_NAMES = {
-//		"PIANO", 
-//		"FLUTE", 
-//		"XYLOPHONE", 
-//		"Electric Sound", 
-//	}; 
+	public static int MIN_DURATION = 100; 
 	public static int BASE_PITCH = 3; 	// the lowest pitch
 	public static int[][][] NOTE_FREQ = {
 		{ // 3
