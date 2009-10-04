@@ -1,5 +1,6 @@
 package org.programus.nxj.music.robot;
 
+import lejos.nxt.ColorLightSensor;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 
@@ -10,9 +11,12 @@ public class Robot {
 	
 	private static int RISING_VAL = 35; 
 	private static int NOTE_ROTATION_OFFSET = 22; 
-	private static int NOTE_RANGE = 45; 
+	private static int NOTE_RANGE = 50; 
 	private static int PITCH_ROTATION_OFFSET = 30 - 3; 
 	private static int PITCH_RANGE = 30; 
+	
+	private static int INIT_LIGHT_MAX = 500; 
+	private static int LIGHT_OFFSET = 5; 
 
 	private static Robot robot = null;  
 	
@@ -27,10 +31,15 @@ public class Robot {
 		return robot; 
 	}
 	
+	private int lightMinValue; 
+	private int lightMaxValue = INIT_LIGHT_MAX; 
+	
 	public void reset() {
 		Consts.SONAR_S.getDistance(); 
 		Consts.NOTE_MOTOR.resetTachoCount(); 
 		Consts.PITCH_MOTOR.resetTachoCount(); 
+		Consts.COLOR_S.setType(ColorLightSensor.TYPE_COLORRED); 
+		this.lightMinValue = Consts.COLOR_S.readRawValue(); 
 	}
 
 	private int getNote() {
@@ -69,6 +78,19 @@ public class Robot {
 	public int getVol() {
 		boolean pressed = Consts.TOUCH_S.isPressed(); 
 		int vol = pressed ? Sound.VOL_MAX : 0; 
+		if (this.lightMaxValue == INIT_LIGHT_MAX && pressed) {
+			this.lightMaxValue = Consts.COLOR_S.readRawValue(); 
+		}
+		if (!pressed) {
+			int light = Consts.COLOR_S.readRawValue(); 
+			vol = (light - this.lightMinValue - LIGHT_OFFSET) * 100 / (this.lightMaxValue - this.lightMinValue); 
+			if (vol < 0) {
+				vol = 0; 
+			}
+			if (vol > 100) {
+				vol = 100; 
+			}
+		}
 		LCD.drawString("Vol:" + vol + "   ", 0, 4); 
 		return vol; 
 	}

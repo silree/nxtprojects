@@ -13,17 +13,7 @@ public class Initializer {
 	public static Initializer getInstance() {
 		return init; 
 	}
-	
-//	private int getSelectedInst() {
-//		TextMenu instMenu = new TextMenu(MusicConsts.INST_NAMES, 1, "Please select a instrument:"); 
-//		return instMenu.select(); 
-//	}
-//	
-//	private void initRobot() {
-//		Robot robot = Robot.getInstance(); 
-//		robot.setInst(MusicConsts.INSTS[this.getSelectedInst()]); 
-//	}
-//	
+
 	private void promptAdjustControllers() {
 		Sound.beepSequence(); 
 		LCD.clear(); 
@@ -37,7 +27,6 @@ public class Initializer {
 	}
 	
 	public void runInit() {
-//		this.initRobot(); 
 		this.promptAdjustControllers(); 
 		Robot.getInstance().reset(); 
 	}
