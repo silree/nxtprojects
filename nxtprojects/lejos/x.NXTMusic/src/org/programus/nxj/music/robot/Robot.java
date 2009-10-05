@@ -9,9 +9,9 @@ import org.programus.nxj.music.utils.MusicConsts;
 
 public class Robot {
 	
-	private static int RISING_VAL = 35; 
+	private static int RISING_VAL = 45; 
 	private static int NOTE_ROTATION_OFFSET = 22; 
-	private static int NOTE_RANGE = 50; 
+	private static int NOTE_RANGE = 45; 
 	private static int PITCH_ROTATION_OFFSET = 30 - 3; 
 	private static int PITCH_RANGE = 30; 
 	
