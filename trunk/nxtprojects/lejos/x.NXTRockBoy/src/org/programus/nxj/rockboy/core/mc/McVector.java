@@ -2,6 +2,8 @@ package org.programus.nxj.rockboy.core.mc;
 
 import java.awt.geom.Point2D;
 
+import org.programus.nxj.rockboy.core.World;
+
 /**
  * Multi-Coordinate vector. 
  * 
@@ -114,7 +116,7 @@ public class McVector extends McObject {
 					: Math.PI + this.angle.getLcdRadian() - vector.angle.getLcdRadian(); 
 			// Law of cosines
 			double v2 = a2 + b2 - 2 * a * b * Math.cos(angleC); 
-			double v = Math.sqrt(v2); 
+			double v = Math.sqrt(v2 > 0 ? v2 : 0); 
 			// Law of sines
 			double r = (v != 0) ? Math.asin(Math.sin(angleC) * b / v) : 0; 
 			if (b2 > a2 + v2) {
@@ -154,10 +156,10 @@ public class McVector extends McObject {
 		McUtil.getInstance().updateAngle(); 
 		McVector g = new McVector(); 
 		g.setStaticInLcd(false); 
-		g.setNaturalVector(1, -90); 
+		g.setNaturalVector(World.G, -90); 
 		McVector speed = new McVector(); 
 		speed.setStaticInLcd(false); 
-		speed.setNaturalVector(0, 90); 
+		speed.setNaturalVector(6.00000000000002E-1, 90); 
 		
 		speed.add(g); 
 		System.out.println(speed); 

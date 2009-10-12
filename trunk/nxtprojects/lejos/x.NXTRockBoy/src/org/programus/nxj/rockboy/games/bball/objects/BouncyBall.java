@@ -9,14 +9,17 @@ import javax.microedition.lcdui.Image;
 import org.programus.nxj.rockboy.core.DropCalculator;
 import org.programus.nxj.rockboy.core.ReboundCalculator;
 import org.programus.nxj.rockboy.core.Thing;
+import org.programus.nxj.rockboy.core.World;
+import org.programus.nxj.rockboy.core.io.IOModule;
 import org.programus.nxj.rockboy.core.mc.McPoint;
+import org.programus.nxj.rockboy.core.mc.McUtil;
 
 public class BouncyBall extends Thing {	
 	private static Image image = new Image(5, 5, new byte[]{
 		(byte) 0x0e, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0x0e, 
 	}); 
 	
-	private static double SPEED_LIMIT = 10; 
+	private static double ENERGY_LIMIT = World.G * (McUtil.SCREEN_BOTTOM_OFFSET + IOModule.getIOModule().getScreenBound().y); 
 	
 	private DropCalculator dc; 
 	private List<Rectangle2D.Double> obstacleList; 
@@ -42,10 +45,16 @@ public class BouncyBall extends Thing {
 		this.moveOneStep(); 
 		if (!this.rc.rebound(oldPoint)) {
 			this.dc.updateDropSpeed(); 
-			if (this.speed.getValue() > SPEED_LIMIT) {
-				this.speed.setValue(SPEED_LIMIT); 
+			double v = speed.getValue(); 
+			double h = this.centerPoint.getNaturalPoint().y; 
+			double ek = v * v / 2; 
+			double ep = World.G * h; 
+			if (ek + ep > ENERGY_LIMIT) {
+				v = Math.sqrt((ENERGY_LIMIT - ep) * 2) - World.G; 
+				this.speed.setValue(v > 0 ? v : 0.1);
 			}
+		} else {
+			IOModule.getIOModule().playTone(4000, 10); 
 		}
 	}
-
 }

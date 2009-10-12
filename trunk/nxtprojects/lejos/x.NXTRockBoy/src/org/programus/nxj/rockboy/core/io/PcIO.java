@@ -1,4 +1,4 @@
-package org.programus.nxj.rockboy.core.input;
+package org.programus.nxj.rockboy.core.io;
 
 import java.awt.Point;
 
@@ -7,7 +7,7 @@ import lejos.nxt.LCD;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 
-public class PcInput extends InputModule {
+public class PcIO extends IOModule {
 	
 	private static Point limit = new Point(LCD.SCREEN_WIDTH, LCD.SCREEN_HEIGHT); 
 
@@ -43,6 +43,11 @@ public class PcInput extends InputModule {
 	@Override
 	public Point getScreenBound() {
 		return limit; 
+	}
+
+	@Override
+	public void playTone(int freq, int duration) {
+		// nothing now. 
 	}
 
 }

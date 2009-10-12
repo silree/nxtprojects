@@ -3,7 +3,7 @@ package org.programus.nxj.rockboy.core.mc;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
-import org.programus.nxj.rockboy.core.input.InputModule;
+import org.programus.nxj.rockboy.core.io.IOModule;
 
 public class McUtil {
 	private static McUtil util = new McUtil(); 
@@ -14,7 +14,7 @@ public class McUtil {
 	}
 	
 	private int angle; 
-	private InputModule input = InputModule.getInputModule(); 
+	private IOModule input = IOModule.getIOModule(); 
 	
 	public static double SCREEN_BOTTOM_OFFSET = 336. / 11; 
 	
