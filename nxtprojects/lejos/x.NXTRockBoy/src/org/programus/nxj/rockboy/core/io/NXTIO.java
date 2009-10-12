@@ -1,4 +1,4 @@
-package org.programus.nxj.rockboy.core.input;
+package org.programus.nxj.rockboy.core.io;
 
 import java.awt.Point;
 
@@ -12,7 +12,7 @@ import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.Delay;
 
-public class NXTInput extends InputModule {
+public class NXTIO extends IOModule {
 	private static Motor R_MOTOR = Motor.A; 
 	private static SensorPort R_TOUCH_P = SensorPort.S1; 
 	private static SensorPort TOUCH_P = SensorPort.S4; 
@@ -103,5 +103,8 @@ public class NXTInput extends InputModule {
 		return limit; 
 	} 
 	
-	
+	@Override
+	public void playTone(int freq, int duration) {
+		Sound.playTone(freq, duration); 
+	}	
 }

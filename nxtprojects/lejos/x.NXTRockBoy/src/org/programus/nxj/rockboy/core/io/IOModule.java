@@ -1,4 +1,4 @@
-package org.programus.nxj.rockboy.core.input;
+package org.programus.nxj.rockboy.core.io;
 
 import java.awt.Point;
 
@@ -6,16 +6,16 @@ import lejos.nxt.ColorLightSensor;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 
-public abstract class InputModule {
+public abstract class IOModule {
 	
-	private static InputModule usingInput; 
-	public synchronized static InputModule getInputModule() {
+	private static IOModule usingInput; 
+	public synchronized static IOModule getIOModule() {
 		if (usingInput == null) {
 			try {
 				Class.forName("java.lang.ClassLoader");
-				usingInput = new PcInput(); 
+				usingInput = new PcIO(); 
 			} catch (ClassNotFoundException e) {
-				usingInput = new NXTInput(); 
+				usingInput = new NXTIO(); 
 			} 
 		}
 		return usingInput; 
@@ -31,4 +31,6 @@ public abstract class InputModule {
 	public abstract boolean isTouchSensorPressed(); 
 	
 	public abstract Point getScreenBound(); 
+	
+	public abstract void playTone(int freq, int duration); 
 }
