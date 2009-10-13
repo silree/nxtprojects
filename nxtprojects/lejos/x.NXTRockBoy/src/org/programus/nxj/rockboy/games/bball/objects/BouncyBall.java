@@ -1,7 +1,7 @@
 package org.programus.nxj.rockboy.games.bball.objects;
 
 import java.awt.Point;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 import java.util.List;
 
 import javax.microedition.lcdui.Image;
@@ -22,10 +22,10 @@ public class BouncyBall extends Thing {
 	private static double ENERGY_LIMIT = World.G * (McUtil.SCREEN_BOTTOM_OFFSET + IOModule.getIOModule().getScreenBound().y); 
 	
 	private DropCalculator dc; 
-	private List<Rectangle2D.Double> obstacleList; 
+	private List<Rectangle> obstacleList; 
 	private ReboundCalculator rc; 
 	
-	public BouncyBall(Point centerPoint, List<Rectangle2D.Double> obstacleList) {
+	public BouncyBall(Point centerPoint, List<Rectangle> obstacleList) {
 		this.centerPoint.setLcdPoint(centerPoint.x, centerPoint.y); 
 		this.obstacleList = obstacleList; 
 		this.centerPoint.setStaticInLcd(false); 
@@ -51,7 +51,7 @@ public class BouncyBall extends Thing {
 			double ep = World.G * h; 
 			if (ek + ep > ENERGY_LIMIT) {
 				v = Math.sqrt((ENERGY_LIMIT - ep) * 2) - World.G; 
-				this.speed.setValue(v > 0 ? v : 0.1);
+				this.speed.setValue(v > 0 ? v : World.G / 10);
 			}
 		} else {
 			IOModule.getIOModule().playTone(4000, 10); 
