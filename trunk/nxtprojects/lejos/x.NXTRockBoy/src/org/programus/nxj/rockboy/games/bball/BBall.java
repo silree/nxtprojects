@@ -1,8 +1,9 @@
 package org.programus.nxj.rockboy.games.bball;
 
 import java.awt.Point;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.microedition.lcdui.Graphics;
 
@@ -27,8 +28,12 @@ public class BBall {
 		int x0 = g.getWidth() >> 1; 
 		int y0 = ((g.getHeight() + g.getFont().getHeight()) >> 1); 
 		
-		BouncyBall ball = new BouncyBall(new Point(x0, y0), new ArrayList<Rectangle2D.Double>()); 
-
+		List<Rectangle> obstacleList = new ArrayList<Rectangle>(); 
+		obstacleList.add(new Rectangle(-50, 30, 200, 5)); 
+//		obstacleList.add(new Rectangle(80, 20, 5, 44)); 
+		
+		BouncyBall ball = new BouncyBall(new Point(x0, y0), obstacleList); 
+		
 		while(!Button.ESCAPE.isPressed()) {
 			util.updateAngle(); 
 //			RConsole.println("======"); 
@@ -40,6 +45,13 @@ public class BBall {
 //			RConsole.println(ball.getSpeedRef().toString()); 
 //			RConsole.println(ball.getCenterPointRef().getLcdPoint().toString()); 
 			g.drawImage(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, false); 
+			
+			for (Rectangle r : obstacleList) {
+				g.fillRect(r.x < 0 ? 0 : r.x, 
+						r.y < 0 ? 0 : r.y, 
+						r.width > g.getWidth() ? g.getWidth() : r.width, 
+						r.height > g.getHeight() ? g.getHeight() : r.height); 
+			}
 			
 			g.refresh(); 
 			
