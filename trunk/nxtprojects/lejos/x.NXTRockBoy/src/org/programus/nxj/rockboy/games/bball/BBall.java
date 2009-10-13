@@ -29,8 +29,8 @@ public class BBall {
 		int y0 = ((g.getHeight() + g.getFont().getHeight()) >> 1); 
 		
 		List<Rectangle> obstacleList = new ArrayList<Rectangle>(); 
-		obstacleList.add(new Rectangle(-50, 30, 200, 5)); 
-//		obstacleList.add(new Rectangle(80, 20, 5, 44)); 
+		obstacleList.add(new Rectangle(20, 20, 50, 10)); 
+		obstacleList.add(new Rectangle(70, 20, 10, 44)); 
 		
 		BouncyBall ball = new BouncyBall(new Point(x0, y0), obstacleList); 
 		
