@@ -28,7 +28,7 @@ public class BouncyBall extends Thing {
 	public BouncyBall(Point centerPoint, List<Rectangle> obstacleList) {
 		this.centerPoint.setLcdPoint(centerPoint.x, centerPoint.y); 
 		this.obstacleList = obstacleList; 
-		this.centerPoint.setStaticInLcd(false); 
+		this.centerPoint.setStaticInLcd(true); 
 		this.speed.setStaticInLcd(false); 
 		this.dc = new DropCalculator(this); 
 		this.rc = new ReboundCalculator(this, this.obstacleList); 
