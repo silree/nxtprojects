@@ -1,7 +1,13 @@
 package org.programus.nxj.rockboy.core.mc;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import lejos.nxt.comm.RConsole;
 
 
 public class McPoint extends McObject {
@@ -85,6 +91,16 @@ public class McPoint extends McObject {
 		return this.getVectorTo(p).getMcAngleClone(); 
 	}
 	
+	public double getDistanceToLine(McPoint p1, McPoint p2) {
+		McVector v1 = p2.getVectorTo(p1); 
+		McVector v = p2.getVectorTo(this); 
+		v.setStaticInLcd(v1.isStaticInLcd()); 
+		v.getMcAngleRef().sub(v1.getMcAngleRef().getRawRadian()); 
+		Point2D.Double p = v.isStaticInLcd() ? v.getLcdOrthValues() : v.getNaturalOrthValues(); 
+		double d = Math.abs(p.y); 
+		return p.x > 0 && p.x <= v1.getValue() ? d : -d; 
+	}
+	
 	public McPoint move(McVector vector) {
 		this.vectorValue.add(vector); 
 		return this; 
@@ -135,16 +151,40 @@ public class McPoint extends McObject {
 	}
 	
 	public static void main(String[] args) {
-		McUtil.getInstance().updateAngle(); 
-		McPoint point = new McPoint(); 
-		double baseY = 64; 
-		point.setStaticInLcd(false); 
-		point.setLcdPoint(50, 64); 
-		Point2D.Double p = point.getLcdPoint(); 
-		System.out.println(p); 
-		p.y = baseY * 2 - p.y; 
-		point.setLcdPoint(p); 
-		System.out.println(p); 
-		System.out.println(point); 
-	}
+//		McUtil.getInstance().updateAngle(); 
+//		McPoint p1 = new McPoint(); 
+//		McPoint p2 = new McPoint(); 
+//		McPoint p = new McPoint(); 
+//		p1.setStaticInLcd(true); 
+//		p2.setStaticInLcd(true); 
+//		p.setStaticInLcd(true); 
+//		p1.setLcdPoint(92.1955122729339, 7.18847524415601); 
+//		p2.setLcdPoint(93.4253407287673, 6.93505465286158); 
+//		p.setLcdPoint(36, 19); 
+//		System.out.println(p.getDistanceToLine(p1, p2)); 
+
+		List<Rectangle> obstacleList = new ArrayList<Rectangle>(); 
+		obstacleList.add(new Rectangle(20, 20, 50, 10)); 
+		obstacleList.add(new Rectangle(70, 20, 10, 44)); 
+		
+		Random rand = new Random(); 
+		List<Point2D.Double> beans = new ArrayList<Point2D.Double>(); 
+		for (int i = 0; i < 5; i++) {
+			Point2D.Double p = new Point2D.Double(); 
+			boolean availablePoint = false; 
+			while (!availablePoint) {
+				p.setLocation(rand.nextInt(100), rand.nextInt(64)); 
+				availablePoint = true; 
+				for (Rectangle rect : obstacleList) {
+					if (rect.contains(p)) {
+						availablePoint = false; 
+						break; 
+					}
+				}
+			}
+			
+			beans.add(p); 
+			System.out.println(p.toString()); 
+		}
+}
 }

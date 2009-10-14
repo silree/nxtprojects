@@ -1,4 +1,4 @@
-package org.programus.nxj.rockboy.core;
+package org.programus.nxj.rockboy.core.thing;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;

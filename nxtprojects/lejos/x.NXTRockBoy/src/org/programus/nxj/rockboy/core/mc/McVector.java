@@ -123,7 +123,11 @@ public class McVector extends McObject {
 				r = Math.PI - r; 
 			}
 			this.value = v; 
-			this.angle.turnCw(r); 
+			if (this.angle.isStaticInLcd() == vector.angle.isStaticInLcd()) {
+				this.angle.add(r); 
+			} else {
+				this.angle.turnCw(r); 
+			}
 		}
 		return this; 
 	}
@@ -133,9 +137,9 @@ public class McVector extends McObject {
 	}
 	
 	public McVector sub(McVector vector) {
-		this.angle.turnCw(Math.PI); 
+		this.angle.add(Math.PI); 
 		this.add(vector); 
-		this.angle.turnCc(Math.PI); 
+		this.angle.sub(Math.PI); 
 		return this; 
 	}
 	

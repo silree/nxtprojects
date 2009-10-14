@@ -1,4 +1,4 @@
-package org.programus.nxj.rockboy.core;
+package org.programus.nxj.rockboy.core.thing;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -147,7 +147,7 @@ public class ReboundCalculator {
 		double radian = speed.getMcAngleRef().getLcdRadian(); 
 		speed.getMcAngleRef().setLcdRadian(-radian); 
 		speed.getMcAngleRef().ltRound(); 
-		p.y = baseY * 2 - p.y; 
+		p.y = (baseY << 1) - p.y; 
 		point.setLcdPoint(p); 
 	}
 	
@@ -155,7 +155,7 @@ public class ReboundCalculator {
 		double radian = speed.getMcAngleRef().getLcdRadian(); 
 		speed.getMcAngleRef().setLcdRadian(Math.PI - radian); 
 		speed.getMcAngleRef().ltRound(); 
-		p.x = baseX * 2 - p.x; 
+		p.x = (baseX << 1) - p.x; 
 		point.setLcdPoint(p); 
 	}
 }

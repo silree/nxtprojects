@@ -18,7 +18,7 @@ public class PcIO extends IOModule {
 
 	@Override
 	public int getRotationAngle() {
-		return 0;
+		return 45;
 	}
 
 	@Override
