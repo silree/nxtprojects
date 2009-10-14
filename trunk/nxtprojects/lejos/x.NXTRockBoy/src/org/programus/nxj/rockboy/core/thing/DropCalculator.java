@@ -1,5 +1,6 @@
-package org.programus.nxj.rockboy.core;
+package org.programus.nxj.rockboy.core.thing;
 
+import org.programus.nxj.rockboy.core.World;
 import org.programus.nxj.rockboy.core.mc.McVector;
 
 public class DropCalculator {

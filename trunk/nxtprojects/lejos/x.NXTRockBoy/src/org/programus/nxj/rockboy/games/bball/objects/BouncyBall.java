@@ -2,17 +2,19 @@ package org.programus.nxj.rockboy.games.bball.objects;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import javax.microedition.lcdui.Image;
 
-import org.programus.nxj.rockboy.core.DropCalculator;
-import org.programus.nxj.rockboy.core.ReboundCalculator;
-import org.programus.nxj.rockboy.core.Thing;
 import org.programus.nxj.rockboy.core.World;
 import org.programus.nxj.rockboy.core.io.IOModule;
 import org.programus.nxj.rockboy.core.mc.McPoint;
 import org.programus.nxj.rockboy.core.mc.McUtil;
+import org.programus.nxj.rockboy.core.thing.DropCalculator;
+import org.programus.nxj.rockboy.core.thing.EatBeanCalculator;
+import org.programus.nxj.rockboy.core.thing.ReboundCalculator;
+import org.programus.nxj.rockboy.core.thing.Thing;
 
 public class BouncyBall extends Thing {	
 	private static Image image = new Image(5, 5, new byte[]{
@@ -24,14 +26,16 @@ public class BouncyBall extends Thing {
 	private DropCalculator dc; 
 	private List<Rectangle> obstacleList; 
 	private ReboundCalculator rc; 
+	private EatBeanCalculator ebc; 
 	
-	public BouncyBall(Point centerPoint, List<Rectangle> obstacleList) {
+	public BouncyBall(Point centerPoint, List<Rectangle> obstacleList, List<Point2D.Double> beanList) {
 		this.centerPoint.setLcdPoint(centerPoint.x, centerPoint.y); 
 		this.obstacleList = obstacleList; 
 		this.centerPoint.setStaticInLcd(true); 
 		this.speed.setStaticInLcd(false); 
 		this.dc = new DropCalculator(this); 
 		this.rc = new ReboundCalculator(this, this.obstacleList); 
+		this.ebc = new EatBeanCalculator(this, beanList); 
 	}
 
 	@Override
@@ -55,6 +59,10 @@ public class BouncyBall extends Thing {
 			}
 		} else {
 			IOModule.getIOModule().playTone(4000, 10); 
+		}
+		
+		if (this.ebc.eat(oldPoint)) {
+			IOModule.getIOModule().playTone(1000, 50); 
 		}
 	}
 }

@@ -116,13 +116,34 @@ public class McAngle extends McObject {
 		return new McAngle(this).sub(angle); 
 	}
 	
+	public McAngle add(double radian) {
+		this.radian += radian; 
+		return this; 
+	}
+	
+	public McAngle addNew(double radian) {
+		return new McAngle(this).add(radian); 
+	}
+	
+	public McAngle sub(double radian) {
+		return this.add(-radian); 
+	}
+	
+	public McAngle subNew(double radian) {
+		return new McAngle(this).sub(radian); 
+	}
+	
 	/**
 	 * Turn clockwise
 	 * @param radian
 	 * @return
 	 */
 	public McAngle turnCw(double radian) {
-		this.radian += radian; 
+		if (this.isStaticInLcd()) {
+			this.radian += radian; 
+		} else {
+			this.radian -= radian; 
+		}
 		return this; 
 	}
 	
