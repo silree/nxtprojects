@@ -19,11 +19,16 @@ import org.programus.nxj.util.Condition;
 
 public class GameLevel {
 	private String title; 
-	private Point initPosition = new Point(); 
-	private List<Rectangle> obstacleList = new ArrayList<Rectangle>();
+	private Point initPosition; 
+	private List<Rectangle> obstacleList;
 	
 	public final static Condition DEFAULT_STOP_CONDITION = new KeyStopCondition(Button.ESCAPE); 
 	private final static int TITLE_TIME = 2000; 
+	
+	GameLevel() {
+		this.initPosition = new Point();  
+		this.obstacleList = new ArrayList<Rectangle>(); 
+	}
 	
 	protected void setTitle(String title) {
 		this.title = title;
@@ -41,24 +46,31 @@ public class GameLevel {
 		return obstacleList;
 	}
 	
+	private Point2D.Double generateBean(Random rand, Graphics g) {
+		if (rand == null) {
+			rand = new Random(); 
+		}
+		Point2D.Double p = new Point2D.Double(); 
+		boolean availablePoint = false; 
+		while (!availablePoint) {
+			p.setLocation(rand.nextInt(g.getWidth()), rand.nextInt(g.getHeight())); 
+			availablePoint = true; 
+			for (Rectangle rect : obstacleList) {
+				if (rect.contains(p)) {
+					availablePoint = false; 
+					break; 
+				}
+			}
+		}
+		
+		return p; 
+	}
+	
 	private List<Point2D.Double> generateRandomBeans(Graphics g) {
 		Random rand = new Random(); 
 		List<Point2D.Double> beans = new ArrayList<Point2D.Double>(); 
 		for (int i = 0; i < 5; i++) {
-			Point2D.Double p = new Point2D.Double(); 
-			boolean availablePoint = false; 
-			while (!availablePoint) {
-				p.setLocation(rand.nextInt(g.getWidth()), rand.nextInt(g.getHeight())); 
-				availablePoint = true; 
-				for (Rectangle rect : obstacleList) {
-					if (rect.contains(p)) {
-						availablePoint = false; 
-						break; 
-					}
-				}
-			}
-			
-			beans.add(p); 
+			beans.add(this.generateBean(rand, g)); 
 		}
 		return beans; 
 	}

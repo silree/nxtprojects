@@ -20,16 +20,18 @@ public class EatBeanCalculator {
 	 * @return true if eaten. 
 	 */
 	public boolean eat(McPoint oldPoint) {
-		int index = this.beanList.size() - 1; 
 		McPoint beanPoint = new McPoint(); 
 		beanPoint.setStaticInLcd(true); 
-		beanPoint.setLcdPoint(this.beanList.get(index)); 
-		
-		double distance = beanPoint.getDistanceToLine(oldPoint, this.master.centerPoint); 
-		boolean ret = (distance >= 0.00001) && (distance <= ((this.master.getWidth() + this.master.getHeight()) >> 2)); 
-		if (ret) {
-			this.beanList.remove(index); 
+		synchronized (this.beanList) {
+			int index = this.beanList.size() - 1; 
+			beanPoint.setLcdPoint(this.beanList.get(index)); 
+			
+			double distance = beanPoint.getDistanceToLine(oldPoint, this.master.centerPoint); 
+			boolean ret = (distance >= 0.00001) && (distance <= ((this.master.getWidth() + this.master.getHeight()) >> 2)); 
+			if (ret) {
+				this.beanList.remove(index); 
+			}
+			return ret; 
 		}
-		return ret; 
 	}
 }

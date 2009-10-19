@@ -32,7 +32,7 @@ public class BouncyBall extends Thing {
 		this.centerPoint.setLcdPoint(centerPoint.x, centerPoint.y); 
 		this.obstacleList = obstacleList; 
 		this.centerPoint.setStaticInLcd(true); 
-		this.speed.setStaticInLcd(false); 
+		this.speed.setStaticInLcd(true); 
 		this.dc = new DropCalculator(this); 
 		this.rc = new ReboundCalculator(this, this.obstacleList); 
 		this.ebc = new EatBeanCalculator(this, beanList); 
@@ -55,7 +55,9 @@ public class BouncyBall extends Thing {
 			double ep = World.G * h; 
 			if (ek + ep > ENERGY_LIMIT) {
 				v = Math.sqrt((ENERGY_LIMIT - ep) * 2) - World.G; 
-				this.speed.setValue(v > 0 ? v : World.G / 10);
+				this.speed.setValue(v > 0 ? v : World.G / 1);
+//				v = Math.sqrt((ENERGY_LIMIT - ep) * 2); 
+//				this.speed.setValue(v);
 			}
 		} else {
 			IOModule.getIOModule().playTone(4000, 10); 
