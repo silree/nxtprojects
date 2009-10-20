@@ -16,11 +16,12 @@ import org.programus.nxj.util.StringComparator;
 public class LevelFactory {
 	public static final String LEVEL_EXT = ".bbl"; 
 	
+	private BBGame game; 
 	private List<File> levelFiles; 
 	private Comparator<String> stringComp = new StringComparator(); 
 	private Iterator<File> fileIterator; 
 	
-	public LevelFactory() {
+	public LevelFactory(BBGame game) {
 		File[] files = File.listFiles(); 
 		this.levelFiles = new ArrayList<File>(files.length); 
 		for (File f : files) {
@@ -38,6 +39,7 @@ public class LevelFactory {
 				}
 			}
 		}
+		this.game = game; 
 		this.reset(); 
 	}
 	
@@ -51,7 +53,7 @@ public class LevelFactory {
 		}
 		File file = this.fileIterator.next(); 
 		FileInputStream in = new FileInputStream(file); 
-		GameLevel level = new GameLevel(); 
+		GameLevel level = new GameLevel(this.game); 
 		int byteData = 0; 
 		// read title. 
 		StringBuffer titleBuffer = new StringBuffer(); 
@@ -96,6 +98,7 @@ public class LevelFactory {
 			rect.height = byteData; 
 			obstacleList.add(rect); 
 		}
+		in.close(); 
 		
 		return level; 
 	}
