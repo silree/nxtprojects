@@ -6,22 +6,18 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 
-import org.programus.nxj.rockboy.core.World;
-import org.programus.nxj.rockboy.games.bball.ctrls.GameLevel;
-import org.programus.nxj.rockboy.games.bball.ctrls.LevelFactory;
+import org.programus.nxj.rockboy.games.bball.ctrls.BBGame;
 
 public class BBall {
 	public static void main(String[] args) {
 //		RConsole.openUSB(15000); 
-		World.initialize(); 
-		LevelFactory levelFactory = new LevelFactory(); 
-		boolean gameStopped = false; 
+		BBGame game = new BBGame(); 
+		game.initialize(); 
 		try {
-			for (GameLevel level = levelFactory.getNextLevel(); level != null; level = levelFactory.getNextLevel()) {
-				if (!level.play(null, null)) {
-					gameStopped = true; 
-					break; 
-				}
+			if (game.play()) {
+				LCD.clear(); 
+				LCD.drawString("YOU WIN!", 4, 3); 
+				LCD.refresh(); 
 			}
 		} catch (IOException e) {
 			Sound.buzz(); 
@@ -30,13 +26,6 @@ public class BBall {
 			LCD.drawString(e.getMessage(), 0, 3); 
 			LCD.refresh(); 
 		}
-		
-		if (!gameStopped) {
-			LCD.clear(); 
-			LCD.drawString("YOU WIN!", 4, 3); 
-			LCD.refresh(); 
-		}
-		
 		Button.ESCAPE.waitForPressAndRelease(); 
 //		RConsole.close(); 
 	}
