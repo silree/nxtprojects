@@ -2,11 +2,12 @@ package org.programus.nxj.rockboy.games.bball;
 
 import java.io.IOException;
 
-import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
+import lejos.util.TextMenu;
 
 import org.programus.nxj.rockboy.games.bball.ctrls.BBGame;
+import org.programus.nxj.util.DisplayUtil;
 
 public class BBall {
 	public static void main(String[] args) {
@@ -14,11 +15,17 @@ public class BBall {
 		BBGame game = new BBGame(); 
 		game.initialize(); 
 		try {
-			if (game.play()) {
-				LCD.clear(); 
-				LCD.drawString("YOU WIN!", 4, 3); 
-				LCD.refresh(); 
-			}
+			int winRow = 3; 
+			TextMenu againMenu = new TextMenu(new String[]{"YES", "NO"}, 6, "Play Again?"); 
+			do {
+				if (game.play()) {
+					LCD.clear(); 
+					DisplayUtil.drawStringCenter("YOU WIN!", winRow); 
+					LCD.refresh(); 
+				} else {
+					break; 
+				}
+			} while (againMenu.select() == 0); 
 		} catch (IOException e) {
 			Sound.buzz(); 
 			LCD.clear(); 
@@ -26,7 +33,7 @@ public class BBall {
 			LCD.drawString(e.getMessage(), 0, 3); 
 			LCD.refresh(); 
 		}
-		Button.ESCAPE.waitForPressAndRelease(); 
+//		Button.ESCAPE.waitForPressAndRelease(); 
 //		RConsole.close(); 
 	}
 }
