@@ -16,6 +16,7 @@ import lejos.util.Delay;
 import org.programus.nxj.rockboy.core.mc.McUtil;
 import org.programus.nxj.rockboy.games.bball.objects.BouncyBall;
 import org.programus.nxj.util.Condition;
+import org.programus.nxj.util.DisplayUtil;
 
 public class GameLevel {
 	private BBGame game; 
@@ -87,8 +88,7 @@ public class GameLevel {
 	
 	private void showTitle() {
 		LCD.clear(); 
-		int x = (LCD.DISPLAY_CHAR_WIDTH - this.getTitle().length()) >> 1; 
-		LCD.drawString(this.getTitle(), x, 3); 
+		DisplayUtil.drawStringCenter(this.getTitle(), 3); 
 		LCD.refresh(); 
 	}
 	
@@ -121,26 +121,34 @@ public class GameLevel {
 	private void drawStatus(List<Point2D.Double> beans, Graphics g) {
 		if (this.game.isTimeMode()) {
 			// bean progress status
-			int w = g.getWidth() - 1; 
+			int w = g.getWidth(); 
 			int len = (beans.size()) * g.getWidth() / BEAN_LIMIT; 
 			int xy = g.getHeight() - 1; 
-			g.drawLine(w, xy, w - len, xy); 
+			if (len > 0) {
+				g.drawLine(w, xy, w - len, xy); 
+			}
 			// ms time status
 			long t = this.gameValue % 1000; 
 			len = (int)(t * g.getWidth() / 1000); 
 			xy = 0; 
-			g.drawLine(0, xy, len, xy); 
+			if (len > 0) {
+				g.drawLine(0, xy, len, xy); 
+			}
 			// sec time status
-			int h = g.getHeight() - 1; 
+			int h = g.getHeight(); 
 			t = (this.gameValue - t) % 60000; 
 			len = (int)(t * g.getHeight() / 60000); 
 			xy = g.getWidth() - 1; 
-			g.drawLine(xy, h, xy, h - len); 
+			if (len > 0) {
+				g.drawLine(xy, h, xy, h - len); 
+			}
 			// min time status
 			t = (this.gameValue - t) % 3600000; 
 			len = (int)(t * g.getHeight() / 3600000); 
 			xy = 0; 
-			g.drawLine(xy, h, xy, h - len); 
+			if (len > 0) {
+				g.drawLine(xy, h, xy, h - len); 
+			}
 		}
 		
 		if (this.game.isScoreMode()) {
@@ -153,8 +161,10 @@ public class GameLevel {
 			// time status
 			len = (int) (System.currentTimeMillis() - this.startTime) * g.getWidth() / TIME_LIMIT; 
 			xy = g.getHeight() - 1; 
-			int w = g.getWidth() - 1; 
-			g.drawLine(w, xy, len, xy); 
+			int w = g.getWidth(); 
+			if (len > 0) {
+				g.drawLine(w, xy, len, xy); 
+			}
 		}
 	}
 	
@@ -233,6 +243,18 @@ public class GameLevel {
 			// ==================================================
 			Delay.msDelay(20); 
 		}
+		
+		if (win) {
+			// draw over animation
+			final int LIMIT = (g.getHeight() >> 1) + 1; 
+			for (int topLine = 0; !stopCondition.isSatisfied() && topLine < LIMIT; topLine++) {
+				g.fillRect(0, 0, g.getWidth(), topLine); 
+				g.fillRect(0, g.getHeight() - topLine - 1, g.getWidth(), topLine); 
+				g.refresh(); 
+				Delay.msDelay(20); 
+			}
+		}
+		
 		return win; 
 	}
 }
