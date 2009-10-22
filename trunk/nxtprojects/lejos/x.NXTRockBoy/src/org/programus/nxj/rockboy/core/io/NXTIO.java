@@ -53,6 +53,8 @@ public class NXTIO extends IOModule {
 		R_MOTOR.setBrakePower(0); 
 		if (!R_TOUCH_S.isPressed()) {
 			Sound.buzz(); 
+		} else {
+			Sound.beep(); 
 		}
 		LCD.drawString("Please reset NXT", 0, 3); 
 		LCD.drawString("Then press ENTER", 0, 4); 

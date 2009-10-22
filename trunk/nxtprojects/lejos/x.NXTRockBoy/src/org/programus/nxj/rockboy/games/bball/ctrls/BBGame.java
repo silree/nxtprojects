@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.microedition.lcdui.Graphics;
+
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import lejos.util.Delay;
@@ -15,6 +17,7 @@ import lejos.util.TextMenu;
 import org.programus.nxj.rockboy.core.World;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
+import org.programus.nxj.util.SoundUtil;
 import org.programus.nxj.util.TimeUtil;
 
 public class BBGame {
@@ -29,8 +32,9 @@ public class BBGame {
 	private long totalValue; 
 	
 	private final static String profileName = ".bball"; 
-	private static long bestScore; 
+	private static long bestScore = -1; 
 	private static long bestTime; 
+	private static Graphics g; 
 	
 	private LevelFactory levelFactory; 
 	
@@ -48,6 +52,7 @@ public class BBGame {
 		if (bestTime <= 0) {
 			bestTime = Long.MAX_VALUE; 
 		}
+		g = new Graphics(); 
 	}
 	
 	public BBGame() {
@@ -58,7 +63,14 @@ public class BBGame {
 		World.initialize(); 
 	}
 	
+	private void showStartScreen() {
+		g.clear(); 
+		g.fillRect(0, LCD.CELL_HEIGHT + (LCD.CELL_HEIGHT >> 1), g.getWidth(), LCD.CELL_HEIGHT << 1); 
+		DisplayUtil.drawStringCenter("BBALL", LCD.CELL_HEIGHT << 1, true); 
+	}
+	
 	public void promptMode(int row) {
+		this.showStartScreen(); 
 		TextMenu modeMenu = new TextMenu(GAME_MODES, row, "SELECT A MODE:"); 
 		this.gameMode = modeMenu.select(); 
 	}
@@ -142,25 +154,21 @@ public class BBGame {
 			@Override
 			public void run() {
 				int duration = 100; 
-				Sound.playTone(523, duration); 
-				Delay.msDelay(duration); 
-				Sound.playTone(587, duration);
-				Delay.msDelay(duration); 
-				Sound.playTone(659, duration); 
-				Delay.msDelay(duration); 
+				SoundUtil.playNote(5, 1, false, duration, true); 
+				SoundUtil.playNote(5, 2, false, duration, true); 
+				SoundUtil.playNote(5, 3, false, duration, true); 
 				duration = 200; 
-				Sound.playTone(784, duration); 
-				Delay.msDelay(duration); 
+				SoundUtil.playNote(5, 5, false, duration, true); 
 				duration = 100; 
-				Sound.playTone(659, duration); 
-				Delay.msDelay(duration); 
+				SoundUtil.playNote(5, 3, false, duration, true); 
 				duration = 500; 
-				Sound.playTone(784, duration); 
-				Delay.msDelay(duration); 
+				SoundUtil.playNote(5, 5, false, duration, true); 
 			}
 		}).start(); 
 		int row = 3; 
-		DisplayUtil.drawStringCenter("NEW RECORD!", row); 
+		g.clear(); 
+		g.fillRect(0, row * LCD.CELL_HEIGHT - 1, g.getWidth(), LCD.CELL_HEIGHT + 1); 
+		DisplayUtil.drawStringCenter("NEW RECORD!", row * LCD.CELL_HEIGHT, true); 
 		row++; 
 		if (this.isScoreMode()) {
 			DisplayUtil.drawStringCenter(String.valueOf(this.totalValue), row); 
@@ -168,7 +176,36 @@ public class BBGame {
 		if (this.isTimeMode()) {
 			DisplayUtil.drawStringCenter(this.getTimeString(this.totalValue), row); 
 		}
-		LCD.refresh(); 
+		g.refresh(); 
+	}
+	
+	private void showBestRecord() {
+		g.clear(); 
+		if (this.isScoreMode()) {
+			int y = LCD.CELL_HEIGHT; 
+			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString("BEST SCORE:", 1, y, true); 
+			y += LCD.CELL_HEIGHT; 
+			DisplayUtil.drawStringRight(String.valueOf(bestScore), y, 0, false); 
+			y += LCD.CELL_HEIGHT; 
+			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString("YOUR SCORE:", 1, y, true); 
+			y += LCD.CELL_HEIGHT; 
+			DisplayUtil.drawStringRight(String.valueOf(this.totalValue), y, 0, false); 
+		}
+		if (this.isTimeMode()) {
+			int y = LCD.CELL_HEIGHT; 
+			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString("BEST TIME:", 1, y, true); 
+			y += LCD.CELL_HEIGHT; 
+			DisplayUtil.drawStringRight(this.getTimeString(bestTime), y, 0, false); 
+			y += LCD.CELL_HEIGHT; 
+			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString("YOUR TIME:", 1, y, true); 
+			y += LCD.CELL_HEIGHT; 
+			DisplayUtil.drawStringRight(this.getTimeString(this.totalValue), y, 0, false); 
+		}
+		g.refresh(); 
 	}
 	
 	private void reset() {
@@ -202,10 +239,12 @@ public class BBGame {
 		if (this.refreshRecords()) {
 			this.showNewRecord(); 
 			this.saveRecords(); 
-			final int CONGRATULATION_TIME = 3000; 
-			for (long t = System.currentTimeMillis(); !stopCondition.isSatisfied() && System.currentTimeMillis() < CONGRATULATION_TIME + t;) {
-				Delay.msDelay(20); 
-			}
+		} else {
+			this.showBestRecord(); 
+		}
+		final int scoreTime = 3000; 
+		for (long t = System.currentTimeMillis(); !stopCondition.isSatisfied() && System.currentTimeMillis() < scoreTime + t;) {
+			Delay.msDelay(20); 
 		}
 		
 		return !gameStopped; 

@@ -65,7 +65,7 @@ public class GameLevel {
 		Point2D.Double p = new Point2D.Double(); 
 		boolean availablePoint = false; 
 		while (!availablePoint) {
-			p.setLocation(rand.nextInt(g.getWidth()), rand.nextInt(g.getHeight())); 
+			p.setLocation(rand.nextInt(g.getWidth() - 2) + 1, rand.nextInt(g.getHeight() - 2) + 1); 
 			availablePoint = true; 
 			for (Rectangle rect : obstacleList) {
 				if (rect.contains(p)) {
@@ -249,7 +249,7 @@ public class GameLevel {
 			final int LIMIT = (g.getHeight() >> 1) + 1; 
 			for (int topLine = 0; !stopCondition.isSatisfied() && topLine < LIMIT; topLine++) {
 				g.fillRect(0, 0, g.getWidth(), topLine); 
-				g.fillRect(0, g.getHeight() - topLine - 1, g.getWidth(), topLine); 
+				g.fillRect(0, g.getHeight() - topLine - 1, g.getWidth(), topLine + 1); 
 				g.refresh(); 
 				Delay.msDelay(20); 
 			}
