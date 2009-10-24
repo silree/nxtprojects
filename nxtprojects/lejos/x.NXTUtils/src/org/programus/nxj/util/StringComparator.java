@@ -14,8 +14,8 @@ public class StringComparator implements Comparator<String> {
 			return 1; 
 		}
 		
-		char[] cs1 = new char[o1.length()]; 
-		char[] cs2 = new char[o2.length()]; 
+		char[] cs1 = o1.toCharArray(); 
+		char[] cs2 = o2.toCharArray(); 
 		int n = Math.min(cs1.length, cs2.length); 
 		for (int i = 0; i < n; i++) {
 			if (cs1[i] != cs2[i]) {
