@@ -28,7 +28,7 @@ public class LevelFactory {
 			if (f != null) {
 				String name = f.getName(); 
 				if (name.lastIndexOf(LEVEL_EXT) == name.length() - LEVEL_EXT.length()) {
-					int index = this.levelFiles.size(); 
+					int index = 0; 
 					for (int i = this.levelFiles.size() - 1; i >= 0; i--) {
 						if (stringComp.compare(this.levelFiles.get(i).getName(), name) < 0) {
 							index = i + 1; 

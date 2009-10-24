@@ -33,6 +33,8 @@ public class GameLevel {
 	private final static int BEAN_LIMIT = 5; 
 	private final static int TIME_LIMIT = 60000; 
 	
+	private final static int TIME_PER_FRAME = 40; 
+	
 	GameLevel(BBGame game) {
 		this.game = game; 
 		this.initPosition = new Point();  
@@ -195,7 +197,8 @@ public class GameLevel {
 		
 		
 		while (!stopCondition.isSatisfied()) {
-			if (System.currentTimeMillis() < this.startTime) {
+			long calcStartTime = System.currentTimeMillis(); 
+			if (calcStartTime < this.startTime) {
 				// displaying level title
 				continue; 
 			}
@@ -241,7 +244,11 @@ public class GameLevel {
 			this.drawStatus(beans, g); 
 			g.refresh(); 
 			// ==================================================
-			Delay.msDelay(20); 
+			int calcTime = (int)(System.currentTimeMillis() - calcStartTime); 
+			int delayTime = TIME_PER_FRAME - calcTime; 
+			if (delayTime > 0) {
+				Delay.msDelay(delayTime); 
+			}
 		}
 		
 		if (win) {

@@ -7,6 +7,7 @@ package org.programus.nxj.rockboy.core.mc;
  *
  */
 public class McAngle extends McObject {
+	private final static double R = 2 * Math.PI; 
 	private double radian; 
 	private boolean staticInLcd = true; 
 	
@@ -174,11 +175,11 @@ public class McAngle extends McObject {
 	}
 	
 	public McAngle ltRound() {
-		final double R = 2 * Math.PI; 
-		double r = this.radian > 0 ? -R : R; 
-		while (!(this.radian >= 0 && this.radian < R)) {
-			this.radian += r; 
-		}
+		this.radian %= R; 
+//		double r = this.radian > 0 ? -R : R; 
+//		while (!(this.radian >= 0 && this.radian < R)) {
+//			this.radian += r; 
+//		}
 		return this; 
 	}
 	
