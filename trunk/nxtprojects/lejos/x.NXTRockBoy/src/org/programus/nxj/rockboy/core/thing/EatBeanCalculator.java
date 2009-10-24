@@ -8,10 +8,12 @@ import org.programus.nxj.rockboy.core.mc.McPoint;
 public class EatBeanCalculator {
 	private Thing master; 
 	private List<Point2D.Double> beanList; 
+	private int distanceLimit; 
 	
 	public EatBeanCalculator(Thing t, List<Point2D.Double> beanList) {
 		this.master = t; 
 		this.beanList = beanList; 
+		this.distanceLimit = ((this.master.getWidth() + this.master.getHeight()) >> 2) + 1; 
 	}
 	
 	/**
@@ -27,7 +29,7 @@ public class EatBeanCalculator {
 			beanPoint.setLcdPoint(this.beanList.get(index)); 
 			
 			double distance = beanPoint.getDistanceToLine(oldPoint, this.master.centerPoint); 
-			boolean ret = (distance >= 0.00001) && (distance <= ((this.master.getWidth() + this.master.getHeight()) >> 2)); 
+			boolean ret = (distance >= 0.00001) && (distance <= this.distanceLimit); 
 			if (ret) {
 				this.beanList.remove(index); 
 			}
