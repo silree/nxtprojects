@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.util.Delay;
 
 import org.programus.nxj.rockboy.core.mc.McUtil;
@@ -33,7 +35,11 @@ public class GameLevel {
 	private final static int BEAN_LIMIT = 5; 
 	private final static int TIME_LIMIT = 60000; 
 	
-	private final static int TIME_PER_FRAME = 40; 
+	private final static int TIME_PER_FRAME = 30; 
+	
+	private final static Image BEAN_IMAGE = new Image(3, 3, new byte[] {
+			0x02, 0x07, 0x02, 
+	}); 
 	
 	GameLevel(BBGame game) {
 		this.game = game; 
@@ -166,8 +172,25 @@ public class GameLevel {
 			int w = g.getWidth(); 
 			if (len > 0) {
 				g.drawLine(w, xy, len, xy); 
+			} else {
+				Sound.beep(); 
 			}
 		}
+	}
+	
+	private Image getObstacleImage(Graphics g) {
+		// don't worry about clear and redraw, because screen won't be updated since there is no refresh. 
+		g.clear(); 
+		for (Rectangle r : this.obstacleList) {
+			g.fillRect(r.x < 0 ? 0 : r.x, 
+					r.y < 0 ? 0 : r.y, 
+					r.width > g.getWidth() ? g.getWidth() : r.width, 
+					r.height > g.getHeight() ? g.getHeight() : r.height); 
+		}
+		byte[] display = LCD.getDisplay(); 
+		byte[] data = new byte[display.length]; 
+		System.arraycopy(display, 0, data, 0, display.length); 
+		return new Image(LCD.SCREEN_WIDTH, LCD.SCREEN_HEIGHT, data); 
 	}
 	
 	/**
@@ -195,11 +218,15 @@ public class GameLevel {
 			stopCondition = DEFAULT_STOP_CONDITION; 
 		}
 		
+		// calculate the image of all obstacles. 
+		Image obstacleImage = this.getObstacleImage(g); 
 		
 		while (!stopCondition.isSatisfied()) {
 			long calcStartTime = System.currentTimeMillis(); 
 			if (calcStartTime < this.startTime) {
 				// displaying level title
+				this.showTitle(); 
+				Delay.msDelay(TIME_PER_FRAME); 
 				continue; 
 			}
 			if (pauseCondition != null && pauseCondition.isSatisfied()) {
@@ -207,6 +234,7 @@ public class GameLevel {
 				LCD.clear(); 
 				LCD.drawString("PAUSE", 5, 3); 
 				LCD.refresh(); 
+				Delay.msDelay(TIME_PER_FRAME); 
 				continue; 
 			}
 			
@@ -230,17 +258,18 @@ public class GameLevel {
 			
 			// Paint screen =====================================
 			g.clear(); 
-			g.drawImage(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, false); 
+			// draw obstacles
+			if (this.obstacleList != null && this.obstacleList.size() > 0) {
+				g.drawImage(obstacleImage, 0, 0, 0, 0, obstacleImage.getWidth(), obstacleImage.getHeight(), LCD.ROP_OR); 
+			}
+			// draw bean
 			if (beanP != null) {
-				g.fillArc((int)beanP.x - 1, (int)beanP.y - 1, 3, 3, 0, 360); 
+				g.drawImage(BEAN_IMAGE, 0, 0, (int)beanP.x - 1, (int)beanP.y - 1, BEAN_IMAGE.getWidth(), BEAN_IMAGE.getHeight(), LCD.ROP_OR); 
+//				g.fillArc((int)beanP.x - 1, (int)beanP.y - 1, 3, 3, 0, 360); 
 			}
-			for (Rectangle r : obstacleList) {
-				g.fillRect(r.x < 0 ? 0 : r.x, 
-						r.y < 0 ? 0 : r.y, 
-						r.width > g.getWidth() ? g.getWidth() : r.width, 
-						r.height > g.getHeight() ? g.getHeight() : r.height); 
-			}
-			
+			// draw ball
+//			g.drawImage(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, false); 
+			g.drawImage(ball.getImage(), 0, 0, ballDrawPoint.x, ballDrawPoint.y, ball.getWidth(), ball.getHeight(), LCD.ROP_OR); 
 			this.drawStatus(beans, g); 
 			g.refresh(); 
 			// ==================================================
