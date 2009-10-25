@@ -201,11 +201,5 @@ public class McAngle extends McObject {
 			.append(this.getLcdAngle()).toString(); 
 		}
 	}
-	
-	public static void main(String[] args) {
-		McAngle angle = new McAngle(); 
-		angle.setLcdAngle(-720); 
-		angle.ltRound(); 
-		System.out.println(angle); 
-	}
+
 }

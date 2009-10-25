@@ -2,8 +2,6 @@ package org.programus.nxj.rockboy.core.mc;
 
 import java.awt.geom.Point2D;
 
-import org.programus.nxj.rockboy.core.World;
-
 /**
  * Multi-Coordinate vector. 
  * 
@@ -155,17 +153,5 @@ public class McVector extends McObject {
 			.append(']')
 			.toString(); 
 	}
-	
-	public static void main(String[] args) {
-		McUtil.getInstance().updateAngle(); 
-		McVector g = new McVector(); 
-		g.setStaticInLcd(false); 
-		g.setNaturalVector(World.G, -90); 
-		McVector speed = new McVector(); 
-		speed.setStaticInLcd(false); 
-		speed.setNaturalVector(6.00000000000002E-1, 90); 
-		
-		speed.add(g); 
-		System.out.println(speed); 
-	}
+
 }

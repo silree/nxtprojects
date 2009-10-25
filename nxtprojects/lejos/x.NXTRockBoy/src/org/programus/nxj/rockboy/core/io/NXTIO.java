@@ -119,4 +119,5 @@ public class NXTIO extends IOModule {
 	public boolean isTouchPressed() {
 		return TOUCH_S.isPressed();
 	}	
+
 }
