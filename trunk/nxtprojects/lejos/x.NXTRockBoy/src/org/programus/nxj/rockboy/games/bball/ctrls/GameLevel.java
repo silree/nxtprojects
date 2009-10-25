@@ -172,8 +172,6 @@ public class GameLevel {
 			int w = g.getWidth(); 
 			if (len > 0) {
 				g.drawLine(w, xy, len, xy); 
-			} else {
-				Sound.beep(); 
 			}
 		}
 	}
