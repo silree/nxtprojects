@@ -108,5 +108,15 @@ public class NXTIO extends IOModule {
 	@Override
 	public void playTone(int freq, int duration) {
 		Sound.playTone(freq, duration); 
+	}
+	
+	@Override
+	public int getDistance() {
+		return SONAR_S.getDistance(); 
+	}
+	
+	@Override
+	public boolean isTouchPressed() {
+		return TOUCH_S.isPressed();
 	}	
 }

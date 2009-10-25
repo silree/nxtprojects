@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import javax.microedition.lcdui.Graphics;
 
+import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import lejos.util.Delay;
@@ -70,6 +71,19 @@ public class BBGame {
 	}
 	
 	public void promptMode(int row) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 300); 
+				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 100); 
+				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 100); 
+				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 150); 
+				SoundUtil.playNote(Sound.PIANO, 5, 3, false, 150); 
+				SoundUtil.playNote(Sound.PIANO, 5, 6, false, 150); 
+				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 500); 
+			}
+		}).start(); 
+		
 		this.showStartScreen(); 
 		TextMenu modeMenu = new TextMenu(GAME_MODES, row, "SELECT A MODE:"); 
 		this.gameMode = modeMenu.select(); 
@@ -227,8 +241,13 @@ public class BBGame {
 		this.reset(); 
 		boolean gameStopped = false; 
 		Condition stopCondition = GameLevel.DEFAULT_STOP_CONDITION; 
+		Condition touchPauseCondition = new TouchSwitchPauseCondition(); 
+		Condition buttonPauseCondition = new ButtonSwitchPauseCondition(Button.ENTER); 
+		MultiOrCondition pauseCondition = new MultiOrCondition(); 
+		pauseCondition.addCondition(touchPauseCondition); 
+		pauseCondition.addCondition(buttonPauseCondition); 
 		for (GameLevel level = this.levelFactory.getNextLevel(); level != null; level = levelFactory.getNextLevel()) {
-			if (!level.play(stopCondition, null)) {
+			if (!level.play(stopCondition, pauseCondition)) {
 				gameStopped = true; 
 				break; 
 			}

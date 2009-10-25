@@ -12,7 +12,6 @@ import javax.microedition.lcdui.Image;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
-import lejos.nxt.Sound;
 import lejos.util.Delay;
 
 import org.programus.nxj.rockboy.core.mc.McUtil;
@@ -229,10 +228,12 @@ public class GameLevel {
 			}
 			if (pauseCondition != null && pauseCondition.isSatisfied()) {
 				// pause. 
+				long t = System.currentTimeMillis(); 
 				LCD.clear(); 
 				LCD.drawString("PAUSE", 5, 3); 
 				LCD.refresh(); 
 				Delay.msDelay(TIME_PER_FRAME); 
+				this.startTime += System.currentTimeMillis() - t; 
 				continue; 
 			}
 			

@@ -33,4 +33,8 @@ public abstract class IOModule {
 	public abstract Point getScreenBound(); 
 	
 	public abstract void playTone(int freq, int duration); 
+	
+	public abstract int getDistance(); 
+	
+	public abstract boolean isTouchPressed(); 
 }
