@@ -143,7 +143,5 @@ public class McPoint extends McObject {
 			.append(this.vectorValue)
 			.append("}").toString(); 
 	}
-	
-	public static void main(String[] args) {
-	}
+
 }
