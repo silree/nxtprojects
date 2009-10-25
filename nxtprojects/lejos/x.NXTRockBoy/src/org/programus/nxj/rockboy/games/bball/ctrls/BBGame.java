@@ -260,17 +260,18 @@ public class BBGame {
 			}
 		}
 		
-		if (this.refreshRecords()) {
-			this.showNewRecord(); 
-			this.saveRecords(); 
-		} else {
-			this.showBestRecord(); 
+		if (!gameStopped) {
+			if (this.refreshRecords()) {
+				this.showNewRecord(); 
+				this.saveRecords(); 
+			} else {
+				this.showBestRecord(); 
+			}
+			final int scoreTime = 3000; 
+			for (long t = System.currentTimeMillis(); !stopCondition.isSatisfied() && System.currentTimeMillis() < scoreTime + t;) {
+				Delay.msDelay(20); 
+			}
 		}
-		final int scoreTime = 3000; 
-		for (long t = System.currentTimeMillis(); !stopCondition.isSatisfied() && System.currentTimeMillis() < scoreTime + t;) {
-			Delay.msDelay(20); 
-		}
-		
 		return !gameStopped; 
 	}
 	
