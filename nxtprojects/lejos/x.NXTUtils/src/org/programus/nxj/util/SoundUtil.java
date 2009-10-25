@@ -85,4 +85,26 @@ public class SoundUtil {
 			Delay.msDelay(duration); 
 		}
 	}
+	
+	public static void playNote(int[] inst, int pitch, int note, boolean alt, int duration) {
+		pitch -= 3; 
+		if (pitch < 0) {
+			pitch = 0; 
+		}
+		if (pitch >= NOTE_FREQ.length) {
+			pitch = NOTE_FREQ.length - 1; 
+		}
+		note--; 
+		if (note < 0) {
+			note = 0; 
+		}
+		if (note >= 7) {
+			note = 6; 
+		}
+		
+		int[] freqs = NOTE_FREQ[pitch][note]; 
+		int freq = freqs[alt && freqs.length > 1 ? 1 : 0]; 
+		
+		Sound.playNote(inst, freq, duration); 
+	}
 }
