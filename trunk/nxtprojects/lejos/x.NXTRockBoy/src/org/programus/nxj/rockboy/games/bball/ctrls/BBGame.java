@@ -181,27 +181,32 @@ public class BBGame {
 	
 	private void showBestRecord() {
 		g.clear(); 
+		String prompt; 
 		if (this.isScoreMode()) {
 			int y = LCD.CELL_HEIGHT; 
-			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
-			g.drawString("BEST SCORE:", 1, y, true); 
+			prompt = "BEST SCORE:"; 
+			g.fillRect(0, y - 1, prompt.length() * LCD.CELL_WIDTH + 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString(prompt, 1, y, true); 
 			y += LCD.CELL_HEIGHT; 
 			DisplayUtil.drawStringRight(String.valueOf(bestScore), y, 0, false); 
 			y += LCD.CELL_HEIGHT; 
-			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
-			g.drawString("YOUR SCORE:", 1, y, true); 
+			prompt = "YOUR SCORE:"; 
+			g.fillRect(0, y - 1, prompt.length() * LCD.CELL_WIDTH + 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString(prompt, 1, y, true); 
 			y += LCD.CELL_HEIGHT; 
 			DisplayUtil.drawStringRight(String.valueOf(this.totalValue), y, 0, false); 
 		}
 		if (this.isTimeMode()) {
 			int y = LCD.CELL_HEIGHT; 
-			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
-			g.drawString("BEST TIME:", 1, y, true); 
+			prompt = "BEST TIME:"; 
+			g.fillRect(0, y - 1, prompt.length() * LCD.CELL_WIDTH + 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString(prompt, 1, y, true); 
 			y += LCD.CELL_HEIGHT; 
 			DisplayUtil.drawStringRight(this.getTimeString(bestTime), y, 0, false); 
 			y += LCD.CELL_HEIGHT; 
-			g.fillRect(0, y - 1, g.getWidth() >> 1, LCD.CELL_HEIGHT + 1); 
-			g.drawString("YOUR TIME:", 1, y, true); 
+			prompt = "YOUR TIME:"; 
+			g.fillRect(0, y - 1, prompt.length() * LCD.CELL_WIDTH + 1, LCD.CELL_HEIGHT + 1); 
+			g.drawString(prompt, 1, y, true); 
 			y += LCD.CELL_HEIGHT; 
 			DisplayUtil.drawStringRight(this.getTimeString(this.totalValue), y, 0, false); 
 		}
