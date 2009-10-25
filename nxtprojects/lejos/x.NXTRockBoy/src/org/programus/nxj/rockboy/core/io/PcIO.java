@@ -50,4 +50,14 @@ public class PcIO extends IOModule {
 		// nothing now. 
 	}
 
+	@Override
+	public int getDistance() {
+		return 0;
+	}
+
+	@Override
+	public boolean isTouchPressed() {
+		return false;
+	}
+
 }
