@@ -7,6 +7,13 @@ import lejos.nxt.LCD;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 
+/**
+ * PcIO is an IO module just for debug. 
+ * @author Programus
+ * 
+ * @see IOModule
+ *
+ */
 public class PcIO extends IOModule {
 	
 	private static Point limit = new Point(LCD.SCREEN_WIDTH, LCD.SCREEN_HEIGHT); 
