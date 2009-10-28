@@ -12,12 +12,22 @@ import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.Delay;
 
+/**
+ * NXTIO class is an IO module for real NXT environment. 
+ * @author Programus
+ * @see IOModule
+ */
 public class NXTIO extends IOModule {
+	// ==================== port setup ====================
+	// if you want to connect the sensors or motors with 
+	//    port set different from below setup, 
+	//    please change the code here. 
 	private static Motor R_MOTOR = Motor.A; 
 	private static SensorPort R_TOUCH_P = SensorPort.S1; 
 	private static SensorPort TOUCH_P = SensorPort.S4; 
 	private static SensorPort COLOR_P = SensorPort.S2; 
 	private static SensorPort SONAR_P = SensorPort.S3; 
+	// ====================================================
 	
 	private static TouchSensor R_TOUCH_S = new TouchSensor(R_TOUCH_P); 
 	private static TouchSensor TOUCH_S = new TouchSensor(TOUCH_P); 
