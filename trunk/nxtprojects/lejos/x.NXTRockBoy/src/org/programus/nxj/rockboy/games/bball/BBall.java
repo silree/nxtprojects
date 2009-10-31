@@ -9,6 +9,11 @@ import lejos.util.TextMenu;
 import org.programus.nxj.rockboy.games.bball.ctrls.BBGame;
 import org.programus.nxj.util.DisplayUtil;
 
+/**
+ * Main class of BBall game. 
+ * @author Programus
+ *
+ */
 public class BBall {
 	public static void main(String[] args) {
 //		RConsole.openUSB(15000); 
@@ -18,6 +23,7 @@ public class BBall {
 			int winRow = 3; 
 			TextMenu againMenu = new TextMenu(new String[]{"YES", "NO"}, 6, "Play Again?"); 
 			do {
+				// play game again and again until the player select no in play again menu. 
 				if (game.play()) {
 					LCD.clear(); 
 					DisplayUtil.drawStringCenter("YOU WIN!", winRow); 

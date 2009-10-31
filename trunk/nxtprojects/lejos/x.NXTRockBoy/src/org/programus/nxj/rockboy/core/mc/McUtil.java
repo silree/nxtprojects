@@ -5,6 +5,11 @@ import java.awt.geom.Point2D;
 
 import org.programus.nxj.rockboy.core.io.IOModule;
 
+/**
+ * A utility class for all multi-coordinate processes. 
+ * @author Programus
+ *
+ */
 public class McUtil {
 	private static McUtil util = new McUtil(); 
 	private McUtil() {
@@ -18,14 +23,25 @@ public class McUtil {
 	
 	public static double SCREEN_BOTTOM_OFFSET = 336. / 11; 
 	
+	/**
+	 * Update the angle to the current NXT brick rotation angle. 
+	 */
 	public void updateAngle() {
 		this.angle = this.input.getRotationAngle(); 
 	}
 	
+	/**
+	 * Return the rotation angle of the NXT brick. 
+	 * @return
+	 */
 	public int getAngle() {
 		return this.angle; 
 	}
 	
+	/**
+	 * Return the rotation radian of the NXT brick. 
+	 * @return
+	 */
 	public double getRadian() {
 		return this.angle2radian(this.angle); 
 	}

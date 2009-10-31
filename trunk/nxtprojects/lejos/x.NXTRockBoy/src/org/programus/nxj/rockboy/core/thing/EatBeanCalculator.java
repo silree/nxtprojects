@@ -5,11 +5,23 @@ import java.util.List;
 
 import org.programus.nxj.rockboy.core.mc.McPoint;
 
+/**
+ * This class is used to process the eat bean action for its master. 
+ * @author Programus
+ *
+ */
 public class EatBeanCalculator {
 	private Thing master; 
 	private List<Point2D.Double> beanList; 
 	private int distanceLimit; 
 	
+	/**
+	 * <p>Constructor. </p>
+	 * You must specify its master, normal is the ball, and the bean list. 
+	 * When a bean is eaten, the bean will be removed from the list. 
+	 * @param t
+	 * @param beanList
+	 */
 	public EatBeanCalculator(Thing t, List<Point2D.Double> beanList) {
 		this.master = t; 
 		this.beanList = beanList; 

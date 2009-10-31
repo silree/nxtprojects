@@ -3,9 +3,12 @@ package org.programus.nxj.rockboy.core.mc;
 import java.awt.geom.Point2D;
 
 /**
- * Multi-Coordinate vector. 
- * 
+ * <p>Multi-Coordinate vector. </p>
+ * This is a real vector, not a list-like class in java.util package. 
+ * A vector has a absolute value and an angle (as McAngle object). 
+ * One vector can be orthogonal decomposed into two components in LCD coordinate or natural coordinate. 
  * @author Programus
+ * @see McAngle
  *
  */
 public class McVector extends McObject {
@@ -52,14 +55,28 @@ public class McVector extends McObject {
 		this.angle.setLcdAngle(angle.getLcdAngle()); 
 	}
 	
+	/**
+	 * Return the absolute value. 
+	 * @return the absolute value. 
+	 */
 	public double getValue() {
 		return this.value; 
 	}
 	
+	/**
+	 * Return the reference of the McAngle. 
+	 * If you changed the value of the reference you get, it will affect the vector. 
+	 * @return the reference of the McAngle. 
+	 */
 	public McAngle getMcAngleRef() {
 		return this.angle; 
 	}
 	
+	/**
+	 * Return a clone of the McAngle. 
+	 * Changes on the return value won't affect this vector. 
+	 * @return a clone of the McAngle. 
+	 */
 	public McAngle getMcAngleClone() {
 		return new McAngle(this.angle); 
 	}
@@ -92,10 +109,16 @@ public class McVector extends McObject {
 		this.setNaturalOrthValues(point.x, point.y); 
 	}
 	
+	/**
+	 * @see McAngle#setStaticInLcd(boolean)
+	 */
 	public void setStaticInLcd(boolean s) {
 		this.angle.setStaticInLcd(s); 
 	}
 	
+	/**
+	 * @see McAngle#isStaticInLcd()
+	 */
 	public boolean isStaticInLcd() {
 		return this.angle.isStaticInLcd(); 
 	}
