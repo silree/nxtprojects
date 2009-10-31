@@ -21,6 +21,11 @@ import org.programus.nxj.util.DisplayUtil;
 import org.programus.nxj.util.SoundUtil;
 import org.programus.nxj.util.TimeUtil;
 
+/**
+ * A BBGame object represent one round game of the BBall game. 
+ * @author Programus
+ *
+ */
 public class BBGame {
 	public final static int TIME_MODE = 0; 
 	public final static int SCORE_MODE = 1; 
@@ -71,6 +76,7 @@ public class BBGame {
 	}
 	
 	public void promptMode(int row) {
+		// Play a start music. 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -89,6 +95,9 @@ public class BBGame {
 		this.gameMode = modeMenu.select(); 
 	}
 	
+	/**
+	 * Save records into file. 
+	 */
 	public void saveRecords() {
 		File profile = new File(profileName); 
 		try {
@@ -123,6 +132,11 @@ public class BBGame {
 		return newRecord; 
 	}
 	
+	/**
+	 * System time (long) -> HH:MM:SS.ms
+	 * @param time
+	 * @return
+	 */
 	private String getTimeString(long time) {
 		int[] hms = TimeUtil.getHMSms(time); 
 		StringBuffer sb = new StringBuffer(); 
@@ -143,6 +157,10 @@ public class BBGame {
 		return sb.toString(); 
 	}
 	
+	/**
+	 * Show the score at the end of the level. 
+	 * @param level
+	 */
 	private void showValue(GameLevel level) {
 		DisplayUtil.drawStringCenter(level.getTitle(), 1, true); 
 		int startY = (LCD.SCREEN_HEIGHT >> 1) - LCD.CELL_HEIGHT; 
@@ -164,6 +182,7 @@ public class BBGame {
 	}
 	
 	private void showNewRecord() {
+		// play a music for breaking a record. 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -283,8 +302,4 @@ public class BBGame {
 		return this.gameMode == SCORE_MODE;
 	}
 	
-	public static void main(String[] args) {
-		BBGame game = new BBGame(); 
-		System.out.println(game.getTimeString(System.currentTimeMillis())); 
-	}
 }

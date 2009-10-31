@@ -3,6 +3,11 @@ package org.programus.nxj.rockboy.core.thing;
 import org.programus.nxj.rockboy.core.World;
 import org.programus.nxj.rockboy.core.mc.McVector;
 
+/**
+ * This class can process the drop action for its master. 
+ * @author Programus
+ *
+ */
 public class DropCalculator {
 	private Thing master; 
 	private McVector g; 

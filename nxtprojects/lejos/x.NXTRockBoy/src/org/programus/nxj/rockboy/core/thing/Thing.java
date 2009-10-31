@@ -9,6 +9,13 @@ import javax.microedition.lcdui.Image;
 import org.programus.nxj.rockboy.core.mc.McPoint;
 import org.programus.nxj.rockboy.core.mc.McVector;
 
+/**
+ * <p>This is a class to describe a thing in the NXTRockBoy. </p>
+ * It has a multi-coordinate position and a speed, which is a vector. 
+ * It also have an image to display on screen. 
+ * @author Programus
+ *
+ */
 public abstract class Thing {
 	protected Rectangle2D.Double rect = new Rectangle2D.Double(); 
 	protected McPoint centerPoint = new McPoint(); 

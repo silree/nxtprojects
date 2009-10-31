@@ -19,6 +19,11 @@ import org.programus.nxj.rockboy.games.bball.objects.BouncyBall;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
 
+/**
+ * An object of this class represent a single level of BBall game. 
+ * @author Programus
+ *
+ */
 public class GameLevel {
 	private BBGame game; 
 	private String title; 

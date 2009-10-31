@@ -9,6 +9,11 @@ import org.programus.nxj.rockboy.core.mc.McPoint;
 import org.programus.nxj.rockboy.core.mc.McUtil;
 import org.programus.nxj.rockboy.core.mc.McVector;
 
+/**
+ * This is a class to process the rebound action. 
+ * @author Programus
+ *
+ */
 public class ReboundCalculator {
 	private Thing master; 
 	private List<Rectangle> obstacleList; 
@@ -23,11 +28,15 @@ public class ReboundCalculator {
 		if (oldPoint == null) {
 			return rebounded; 
 		}
+		
 		McVector speed = master.speed; 
 		McPoint point = master.centerPoint; 
+		// op means old point
 		Point2D.Double op = oldPoint.getLcdPoint(); 
+		// p means current point
 		Point2D.Double p = point.getLcdPoint(); 
 		if (this.obstacleList != null) {
+			// Check all obstacles one by one. 
 			for (Rectangle obstacle : this.obstacleList) {
 				boolean reverseX = false; 
 				int baseY = 0; 
@@ -37,32 +46,51 @@ public class ReboundCalculator {
 				int outOp = obstacle.outcode(op); 
 				int outP = obstacle.outcode(p); 
 				if ((outOp & outP) != 0) {
-					// object didn't touch the obstacle. 
+					// old point and current point r at the same side of the obstacle, 
+					// which means object didn't touch the obstacle. 
 					continue; 
 				}
 				if ((outOp & Rectangle.OUT_TOP) > 0) {
+					// old point is on the top of the obstacle, 
+					// if there is a rebound, 
+					// must occur on the top side of the obstacle.  
 					baseY = obstacle.y; 
 				}
 				if ((outOp & Rectangle.OUT_BOTTOM) > 0) {
+					// old point is on the bottom of the obstacle, 
+					// if there is a rebound, 
+					// must occur on the bottom side of the obstacle.  
 					baseY = obstacle.y + obstacle.height; 
 				}
 				if ((outOp & Rectangle.OUT_LEFT) > 0) {
+					// old point is on the left of the obstacle, 
+					// if there is a rebound, 
+					// must occur on the left side of the obstacle.  
 					baseX = obstacle.x; 
 				}
 				if ((outOp & Rectangle.OUT_RIGHT) > 0) {
+					// old point is on the right of the obstacle, 
+					// if there is a rebound, 
+					// must occur on the right side of the obstacle.  
 					baseX = obstacle.x + obstacle.width; 
 				}
 				switch(outOp) {
 				case Rectangle.OUT_TOP:
 				case Rectangle.OUT_BOTTOM:
+					// if the old point is on the top side or bottom side, 
+					// the rebound will occur on horizontal. 
 					reverseX = true; 
 					break; 
 				case Rectangle.OUT_LEFT:
 				case Rectangle.OUT_RIGHT:
+					// if the old point is on the left side or right side, 
+					// the rebound will occur on vertical. 
 					reverseY = true; 
 					break; 
 				case Rectangle.OUT_TOP | Rectangle.OUT_LEFT:
 					{
+						// top-left side, 
+						// need some angle calculation
 						double tgpp = Math.abs(p.y - op.y) / Math.abs(p.x - op.x); 
 						double tgpr = Math.abs(obstacle.y - op.y) / Math.abs(obstacle.x - op.x); 
 						if (tgpp <= tgpr) {
@@ -75,6 +103,8 @@ public class ReboundCalculator {
 					break; 
 				case Rectangle.OUT_TOP | Rectangle.OUT_RIGHT:
 					{
+						// top-right side, 
+						// need some angle calculation
 						double tgpp = Math.abs(p.y - op.y) / Math.abs(p.x - op.x); 
 						double tgpr = Math.abs(obstacle.y - op.y) / Math.abs(obstacle.x + obstacle.width - op.x); 
 						if (tgpp <= tgpr) {
@@ -87,6 +117,8 @@ public class ReboundCalculator {
 					break; 
 				case Rectangle.OUT_BOTTOM | Rectangle.OUT_LEFT:
 					{
+						// bottom-left side, 
+						// need some angle calculation
 						double tgpp = Math.abs(p.y - op.y) / Math.abs(p.x - op.x); 
 						double tgpr = Math.abs(obstacle.y + obstacle.height - op.y) / Math.abs(obstacle.x - op.x); 
 						if (tgpp <= tgpr) {
@@ -99,6 +131,8 @@ public class ReboundCalculator {
 					break; 
 				case Rectangle.OUT_BOTTOM | Rectangle.OUT_RIGHT:
 					{
+						// bottom-right side, 
+						// need some angle calculation
 						double tgpp = Math.abs(p.y - op.y) / Math.abs(p.x - op.x); 
 						double tgpr = Math.abs(obstacle.y + obstacle.height - op.y) / Math.abs(obstacle.x + obstacle.width - op.x); 
 						if (tgpp <= tgpr) {
@@ -125,6 +159,7 @@ public class ReboundCalculator {
 		McUtil util = McUtil.getInstance(); 
 		Point bound = util.getLcdCooridnateOffset(); 
 		
+		// To know whether this object touch the bound of the screen. 
 		if (p.y <= 0) {
 			this.reverseX(speed, point, p, 0); 
 			rebounded = true; 

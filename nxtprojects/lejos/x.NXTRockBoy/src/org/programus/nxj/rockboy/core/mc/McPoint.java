@@ -3,7 +3,16 @@ package org.programus.nxj.rockboy.core.mc;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
-
+/**
+ * <p>Multi-Coordinate point. </p>
+ * The staticInLcd property will decide whether this point is static in LCD coordinate. 
+ * <p>
+ * The internal storage of a McPoint is not x, y values in any coordinate, but a vector. 
+ * The origin of the vector is nature coordinate origin. 
+ * </p>
+ * @author Programus
+ *
+ */
 public class McPoint extends McObject {
 	public final static double X_OFFSET; 
 	public final static double Y_OFFSET; 
@@ -73,18 +82,35 @@ public class McPoint extends McObject {
 		return p; 
 	}
 	
+	/**
+	 * Return the vector start from this point to the specified point. 
+	 * @param p
+	 * @return
+	 */
 	public McVector getVectorTo(McPoint p) {
 		return p.vectorValue.subNew(this.vectorValue); 
 	}
 	
+	/**
+	 * Return the distance to the specified point. 
+	 * @param p
+	 * @return
+	 */
 	public double getDistanceTo(McPoint p) {
 		return this.getVectorTo(p).getValue(); 
 	}
 	
+	@Deprecated
 	public McAngle getAngleTo(McPoint p) {
 		return this.getVectorTo(p).getMcAngleClone(); 
 	}
 	
+	/**
+	 * Return the distance from this point to the line which passes through the specified two points. 
+	 * @param p1 one point in the line
+	 * @param p2 another point in the line
+	 * @return
+	 */
 	public double getDistanceToLine(McPoint p1, McPoint p2) {
 		McVector v1 = p2.getVectorTo(p1); 
 		McVector v = p2.getVectorTo(this); 
@@ -95,6 +121,11 @@ public class McPoint extends McObject {
 		return p.x > 0 && p.x <= v1.getValue() ? d : -d; 
 	}
 	
+	/**
+	 * Move this point along the specified vector. 
+	 * @param vector
+	 * @return
+	 */
 	public McPoint move(McVector vector) {
 		this.vectorValue.add(vector); 
 		return this; 
