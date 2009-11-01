@@ -7,7 +7,7 @@ In NXTRockBoy, NXT brick is connected to a servo motor so that when you rock the
 
 Below is a quick look of the NXTRockBoy body. 
 
-http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/NXTRockBoyBody.png
+http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/nxtrockboybody.jpg
 
 = Details =
 
