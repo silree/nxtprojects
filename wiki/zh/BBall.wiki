@@ -1,5 +1,5 @@
 #labels Phase-Deploy
-BBall(蹦蹦球)是NXTRockBoy上运行的一款游戏。
+BBall(蹦蹦球)是[NXTRockBoy]上运行的一款游戏。
 
 = 简介 =
 
