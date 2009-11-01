@@ -8,7 +8,8 @@ BBall game's hero is a *bouncy ball*, which will rebound when it touched an obst
 You mission in this game is to help the ball to eat beans. 
 
 Here is a video demo: 
-http://s141.photobucket.com/albums/r60/programus/?action=view&current=BBall_en.flv
+
+[http://s141.photobucket.com/albums/r60/programus/?action=view&current=BBall_en.flv http://i141.photobucket.com/albums/r60/programus/th_BBall_en.jpg]
 
 = Details =
 
