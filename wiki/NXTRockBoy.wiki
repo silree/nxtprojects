@@ -1,5 +1,5 @@
 #labels Featured,Phase-Deploy
-NXTRockBoy is a game boy or game machine built by LEGO Mindstorms NXT 8547 kit. Rocking control is its unique feature. 
+NXTRockBoy is a game machine built by LEGO Mindstorms NXT 8547 kit. Rocking control is its unique feature. 
 
 = Introduction =
 
