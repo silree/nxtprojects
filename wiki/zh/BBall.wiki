@@ -10,7 +10,6 @@ BBall游戏的主角是一个弹力球——碰到障碍物或者屏幕边界时
 多说无益，请看演示视频：
 
 [http://www.tudou.com/programs/view/9-eFmGmNbZ8/ http://i141.photobucket.com/albums/r60/programus/th_BBall_en.jpg]
-<wiki:video url="http://v.youku.com/v_show/id_XMTI3NjgzODEy.html" />
 
 
 = 详细信息 =
