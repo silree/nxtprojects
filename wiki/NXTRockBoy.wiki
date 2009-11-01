@@ -4,6 +4,7 @@ NXTRockBoy is a game boy or game machine built by LEGO Mindstorms NXT 8547 kit. 
 = Introduction =
 
 NXTRockBoy is a game boy or game machine built by LEGO Mindstorms NXT 8547 kit. Rocking control is its unique feature. 
+http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/NXTRockBoyBody.png
 
 = Details =
 
