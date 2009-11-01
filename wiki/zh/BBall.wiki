@@ -8,7 +8,7 @@ BBall游戏的主角是一个弹力球——碰到障碍物或者屏幕边界时
 你的任务就是帮助蹦蹦球去吃屁屁豆。
 
 多说无益，请看演示视频：
-<wiki:video url="http://www.tudou.com/programs/view/9-eFmGmNbZ8/"/>
+http://www.tudou.com/programs/view/9-eFmGmNbZ8/
 
 = 详细信息 =
 
