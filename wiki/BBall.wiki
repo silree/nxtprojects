@@ -16,8 +16,8 @@ Here is a video demo:
 When you start the game, at beginning, the [NXTRockBoy] will reset the position of the NXT. Just follow the guid in the LCD screen. 
 
 After that the game will prompt you to select a game mode. There are two mode for playing:
- * TIME MODE: you help the bouncy ball eat as many beans as posible within the limited time (normally one minute for one level). 
- * SCORE MODE: you help the bouncy ball eat the specified number (normally 5 for each level) of beans as fast as possible. 
+ * TIME MODE: you help the bouncy ball eat the specified number (normally 5 for each level) of beans as fast as possible. 
+ * SCORE MODE: you help the bouncy ball eat as many beans as posible within the limited time (normally one minute for one level). 
 
 Then, rock the NXT brick to let the bouncy ball be rebound to the direction near the bean or let it drop to the bean... any way, just use your hand and imagination. 
 

@@ -1,0 +1,21 @@
+#labels Featured,Phase-Deploy
+<strong>NXTRockBoy</strong>是使用LEGO Mindstorms NXT 8547 kit组装而成的一款游戏机。他最大的特性是通过摇摆进行控制。
+
+= 简介 =
+NXTRockBoy通过将NXT积木块连接在一个伺服马达上获得玩家对NXT积木块的摇摆角度，从而让程序作出响应。你可以在NXTRockBoy上书写任何你喜欢的游戏。不过我认为最适合本款游戏机的游戏是那些物理模拟游戏。
+
+下图是NXTRockBoy的一个整体图。
+http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/NXTRockBoyBody.png
+
+= 详细信息 =
+
+NXTRockBoy所使用的传感器如下：
+  * Touch Sensor 1: Port 1. 此传感器用来重设NXT积木块的初始角度。
+  * Color Light Sensor: Port 2. 嗯……请自行发挥想象利用此传感器。
+  * Ultrasonic Sensor: Port 3. 同上，请发挥你的想象力。
+  * Touch Sensor 2: Port 4. 依旧同上。
+
+你可以从Download页面找到搭建NXTRockBoy的指导和基本核心程序的下载。
+
+NXTRockBoy游戏列表：
+  * [BBall]
