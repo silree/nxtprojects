@@ -6,7 +6,7 @@ NXTRockBoy通过将NXT积木块连接在一个伺服马达上获得玩家对NXT�
 
 下图是NXTRockBoy的一个整体图。
 
-http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/NXTRockBoyBody.png
+http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/NXTRockBoyBody.jpg
 
 = 详细信息 =
 
