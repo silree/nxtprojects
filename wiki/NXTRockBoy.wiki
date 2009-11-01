@@ -4,7 +4,9 @@ NXTRockBoy is a game boy or game machine built by LEGO Mindstorms NXT 8547 kit. 
 = Introduction =
 
 In NXTRockBoy, NXT brick is connected to a servo motor so that when you rock the NXT brick the servo motor can return a angle value to the program. You can program your own game on NXTRockBoy. I think the most suitable games on NXTRockBoy are some physics simulation game. 
+
 Below is a quick look of the NXTRockBoy body. 
+
 http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/NXTRockBoyBody.png
 
 = Details =
