@@ -21,7 +21,7 @@ public class BouncyBall extends Thing {
 		(byte) 0x0e, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0x0e, 
 	}); 
 	
-	private static double ENERGY_LIMIT = World.G * (McUtil.SCREEN_BOTTOM_OFFSET + IOModule.getIOModule().getScreenBound().y + 20); 
+	private static double ENERGY_LIMIT = World.G * (McUtil.SCREEN_BOTTOM_OFFSET + IOModule.getIOModule().getScreenBoundary().y + 20); 
 	
 	private DropCalculator dc; 
 	private List<Rectangle> obstacleList; 
