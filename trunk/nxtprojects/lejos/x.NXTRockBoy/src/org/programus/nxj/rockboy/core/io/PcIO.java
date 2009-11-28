@@ -48,7 +48,7 @@ public class PcIO extends IOModule {
 	}
 
 	@Override
-	public Point getScreenBound() {
+	public Point getScreenBoundary() {
 		return limit; 
 	}
 
@@ -65,6 +65,11 @@ public class PcIO extends IOModule {
 	@Override
 	public boolean isTouchPressed() {
 		return false;
+	}
+
+	@Override
+	public int getLightValue() {
+		return 50;
 	}
 
 }

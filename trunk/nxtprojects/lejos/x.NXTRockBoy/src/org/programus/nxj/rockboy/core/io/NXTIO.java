@@ -5,6 +5,7 @@ import java.awt.Point;
 import lejos.nxt.Button;
 import lejos.nxt.ColorLightSensor;
 import lejos.nxt.LCD;
+import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
@@ -32,6 +33,7 @@ public class NXTIO extends IOModule {
 	private static TouchSensor R_TOUCH_S = new TouchSensor(R_TOUCH_P); 
 	private static TouchSensor TOUCH_S = new TouchSensor(TOUCH_P); 
 	private static ColorLightSensor COLOR_S = new ColorLightSensor(COLOR_P, ColorLightSensor.TYPE_COLORNONE); 
+	private static LightSensor LIGHT_S = new LightSensor(COLOR_P); 
 	private static UltrasonicSensor SONAR_S = new UltrasonicSensor(SONAR_P);
 	
 	private static Point limit = new Point(LCD.SCREEN_WIDTH, LCD.SCREEN_HEIGHT); 
@@ -111,7 +113,7 @@ public class NXTIO extends IOModule {
 	}
 	
 	@Override
-	public Point getScreenBound() {
+	public Point getScreenBoundary() {
 		return limit; 
 	} 
 	
@@ -128,6 +130,16 @@ public class NXTIO extends IOModule {
 	@Override
 	public boolean isTouchPressed() {
 		return TOUCH_S.isPressed();
+	}
+	
+	@Override
+	public int getLightValue() {
+		int value = COLOR_S.readValue(); 
+		if (value < 0) {
+			value = LIGHT_S.readValue(); 
+		}
+		
+		return value; 
 	}	
 
 }
