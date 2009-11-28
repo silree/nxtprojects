@@ -1,0 +1,277 @@
+package org.programus.nxj.rockboy.games.dropball.ctrls;
+
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javax.microedition.lcdui.Graphics;
+
+import lejos.nxt.Button;
+import lejos.nxt.LCD;
+import lejos.nxt.Sound;
+import lejos.nxt.comm.RConsole;
+import lejos.util.Delay;
+
+import org.programus.nxj.rockboy.core.io.IOModule;
+import org.programus.nxj.rockboy.core.mc.McUtil;
+import org.programus.nxj.rockboy.games.bball.ctrls.KeyStopCondition;
+import org.programus.nxj.rockboy.games.dropball.objects.InelasticBall;
+import org.programus.nxj.util.Condition;
+import org.programus.nxj.util.DisplayUtil;
+
+/**
+ * An object of this class represent a single level of BBall game. 
+ * @author Programus
+ *
+ */
+public class GameLevel {
+	private Point initPosition; 
+	private List<Rectangle> obstacleList;
+	private Random rand; 
+	
+	private int gameValue; 
+	private long startTime; 
+	
+	public final static Condition DEFAULT_STOP_CONDITION = new KeyStopCondition(Button.ESCAPE); 	
+	
+	private final static IOModule IO = IOModule.getIOModule(); 
+	private final static int W = IO.getScreenBoundary().x; 
+	private final static int H = IO.getScreenBoundary().y; 
+	
+	private final static int TIME_PER_FRAME = 40; 
+	
+	private final static int FIRST_HEIGHT = 30; 
+	private final static int STEP = 20; 
+	private final static int HEIGHT = 14; 
+	
+	private double speed; 
+	private double offset; 
+	private int turnCounter; 
+	
+	private final static double INIT_SPEED = .1; 
+	private final static double LIMIT_SPEED = 10; 
+	private final static int SPEED_UP_TURN = 10 * 1000 / TIME_PER_FRAME; 
+	private final static double SPEED_UP_STEP = .01; 
+	
+	
+	GameLevel(DropBallGame game) {
+		this.initPosition = new Point();  
+		this.obstacleList = new ArrayList<Rectangle>(); 
+		this.gameValue = 0; 
+		this.rand = new Random(); 
+	}
+	
+	public void initialize() {
+		this.obstacleList.clear(); 
+		for (int i = FIRST_HEIGHT; i < FIRST_HEIGHT + H + STEP; i += STEP) {
+			Rectangle r = new Rectangle(0, i, 0, HEIGHT); 
+			this.randomObstacleX(r); 
+			RConsole.println("r1:" + r); 
+			this.obstacleList.add(r); 
+			r = new Rectangle(r.x - W, r.y, r.width, r.height); 
+			RConsole.println("r2:" + r); 
+			this.obstacleList.add(r); 
+		}
+		
+		this.initPosition.x = this.rand.nextInt(W); 
+		this.initPosition.y = this.rand.nextInt(FIRST_HEIGHT); 
+		
+		this.gameValue = 0; 
+		
+		this.speed = INIT_SPEED; 
+		this.turnCounter = 0; 
+	}
+	
+	public Point getInitPosition() {
+		return initPosition;
+	}
+	
+	public List<Rectangle> getObstacleList() {
+		return obstacleList;
+	}
+	
+	public int getGameValue() {
+		return this.gameValue; 
+	}
+
+	private boolean isOver(Point p, int r) {
+		if (p.y < -r) {
+			return true; 
+		} else if (p.y > IO.getScreenBoundary().y + r) {
+			this.gameValue += (this.obstacleList.size() >> 1); 
+			return true; 
+		}
+		return false; 
+	}
+	
+	private int getObstacleMoveOffset() {
+		this.offset += this.speed; 
+		this.turnCounter++; 
+		
+		int ret = (int) this.offset; 
+		this.offset -= ret; 
+		
+		return (int) ret; 
+	}
+	
+	private void speedUp() {
+		if (this.turnCounter % SPEED_UP_TURN == 0) {
+			this.speed += SPEED_UP_STEP; 
+			if (this.speed > LIMIT_SPEED) {
+				this.speed = LIMIT_SPEED; 
+			}
+		}
+	}
+	
+	private void resetCounter() {
+		int commonMultiple = SPEED_UP_TURN; 
+		if (this.turnCounter > commonMultiple && this.turnCounter % commonMultiple == 0) {
+			this.turnCounter = 1; 
+		}
+	}
+	
+	private void randomObstacleX(Rectangle obstacle) {
+		int randomRange = W >> 1; 
+		int space = 10; 
+		obstacle.width = this.rand.nextInt(randomRange) + (W - randomRange) - space; 
+		obstacle.x = this.rand.nextInt(W); 
+		obstacle.height = HEIGHT; 
+	}
+	
+	private boolean generateNewObstacles(int i) {
+		Rectangle obstacle = this.obstacleList.get(i);
+		if (obstacle.y < -obstacle.height && (i % 2) > 0) {
+			int prevIndex = (i + this.obstacleList.size() - 2) % this.obstacleList.size(); 
+			obstacle.y = this.obstacleList.get(prevIndex).y + STEP; 
+			this.randomObstacleX(obstacle); 
+			
+			Rectangle pairObstacle = this.obstacleList.get(i - 1); 
+			pairObstacle.y = obstacle.y; 
+			pairObstacle.width = obstacle.width; 
+			pairObstacle.x = obstacle.x - W; 
+			
+			return true; 
+		}
+		
+		return false; 
+	}
+	
+	/**
+	 * Play this level. 
+	 * @param stopCondition
+	 * @param pauseCondition
+	 * @return true if this level is passed, and false if it is stopped. 
+	 */
+	public boolean play(Condition stopCondition, Condition pauseCondition) {
+		McUtil util = McUtil.getInstance(); 
+		Graphics g = new Graphics(); 
+		g.autoRefresh(false); 
+		
+		// To prevent the button event
+		Delay.msDelay(500); 
+		
+		this.startTime = System.currentTimeMillis(); 
+		
+		InelasticBall ball = new InelasticBall(initPosition, obstacleList); 
+		
+		boolean over = false; 
+		
+		if (stopCondition == null) {
+			stopCondition = DEFAULT_STOP_CONDITION; 
+		}
+		
+		int markIndex = -10; 
+		int markNum = 0; 
+		int markFactor = 10; 
+		
+		while (!stopCondition.isSatisfied()) {
+			long calcStartTime = System.currentTimeMillis(); 
+			if (pauseCondition != null && pauseCondition.isSatisfied()) {
+				// pause. 
+				long t = System.currentTimeMillis(); 
+				LCD.clear(); 
+				LCD.drawString("PAUSE", 5, 3); 
+				LCD.refresh(); 
+				Delay.msDelay(TIME_PER_FRAME); 
+				this.startTime += System.currentTimeMillis() - t; 
+				continue; 
+			}
+			
+			util.updateAngle(); 
+			// calculate obstacles
+			int offset = this.getObstacleMoveOffset(); 
+			this.speedUp(); 
+			this.resetCounter(); 
+			for (int i = 0; i < this.obstacleList.size(); i++) {
+				Rectangle obstacle = this.obstacleList.get(i);
+				obstacle.y -= offset; 
+				if (this.generateNewObstacles(i)) {
+					Sound.playTone(500, 100); 
+					this.gameValue++; 
+					int n = (int) (this.gameValue + (this.obstacleList.size() >> 1)); 
+					if (n % markFactor == 0) {
+						markNum = n; 
+						markIndex = i; 
+					} else if (i == markIndex) {
+						markIndex = -10; 
+					}
+				}
+			}
+			
+			// calculate ball --------------------------------
+			ball.setObstacleSpeed(this.speed); 
+			ball.run(); 
+			Point ballDrawPoint = ball.getTopLeft(); 
+			// --------------------------------------------------
+			
+			// clear screen.
+			g.clear(); 
+			
+			// Paint screen =====================================
+			for (int i = 0; i < this.obstacleList.size(); i++) {
+				Rectangle obstacle = this.obstacleList.get(i); 
+				int gap = ball.getRadius() + 1; 
+				g.fillRect(obstacle.x + gap, obstacle.y + gap, obstacle.width - (gap << 1), obstacle.height - (gap << 1)); 
+				if (i == markIndex || i == markIndex - 1) {
+					int color = g.getColor(); 
+					g.setColor(Graphics.WHITE); 
+					gap++; 
+					g.fillRect(obstacle.x + gap, obstacle.y + gap, obstacle.width - (gap << 1), obstacle.height - (gap << 1)); 
+					g.setColor(color); 
+					g.drawString(String.valueOf(markNum), obstacle.x + gap + 3, obstacle.y + gap); 
+				}
+			}
+			DisplayUtil.drawImageCross(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, DisplayUtil.X_FLAG, LCD.ROP_OR); 
+			LCD.drawInt(this.gameValue, 5, 0, 0);  
+			g.refresh(); 
+			
+			if (this.isOver(ballDrawPoint, ball.getRadius() + 1)) {
+				over = true; 
+				break; 
+			}
+			// ==================================================
+			int calcTime = (int)(System.currentTimeMillis() - calcStartTime); 
+			int delayTime = TIME_PER_FRAME - calcTime; 
+			if (delayTime > 0) {
+				Delay.msDelay(delayTime); 
+			} else {
+				Sound.playTone(2000, 100); 
+			}
+		}
+		
+		if (over) {
+			// draw over animation
+			final int LIMIT = (g.getHeight() >> 1) + 1; 
+			for (int topLine = 0; !stopCondition.isSatisfied() && topLine < LIMIT; topLine++) {
+				g.fillRect(0, 0, g.getWidth(), topLine); 
+				g.fillRect(0, g.getHeight() - topLine - 1, g.getWidth(), topLine + 1); 
+				g.refresh(); 
+				Delay.msDelay(20); 
+			}
+		}
+		
+		return over; 
+	}
+}
