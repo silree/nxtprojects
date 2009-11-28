@@ -56,11 +56,18 @@ public abstract class IOModule {
 	
 	public abstract boolean isTouchSensorPressed(); 
 	
-	public abstract Point getScreenBound(); 
+	public abstract Point getScreenBoundary(); 
 	
 	public abstract void playTone(int freq, int duration); 
 	
 	public abstract int getDistance(); 
 	
 	public abstract boolean isTouchPressed(); 
+	
+	/**
+	 * Return the light value in percentage. 
+	 * It can detect whether you connect with a light sensor or color light sensor automatically. 
+	 * @return light value, 0-100
+	 */
+	public abstract int getLightValue(); 
 }
