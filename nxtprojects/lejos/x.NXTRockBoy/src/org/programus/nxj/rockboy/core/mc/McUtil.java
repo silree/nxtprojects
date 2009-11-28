@@ -62,7 +62,7 @@ public class McUtil {
 	
 	public Point2D.Double orth2polar(double x, double y) {
 		double l = Math.sqrt(x * x + y * y); 
-		double r = Math.atan(y / x); 
+		double r = x == 0 ? 0 : Math.atan(y / x); 
 		if (x < 0) {
 			r += Math.PI; 
 		}
@@ -70,6 +70,6 @@ public class McUtil {
 	}
 	
 	public Point getLcdCooridnateOffset() {
-		return this.input.getScreenBound(); 
+		return this.input.getScreenBoundary(); 
 	}
 }
