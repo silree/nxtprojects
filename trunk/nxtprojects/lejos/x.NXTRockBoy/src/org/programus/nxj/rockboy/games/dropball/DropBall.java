@@ -19,13 +19,13 @@ public class DropBall {
 		DropBallGame game = new DropBallGame(); 
 		game.initialize(); 
 		try {
-			int winRow = 3; 
+			int overRow = 3; 
 			TextMenu againMenu = new TextMenu(new String[]{"YES", "NO"}, 6, "Play Again?"); 
 			do {
 				// play game again and again until the player select no in play again menu. 
 				if (game.play()) {
 					LCD.clear(); 
-					DisplayUtil.drawStringCenter("YOU WIN!", winRow); 
+					DisplayUtil.drawStringCenter("GAME OVER", overRow); 
 					LCD.refresh(); 
 				} else {
 					break; 
