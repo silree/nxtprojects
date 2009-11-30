@@ -9,9 +9,7 @@ import java.util.Random;
 import javax.microedition.lcdui.Graphics;
 
 import lejos.nxt.Button;
-import lejos.nxt.ColorLightSensor;
 import lejos.nxt.LCD;
-import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
 
@@ -71,8 +69,6 @@ public class GameLevel {
 	}
 	
 	public void initialize() {
-		IO.setColorLightSensorType(ColorLightSensor.TYPE_COLORNONE); 
-		
 		this.obstacleList.clear(); 
 		for (int i = FIRST_SPACE; i < FIRST_SPACE + H + MAX_STEP; i += this.getStep()) {
 			Rectangle r = new Rectangle(0, i, 0, HEIGHT); 

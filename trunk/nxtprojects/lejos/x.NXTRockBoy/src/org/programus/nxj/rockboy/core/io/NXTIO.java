@@ -32,11 +32,19 @@ public class NXTIO extends IOModule {
 	
 	private static TouchSensor R_TOUCH_S = new TouchSensor(R_TOUCH_P); 
 	private static TouchSensor TOUCH_S = new TouchSensor(TOUCH_P); 
-	private static ColorLightSensor COLOR_S = new ColorLightSensor(COLOR_P, ColorLightSensor.TYPE_COLORNONE); 
-	private static LightSensor LIGHT_S = new LightSensor(COLOR_P); 
+	private static ColorLightSensor COLOR_S; 
+	private static LightSensor LIGHT_S; 
 	private static UltrasonicSensor SONAR_S = new UltrasonicSensor(SONAR_P);
 	
 	private static Point limit = new Point(LCD.SCREEN_WIDTH, LCD.SCREEN_HEIGHT); 
+	
+	NXTIO() {
+		COLOR_S = new ColorLightSensor(COLOR_P, ColorLightSensor.TYPE_COLORNONE); 
+		if (COLOR_S.readValue() < 0) {
+			LIGHT_S = new LightSensor(COLOR_P); 
+			COLOR_S = null; 
+		}
+	}
 
 	@Override
 	public ColorLightSensor getColorLightSensor() {
@@ -134,17 +142,19 @@ public class NXTIO extends IOModule {
 	
 	@Override
 	public int getLightValue() {
-		int value = COLOR_S.readValue(); 
-		if (value < 0) {
-			value = LIGHT_S.readValue(); 
-		}
-		
-		return value; 
+		return this.isUsingColorLightSensor() ? COLOR_S.readValue() : LIGHT_S.readValue(); 
 	}
 	
 	@Override
 	public void setColorLightSensorType(int type) {
-		COLOR_S.setType(type); 
+		if (this.isUsingColorLightSensor()) {
+			COLOR_S.setType(type); 
+		}
+	}
+
+	@Override
+	public boolean isUsingColorLightSensor() {
+		return COLOR_S != null; 
 	}	
 
 }
