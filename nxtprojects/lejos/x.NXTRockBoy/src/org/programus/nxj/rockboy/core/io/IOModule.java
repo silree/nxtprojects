@@ -72,5 +72,12 @@ public abstract class IOModule {
 	 */
 	public abstract int getLightValue(); 
 	
+	/**
+	 * Return the raw light value. 
+	 * It can detect whether you connect with a light sensor or color light sensor automatically. 
+	 * @return light value, 0-1023
+	 */
+	public abstract int getRawLightValue(); 	
+	
 	public abstract boolean isUsingColorLightSensor(); 
 }
