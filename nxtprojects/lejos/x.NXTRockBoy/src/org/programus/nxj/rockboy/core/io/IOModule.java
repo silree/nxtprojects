@@ -64,6 +64,7 @@ public abstract class IOModule {
 	
 	public abstract boolean isTouchPressed(); 
 	
+	public abstract void setColorLightSensorType(int type); 
 	/**
 	 * Return the light value in percentage. 
 	 * It can detect whether you connect with a light sensor or color light sensor automatically. 
