@@ -81,4 +81,10 @@ public class PcIO extends IOModule {
 		return true;
 	}
 
+	@Override
+	public int getRawLightValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

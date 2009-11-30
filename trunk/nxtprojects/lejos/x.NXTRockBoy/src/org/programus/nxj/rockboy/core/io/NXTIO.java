@@ -144,6 +144,11 @@ public class NXTIO extends IOModule {
 	public int getLightValue() {
 		return this.isUsingColorLightSensor() ? COLOR_S.readValue() : LIGHT_S.readValue(); 
 	}
+
+	@Override
+	public int getRawLightValue() {
+		return this.isUsingColorLightSensor() ? COLOR_S.readRawValue() : LIGHT_S.readNormalizedValue(); 
+	}	
 	
 	@Override
 	public void setColorLightSensorType(int type) {
@@ -155,6 +160,6 @@ public class NXTIO extends IOModule {
 	@Override
 	public boolean isUsingColorLightSensor() {
 		return COLOR_S != null; 
-	}	
+	}
 
 }
