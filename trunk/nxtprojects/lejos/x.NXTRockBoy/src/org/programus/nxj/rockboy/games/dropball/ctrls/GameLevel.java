@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.microedition.lcdui.Graphics;
 
 import lejos.nxt.Button;
+import lejos.nxt.ColorLightSensor;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
@@ -31,6 +32,7 @@ public class GameLevel {
 	private List<Rectangle> obstacleList;
 	private Random rand; 
 	
+	private DropBallGame game; 
 	private int gameValue; 
 	private long startTime; 
 	
@@ -40,17 +42,21 @@ public class GameLevel {
 	private final static int W = IO.getScreenBoundary().x; 
 	private final static int H = IO.getScreenBoundary().y; 
 	
-	private final static int TIME_PER_FRAME = 40; 
+	private final static int TIME_PER_FRAME = 30; 
 	
-	private final static int FIRST_HEIGHT = 30; 
-	private final static int STEP = 20; 
+	private final static int FIRST_SPACE = 30; 
 	private final static int HEIGHT = 14; 
+	private final static int MIN_STEP = HEIGHT + 2; 
+	private final static int MAX_STEP = H * 2 / 3; 
+	
+	private final static int MIN_FIXED_WIDTH = 10; 
+	private final static int MAX_FIXED_WIDTH = W - 12; 
 	
 	private double speed; 
 	private double offset; 
 	private int turnCounter; 
 	
-	private final static double INIT_SPEED = .1; 
+	private final static double INIT_SPEED = .12; 
 	private final static double LIMIT_SPEED = 10; 
 	private final static int SPEED_UP_TURN = 10 * 1000 / TIME_PER_FRAME; 
 	private final static double SPEED_UP_STEP = .01; 
@@ -61,11 +67,14 @@ public class GameLevel {
 		this.obstacleList = new ArrayList<Rectangle>(); 
 		this.gameValue = 0; 
 		this.rand = new Random(); 
+		this.game = game; 
 	}
 	
 	public void initialize() {
+		IO.setColorLightSensorType(ColorLightSensor.TYPE_COLORNONE); 
+		
 		this.obstacleList.clear(); 
-		for (int i = FIRST_HEIGHT; i < FIRST_HEIGHT + H + STEP; i += STEP) {
+		for (int i = FIRST_SPACE; i < FIRST_SPACE + H + MAX_STEP; i += this.getStep()) {
 			Rectangle r = new Rectangle(0, i, 0, HEIGHT); 
 			this.randomObstacleX(r); 
 			RConsole.println("r1:" + r); 
@@ -75,8 +84,10 @@ public class GameLevel {
 			this.obstacleList.add(r); 
 		}
 		
-		this.initPosition.x = this.rand.nextInt(W); 
-		this.initPosition.y = this.rand.nextInt(FIRST_HEIGHT); 
+		Rectangle firstObstacle = this.obstacleList.get(0); 
+		
+		this.initPosition.x = firstObstacle.x + this.rand.nextInt(firstObstacle.width); 
+		this.initPosition.y = this.rand.nextInt(FIRST_SPACE); 
 		
 		this.gameValue = 0; 
 		
@@ -94,6 +105,12 @@ public class GameLevel {
 	
 	public int getGameValue() {
 		return this.gameValue; 
+	}
+	
+	private int getStep() {
+		int lightValue = this.game.isLightStepMode() ? IO.getLightValue() : 75; 
+		int v = (MAX_STEP - MIN_STEP) * (100 - lightValue) / 100; 
+		return MIN_STEP + (v < 0 ? 0 : v); 
 	}
 
 	private boolean isOver(Point p, int r) {
@@ -133,9 +150,11 @@ public class GameLevel {
 	}
 	
 	private void randomObstacleX(Rectangle obstacle) {
-		int randomRange = W >> 1; 
-		int space = 10; 
-		obstacle.width = this.rand.nextInt(randomRange) + (W - randomRange) - space; 
+		int lightValue = this.game.isLightWidthMode() ? IO.getLightValue() : 50; 
+		int fixedWidth = MIN_FIXED_WIDTH + (MAX_FIXED_WIDTH - MIN_FIXED_WIDTH) * lightValue / 100; 
+		int randomRange = (W - fixedWidth) >> 2; 
+		int space = 0; 
+		obstacle.width = this.rand.nextInt(randomRange) + fixedWidth - space; 
 		obstacle.x = this.rand.nextInt(W); 
 		obstacle.height = HEIGHT; 
 	}
@@ -144,7 +163,7 @@ public class GameLevel {
 		Rectangle obstacle = this.obstacleList.get(i);
 		if (obstacle.y < -obstacle.height && (i % 2) > 0) {
 			int prevIndex = (i + this.obstacleList.size() - 2) % this.obstacleList.size(); 
-			obstacle.y = this.obstacleList.get(prevIndex).y + STEP; 
+			obstacle.y = this.obstacleList.get(prevIndex).y + this.getStep(); 
 			this.randomObstacleX(obstacle); 
 			
 			Rectangle pairObstacle = this.obstacleList.get(i - 1); 
@@ -208,7 +227,6 @@ public class GameLevel {
 				Rectangle obstacle = this.obstacleList.get(i);
 				obstacle.y -= offset; 
 				if (this.generateNewObstacles(i)) {
-					Sound.playTone(500, 100); 
 					this.gameValue++; 
 					int n = (int) (this.gameValue + (this.obstacleList.size() >> 1)); 
 					if (n % markFactor == 0) {
@@ -233,18 +251,17 @@ public class GameLevel {
 			for (int i = 0; i < this.obstacleList.size(); i++) {
 				Rectangle obstacle = this.obstacleList.get(i); 
 				int gap = ball.getRadius() + 1; 
-				g.fillRect(obstacle.x + gap, obstacle.y + gap, obstacle.width - (gap << 1), obstacle.height - (gap << 1)); 
+				g.fillRect(obstacle.x, obstacle.y + gap, obstacle.width, obstacle.height - (gap << 1)); 
 				if (i == markIndex || i == markIndex - 1) {
 					int color = g.getColor(); 
 					g.setColor(Graphics.WHITE); 
 					gap++; 
-					g.fillRect(obstacle.x + gap, obstacle.y + gap, obstacle.width - (gap << 1), obstacle.height - (gap << 1)); 
+					g.fillRect(obstacle.x + 1, obstacle.y + gap, obstacle.width - 2, obstacle.height - (gap << 1)); 
 					g.setColor(color); 
-					g.drawString(String.valueOf(markNum), obstacle.x + gap + 3, obstacle.y + gap); 
+					g.drawString(String.valueOf(markNum), obstacle.x + 2, obstacle.y + gap); 
 				}
 			}
 			DisplayUtil.drawImageCross(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, DisplayUtil.X_FLAG, LCD.ROP_OR); 
-			LCD.drawInt(this.gameValue, 5, 0, 0);  
 			g.refresh(); 
 			
 			if (this.isOver(ballDrawPoint, ball.getRadius() + 1)) {
@@ -257,7 +274,8 @@ public class GameLevel {
 			if (delayTime > 0) {
 				Delay.msDelay(delayTime); 
 			} else {
-				Sound.playTone(2000, 100); 
+//				// Just for debug. 
+//				Sound.playTone(2000, 100); 
 			}
 		}
 		

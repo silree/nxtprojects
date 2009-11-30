@@ -31,8 +31,11 @@ import org.programus.nxj.util.SoundUtil;
  */
 public class DropBallGame {
 	private final static String[] GAME_MODES = {
-		"START", "QUIT", 
+		"| MODE", "- MODE", 
 	};
+	
+	/** Game mode: | or - */
+	private int mode; 
 	
 	private long totalValue; 
 	
@@ -86,9 +89,18 @@ public class DropBallGame {
 		
 		this.showStartScreen(); 
 		TextMenu modeMenu = new TextMenu(GAME_MODES, row, "PLEASE SELECT:"); 
-		if (modeMenu.select() > 0) {
+		this.mode = modeMenu.select(this.mode); 
+		if (this.mode < 0) {
 			System.exit(0); 
 		}
+	}
+	
+	public boolean isLightStepMode() {
+		return this.mode == 0; 
+	}
+	
+	public boolean isLightWidthMode() {
+		return this.mode == 1; 
 	}
 	
 	/**
