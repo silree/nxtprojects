@@ -71,4 +71,6 @@ public abstract class IOModule {
 	 * @return light value, 0-100
 	 */
 	public abstract int getLightValue(); 
+	
+	public abstract boolean isUsingColorLightSensor(); 
 }
