@@ -72,4 +72,8 @@ public class PcIO extends IOModule {
 		return 50;
 	}
 
+	@Override
+	public void setColorLightSensorType(int type) {
+	}
+
 }

@@ -140,6 +140,11 @@ public class NXTIO extends IOModule {
 		}
 		
 		return value; 
+	}
+	
+	@Override
+	public void setColorLightSensorType(int type) {
+		COLOR_S.setType(type); 
 	}	
 
 }
