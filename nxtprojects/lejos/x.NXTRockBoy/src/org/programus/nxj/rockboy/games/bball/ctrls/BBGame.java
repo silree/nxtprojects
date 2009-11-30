@@ -93,6 +93,9 @@ public class BBGame {
 		this.showStartScreen(); 
 		TextMenu modeMenu = new TextMenu(GAME_MODES, row, "SELECT A MODE:"); 
 		this.gameMode = modeMenu.select(); 
+		if (this.gameMode < 0) {
+			System.exit(0); 
+		}
 	}
 	
 	/**
