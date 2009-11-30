@@ -104,8 +104,8 @@ public class GameLevel {
 	}
 	
 	private int getStep() {
-		int lightValue = this.game.isLightStepMode() ? IO.getLightValue() : 75; 
-		int v = (MAX_STEP - MIN_STEP) * (100 - lightValue) / 100; 
+		int lightValue = this.game.isLightStepMode() ? IO.getRawLightValue() : 768; 
+		int v = (MAX_STEP - MIN_STEP) * (1023 - lightValue) / 1023; 
 		return MIN_STEP + (v < 0 ? 0 : v); 
 	}
 
@@ -146,8 +146,8 @@ public class GameLevel {
 	}
 	
 	private void randomObstacleX(Rectangle obstacle) {
-		int lightValue = this.game.isLightWidthMode() ? IO.getLightValue() : 50; 
-		int fixedWidth = MIN_FIXED_WIDTH + (MAX_FIXED_WIDTH - MIN_FIXED_WIDTH) * lightValue / 100; 
+		int lightValue = this.game.isLightWidthMode() ? IO.getRawLightValue() : 512; 
+		int fixedWidth = MIN_FIXED_WIDTH + (MAX_FIXED_WIDTH - MIN_FIXED_WIDTH) * lightValue / 1023; 
 		int randomRange = (W - fixedWidth) >> 2; 
 		int space = 0; 
 		obstacle.width = this.rand.nextInt(randomRange) + fixedWidth - space; 
@@ -284,6 +284,9 @@ public class GameLevel {
 				g.refresh(); 
 				Delay.msDelay(20); 
 			}
+			DisplayUtil.drawStringCenter("GAME OVER", 3 * LCD.CELL_HEIGHT, true); 
+			g.refresh(); 
+			Delay.msDelay(3000); 
 		}
 		
 		return over; 
