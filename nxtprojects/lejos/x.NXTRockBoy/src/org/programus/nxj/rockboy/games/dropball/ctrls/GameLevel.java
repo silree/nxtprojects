@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
@@ -19,6 +20,8 @@ import org.programus.nxj.rockboy.games.bball.ctrls.KeyStopCondition;
 import org.programus.nxj.rockboy.games.dropball.objects.InelasticBall;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
+import org.programus.nxj.util.txtimg.TextImage;
+import org.programus.nxj.util.txtimg.TextImage3x5;
 
 /**
  * An object of this class represent a single level of BBall game. 
@@ -43,7 +46,7 @@ public class GameLevel {
 	private final static int TIME_PER_FRAME = 30; 
 	
 	private final static int FIRST_SPACE = 30; 
-	private final static int HEIGHT = 14; 
+	private final static int HEIGHT = 13; 
 	private final static int MIN_STEP = HEIGHT + 2; 
 	private final static int MAX_STEP = H * 2 / 3; 
 	
@@ -59,6 +62,7 @@ public class GameLevel {
 	private final static int SPEED_UP_TURN = 10 * 1000 / TIME_PER_FRAME; 
 	private final static double SPEED_UP_STEP = .01; 
 	
+	private final static TextImage TEXT_IMAGE = new TextImage3x5(); 
 	
 	GameLevel(DropBallGame game) {
 		this.initPosition = new Point();  
@@ -198,7 +202,7 @@ public class GameLevel {
 		}
 		
 		int markIndex = -10; 
-		int markNum = 0; 
+		Image markNum = null; 
 		int markFactor = 10; 
 		
 		while (!stopCondition.isSatisfied()) {
@@ -226,7 +230,7 @@ public class GameLevel {
 					this.gameValue++; 
 					int n = (int) (this.gameValue + (this.obstacleList.size() >> 1)); 
 					if (n % markFactor == 0) {
-						markNum = n; 
+						markNum = TEXT_IMAGE.getImage(n); 
 						markIndex = i; 
 					} else if (i == markIndex) {
 						markIndex = -10; 
@@ -254,7 +258,7 @@ public class GameLevel {
 					gap++; 
 					g.fillRect(obstacle.x + 1, obstacle.y + gap, obstacle.width - 2, obstacle.height - (gap << 1)); 
 					g.setColor(color); 
-					g.drawString(String.valueOf(markNum), obstacle.x + 2, obstacle.y + gap); 
+					g.drawImage(markNum, 0, 0, obstacle.x + ((obstacle.width - markNum.getWidth()) >> 1), obstacle.y + gap, markNum.getWidth(), markNum.getHeight(), LCD.ROP_XOR); 
 				}
 			}
 			DisplayUtil.drawImageCross(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, DisplayUtil.X_FLAG, LCD.ROP_OR); 
