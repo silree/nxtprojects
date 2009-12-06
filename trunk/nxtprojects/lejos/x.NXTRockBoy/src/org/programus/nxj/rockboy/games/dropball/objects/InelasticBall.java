@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.microedition.lcdui.Image;
 
-import org.programus.nxj.rockboy.core.io.IOModule;
 import org.programus.nxj.rockboy.core.mc.McPoint;
 import org.programus.nxj.rockboy.core.thing.BoundaryLoopCalculator;
 import org.programus.nxj.rockboy.core.thing.DropCalculator;
 import org.programus.nxj.rockboy.core.thing.ObstructCalculator;
 import org.programus.nxj.rockboy.core.thing.Thing;
+import org.programus.nxj.util.music.BGMBox;
 
 /**
  * This is the ball dropping. 
@@ -64,7 +64,7 @@ public class InelasticBall extends Thing {
 		int obstructed = this.oc.obstruct(oldPoint, this.obstacleSpeed); 
 		double v = speed.getValue(); 
 		if (Math.abs(v) - Math.abs(oldV) < -0.5 || (obstructed & ObstructCalculator.Y) > 0) {
-			IOModule.getIOModule().playTone(4000, 10); 
+			BGMBox.getInstance().playSound(4000, 10, 100); 
 		}
 		
 		this.dc.updateDropSpeed(); 
