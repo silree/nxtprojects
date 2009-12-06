@@ -20,6 +20,7 @@ import org.programus.nxj.rockboy.games.bball.ctrls.KeyStopCondition;
 import org.programus.nxj.rockboy.games.dropball.objects.InelasticBall;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
+import org.programus.nxj.util.music.BGMBox;
 import org.programus.nxj.util.txtimg.TextImage;
 import org.programus.nxj.util.txtimg.TextImage3x5;
 
@@ -187,9 +188,9 @@ public class GameLevel {
 		McUtil util = McUtil.getInstance(); 
 		Graphics g = new Graphics(); 
 		g.autoRefresh(false); 
-		
+
 		// To prevent the button event
-		Delay.msDelay(500); 
+		Delay.msDelay(200); 
 		
 		this.startTime = System.currentTimeMillis(); 
 		
@@ -205,6 +206,8 @@ public class GameLevel {
 		Image markNum = null; 
 		int markFactor = 10; 
 		
+		BGMBox box = BGMBox.getInstance(); 
+		box.playLoop(1000); 
 		while (!stopCondition.isSatisfied()) {
 			long calcStartTime = System.currentTimeMillis(); 
 			if (pauseCondition != null && pauseCondition.isSatisfied()) {
@@ -278,6 +281,8 @@ public class GameLevel {
 //				Sound.playTone(2000, 100); 
 			}
 		}
+		
+		box.stop(); 
 		
 		if (over) {
 			// draw over animation
