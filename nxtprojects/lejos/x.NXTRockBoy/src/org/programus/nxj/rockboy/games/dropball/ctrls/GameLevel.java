@@ -115,7 +115,7 @@ public class GameLevel {
 	}
 
 	private boolean isOver(Point p, int r) {
-		if (p.y < -r) {
+		if (p.y < -HEIGHT) {
 			return true; 
 		} else if (p.y > IO.getScreenBoundary().y + r) {
 			this.gameValue += (this.obstacleList.size() >> 1); 
@@ -222,6 +222,7 @@ public class GameLevel {
 			}
 			
 			util.updateAngle(); 
+			
 			// calculate obstacles
 			int offset = this.getObstacleMoveOffset(); 
 			this.speedUp(); 
@@ -240,7 +241,6 @@ public class GameLevel {
 					}
 				}
 			}
-			
 			// calculate ball --------------------------------
 			ball.setObstacleSpeed(this.speed); 
 			ball.run(); 
@@ -251,6 +251,7 @@ public class GameLevel {
 			g.clear(); 
 			
 			// Paint screen =====================================
+			DisplayUtil.drawImageCross(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, DisplayUtil.X_FLAG, LCD.ROP_OR); 
 			for (int i = 0; i < this.obstacleList.size(); i++) {
 				Rectangle obstacle = this.obstacleList.get(i); 
 				int gap = ball.getRadius() + 1; 
@@ -264,7 +265,6 @@ public class GameLevel {
 					g.drawImage(markNum, 0, 0, obstacle.x + ((obstacle.width - markNum.getWidth()) >> 1), obstacle.y + gap, markNum.getWidth(), markNum.getHeight(), LCD.ROP_XOR); 
 				}
 			}
-			DisplayUtil.drawImageCross(ball.getImage(), ballDrawPoint.x, ballDrawPoint.y, DisplayUtil.X_FLAG, LCD.ROP_OR); 
 			g.refresh(); 
 			
 			if (this.isOver(ballDrawPoint, ball.getRadius() + 1)) {

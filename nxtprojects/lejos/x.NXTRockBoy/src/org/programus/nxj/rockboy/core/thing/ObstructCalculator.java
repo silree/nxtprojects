@@ -180,8 +180,8 @@ public class ObstructCalculator {
 //		RConsole.println("speed:" + speed); 
 //		RConsole.println("p:" + point); 
 		Point2D.Double lcdSpeed = speed.getLcdOrthValues(); 
-		p.y = baseY - Math.signum(lcdSpeed.y) * .2 - obstacleSpeed; 
-		lcdSpeed.y = 0; 
+		p.y = baseY - 0.0001; 
+		lcdSpeed.y = -obstacleSpeed; 
 		speed.setLcdOrthValues(lcdSpeed); 
 		point.setLcdPoint(p); 
 //		RConsole.println("speed:" + speed); 
