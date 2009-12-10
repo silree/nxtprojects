@@ -3,8 +3,6 @@ package org.programus.nxj.rockboy.core.thing;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
-import lejos.nxt.comm.RConsole;
-
 import org.programus.nxj.rockboy.core.mc.McUtil;
 
 public class BoundaryLoopCalculator {
