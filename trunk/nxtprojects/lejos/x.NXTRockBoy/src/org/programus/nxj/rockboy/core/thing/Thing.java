@@ -8,6 +8,7 @@ import javax.microedition.lcdui.Image;
 
 import org.programus.nxj.rockboy.core.mc.McPoint;
 import org.programus.nxj.rockboy.core.mc.McVector;
+import org.programus.nxj.util.MathUtil;
 
 /**
  * <p>This is a class to describe a thing in the NXTRockBoy. </p>
@@ -75,7 +76,7 @@ public abstract class Thing {
 	
 	public Point getTopLeft() {
 		Point2D.Double p = this.centerPoint.getLcdPoint(); 
-		Point topLeft = new Point((int)Math.round(p.x), (int)Math.round(p.y)); 
+		Point topLeft = new Point((int)MathUtil.round(p.x), (int)MathUtil.round(p.y)); 
 		topLeft.x -= (this.getWidth() >> 1); 
 		topLeft.y -= (this.getHeight() >> 1); 
 		
