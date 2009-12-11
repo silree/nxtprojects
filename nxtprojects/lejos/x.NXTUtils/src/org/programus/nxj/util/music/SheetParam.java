@@ -4,15 +4,22 @@ public class SheetParam {
 	public static final int SLOW_BEAT_DUR = 2000; 
 	public static final int NORMAL_BEAT_DUR = 1000; 
 	public static final int FAST_BEAT_DUR = 500; 
+	public static final int[] STD_44 = {20, 0, 10, 0}; 
+	public static final int[] STD_24 = {20, 0, 20, 0}; 
 	
 	private int beatDuration = NORMAL_BEAT_DUR; 
-	private int[] beatStyle = {10, 0, 5, 0}; 
+	private int[] beatStyle = STD_44; 
 	private int pitchOffset; 
+	private boolean continueNote; 
 	
-	public SheetParam(int beatDuration, int pitchOffset) {
+	public SheetParam(int beatDuration, int pitchOffset, int[] beatStyle, boolean continueNote) {
 		this.beatDuration = beatDuration; 
 		this.pitchOffset = pitchOffset; 
+		this.beatStyle = beatStyle; 
+		this.setContinueNote(continueNote); 
 	}
+	
+	public SheetParam() {}
 	
 	/**
 	 * @return the beatDuration
@@ -49,5 +56,19 @@ public class SheetParam {
 	 */
 	public int getPitchOffset() {
 		return pitchOffset;
+	}
+
+	/**
+	 * @param continueNote the continueNote to set
+	 */
+	public void setContinueNote(boolean continueNote) {
+		this.continueNote = continueNote;
+	}
+
+	/**
+	 * @return the continueNote
+	 */
+	public boolean isContinueNote() {
+		return continueNote;
 	}
 }

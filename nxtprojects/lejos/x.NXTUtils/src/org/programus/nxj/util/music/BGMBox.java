@@ -16,8 +16,9 @@ public class BGMBox {
 	
 	private final static Random rand = new Random(); 
 	
-	private final static int TICK = 300; 
-
+	private final static int EXT = 10; 
+	private final static int DEFAULT_TICK = 100; 
+	
 	private int vol = Sound.getVolume() >> 1; 
 	private List<Music> musicList = new ArrayList<Music>(); 
 	
@@ -86,47 +87,87 @@ public class BGMBox {
 	}
 	
 	private void play(Music music) {
+		SheetParam param = music.getParam(); 
+		int[] beatStyle = param.getBeatStyle(); 
+		int[] dvs; 
+		int oldVol = 0; 
+		int tick; 
+		if (null == beatStyle || beatStyle.length < 2) {
+			tick = DEFAULT_TICK; 
+			dvs = new int[1]; 
+		} else {
+			tick = param.getBeatDuration() / beatStyle.length; 
+			dvs = new int[beatStyle.length]; 
+		}
+		
+		int aTick = tick; 
+		int index = 0; 
 		for (MusicNote note : music.getNotes()) {
 			if (!this.isPlaying()) {
 				break; 
 			}
-			this.play(note, music.getParam()); 
-		}
-	}
-	
-	private void play(MusicNote note, SheetParam param) {
-		int duration = note.getDuration(param); 
-		int dur = duration; 
-		while (dur > 0) {
-			if (!this.isPlaying()) {
-				return; 
+			
+			// calculate beat volume. 
+			if (oldVol != this.vol && dvs.length > 1) {
+				oldVol = this.vol; 
+				for (int i = 0; i < dvs.length; i++) {
+					dvs[i] = oldVol * beatStyle[i] / 100; 
+				}
 			}
-			int dNote = Math.min(dur, TICK); 
-			synchronized(this.soundEffect) {
-				if (this.soundEffect[0] > 0) {
-					int dSound = Math.min(this.soundEffect[2], TICK); 
-					int d = dSound - dNote; 
-					if (d >= 0) {
-						dNote = 0; 
-					} else {
-						dNote = -d; 
-						this.soundEffect[0] = 0; 
+			// play every note. 
+			int duration = note.getDuration(param); 
+			int muteTime = tick >> 5; 
+			if (!param.isContinueNote()) {
+				duration -= muteTime; 
+			}
+			int dur = duration; 
+			while (dur > 0) {
+				if (!this.isPlaying()) {
+					return; 
+				}
+				int playTime = 0; 
+				int dNote = Math.min(dur, aTick); 
+				synchronized(this.soundEffect) {
+					if (this.soundEffect[0] > 0) {
+						int dSound = Math.min(this.soundEffect[2], aTick); 
+						int d = dSound - dNote; 
+						if (d >= 0) {
+							dNote = 0; 
+						} else {
+							dNote = -d; 
+							this.soundEffect[0] = 0; 
+						}
+						
+						if (dSound > 0) {
+							Sound.playTone(this.soundEffect[1], dSound + EXT, this.soundEffect[3]); 
+							Delay.msDelay(dSound); 
+							playTime += dSound; 
+							this.soundEffect[2] -= dSound; 
+						}
 					}
-					
-					if (dSound > 0) {
-						Sound.playTone(this.soundEffect[1], dSound, this.soundEffect[3]); 
-						Delay.msDelay(dSound); 
-						this.soundEffect[2] -= dSound; 
+				}
+				if (dNote > 0) {
+					if (note.getNote() > 0) {
+						Sound.playTone(note.getFreq(param.getPitchOffset()), dNote + EXT, this.vol + dvs[index]); 
+					}
+					Delay.msDelay(dNote); 
+					playTime += dNote; 
+				}
+				dur -= aTick; 
+				aTick -= playTime; 
+				if (aTick <= 0) {
+					aTick = tick; 
+					index++; 
+					if (index >= dvs.length) {
+						index = 0; 
 					}
 				}
 			}
-			if (dNote > 0) {
-				if (note.getNote() > 0) {
-					Sound.playTone(note.getFreq(param.getPitchOffset()), dNote, this.vol); 
-				}
-				Delay.msDelay(dNote); 
+			
+			if (!param.isContinueNote()) {
+				Sound.playTone(0, 1, 0); 
+				Delay.msDelay(muteTime); 
 			}
-			dur -= TICK; 
 		}
 	}
 
