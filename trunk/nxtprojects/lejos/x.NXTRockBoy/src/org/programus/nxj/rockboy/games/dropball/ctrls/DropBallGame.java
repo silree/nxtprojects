@@ -23,6 +23,8 @@ import org.programus.nxj.rockboy.games.bball.ctrls.TouchSwitchPauseCondition;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
 import org.programus.nxj.util.SoundUtil;
+import org.programus.nxj.util.music.Music;
+import org.programus.nxj.util.music.SheetParam;
 
 /**
  * A DropBallGame object represent one round game of the Drop Ball game. 
@@ -77,13 +79,9 @@ public class DropBallGame {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 300); 
-				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 100); 
-				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 100); 
-				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 150); 
-				SoundUtil.playNote(Sound.PIANO, 5, 3, false, 150); 
-				SoundUtil.playNote(Sound.PIANO, 5, 6, false, 150); 
-				SoundUtil.playNote(Sound.PIANO, 5, 5, false, 500); 
+				new Music(new SheetParam(1200, 0, new int[]{20, 0, 10, 0}, false), new String[] {
+					"4c/4 4e/4 4g/4 5c/2", 
+				}).play(Sound.PIANO, 100); 
 			}
 		}).start(); 
 		

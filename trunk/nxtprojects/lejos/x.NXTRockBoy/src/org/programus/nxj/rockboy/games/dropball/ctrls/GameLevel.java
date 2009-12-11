@@ -11,7 +11,7 @@ import javax.microedition.lcdui.Image;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
-import lejos.nxt.comm.RConsole;
+import lejos.nxt.Sound;
 import lejos.util.Delay;
 
 import org.programus.nxj.rockboy.core.io.IOModule;
@@ -20,7 +20,10 @@ import org.programus.nxj.rockboy.games.bball.ctrls.KeyStopCondition;
 import org.programus.nxj.rockboy.games.dropball.objects.InelasticBall;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
+import org.programus.nxj.util.MathUtil;
 import org.programus.nxj.util.music.BGMBox;
+import org.programus.nxj.util.music.Music;
+import org.programus.nxj.util.music.SheetParam;
 import org.programus.nxj.util.txtimg.TextImage;
 import org.programus.nxj.util.txtimg.TextImage3x5;
 
@@ -78,10 +81,10 @@ public class GameLevel {
 		for (int i = FIRST_SPACE; i < FIRST_SPACE + H + MAX_STEP; i += this.getStep()) {
 			Rectangle r = new Rectangle(0, i, 0, HEIGHT); 
 			this.randomObstacleX(r); 
-			RConsole.println("r1:" + r); 
+//			RConsole.println("r1:" + r); 
 			this.obstacleList.add(r); 
 			r = new Rectangle(r.x - W, r.y, r.width, r.height); 
-			RConsole.println("r2:" + r); 
+//			RConsole.println("r2:" + r); 
 			this.obstacleList.add(r); 
 		}
 		
@@ -115,7 +118,7 @@ public class GameLevel {
 	}
 
 	private boolean isOver(Point p, int r) {
-		if (p.y < -HEIGHT) {
+		if (p.y < r - HEIGHT) {
 			return true; 
 		} else if (p.y > IO.getScreenBoundary().y + r) {
 			this.gameValue += (this.obstacleList.size() >> 1); 
@@ -128,7 +131,7 @@ public class GameLevel {
 		this.offset += this.speed; 
 		this.turnCounter++; 
 		
-		int ret = (int) this.offset; 
+		int ret = (int) MathUtil.round(this.offset); 
 		this.offset -= ret; 
 		
 		return (int) ret; 
@@ -245,6 +248,9 @@ public class GameLevel {
 			ball.setObstacleSpeed(this.speed); 
 			ball.run(); 
 			Point ballDrawPoint = ball.getTopLeft(); 
+			// For debug
+//			RConsole.println(String.valueOf(ballDrawPoint)); 
+//			RConsole.println("=========================================="); 
 			// --------------------------------------------------
 			
 			// clear screen.
@@ -287,11 +293,22 @@ public class GameLevel {
 		if (over) {
 			// draw over animation
 			final int LIMIT = (g.getHeight() >> 1) + 1; 
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					new Music(new SheetParam(SheetParam.FAST_BEAT_DUR, 0, new int[]{20, 0, 10, 0}, false), new String[] {
+						"6b/16 6a#/16 6a/16 6g#16 6g/16 6f#/16 6f/16 6e/16 6d#/16 6d/16 6c#/16 6c/16", 
+						"5b/16 5a#/16 5a/16 5g#16 5g/16 5f#/16 ", 
+						"4g/2", 
+					}).play(Sound.PIANO); 
+				}
+			}).start(); 
+
 			for (int topLine = 0; !stopCondition.isSatisfied() && topLine < LIMIT; topLine++) {
 				g.fillRect(0, 0, g.getWidth(), topLine); 
 				g.fillRect(0, g.getHeight() - topLine - 1, g.getWidth(), topLine + 1); 
 				g.refresh(); 
-				Delay.msDelay(20); 
+				Delay.msDelay(30); 
 			}
 			DisplayUtil.drawStringCenter("GAME OVER", 3 * LCD.CELL_HEIGHT, true); 
 			g.refresh(); 
