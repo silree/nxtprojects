@@ -30,6 +30,11 @@ public class DisplayUtil {
 		int x = (LCD.SCREEN_WIDTH - right - string.length() * LCD.CELL_WIDTH); 
 		LCD.drawString(string, x, y, invert); 
 	}
+	
+	public static void drawImageCenter(Image image, int y, int rop) {
+		int x = (LCD.SCREEN_WIDTH - image.getWidth()) >> 1; 
+		g.drawImage(image, 0, 0, x, y, image.getWidth(), image.getHeight(), rop); 
+	}
 
 	public static void drawImageCross(Image image, int x, int y, int flag, int rop) {
 		boolean loopX = (flag & X_FLAG) > 0; 
