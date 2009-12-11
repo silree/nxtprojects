@@ -2,6 +2,8 @@ package org.programus.nxj.rockboy.core.io;
 
 import java.awt.Point;
 
+import javax.microedition.lcdui.Image;
+
 import lejos.nxt.Button;
 import lejos.nxt.ColorLightSensor;
 import lejos.nxt.LCD;
@@ -12,6 +14,10 @@ import lejos.nxt.Sound;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.Delay;
+
+import org.programus.nxj.util.DisplayUtil;
+import org.programus.nxj.util.txtimg.TextImage;
+import org.programus.nxj.util.txtimg.TextImage3x5;
 
 /**
  * NXTIO class is an IO module for real NXT environment. 
@@ -69,6 +75,7 @@ public class NXTIO extends IOModule {
 	
 	@Override
 	public void resetPosition() {
+		TextImage ti = new TextImage3x5(); 
 		R_MOTOR.setPower(0); 
 		R_MOTOR.setBrakePower(0); 
 		if (!R_TOUCH_S.isPressed()) {
@@ -76,16 +83,27 @@ public class NXTIO extends IOModule {
 		} else {
 			Sound.beep(); 
 		}
-		LCD.drawString("Please reset NXT", 0, 3); 
-		LCD.drawString("Then press ENTER", 0, 4); 
+		Image text = ti.getImage("PLS RESET NXT AND PRESS"); 
+		int centerY = (LCD.SCREEN_HEIGHT >> 1); 
+		DisplayUtil.drawImageCenter(text, centerY - text.getHeight(), LCD.ROP_XOR); 
+		DisplayUtil.drawStringCenter("ENTER", centerY + 1, LCD.ROP_XOR); 
 		while (!R_TOUCH_S.isPressed()) {
+			if (Button.ESCAPE.isPressed()) {
+				System.exit(0); 
+			}
 			Thread.yield(); 
 		}
-		Button.ENTER.waitForPressAndRelease(); 
+		int pressedButtonId = 0; 
+		while (pressedButtonId != Button.ID_ENTER) {
+			pressedButtonId = Button.waitForPress(); 
+			if (pressedButtonId == Button.ID_ESCAPE) {
+				System.exit(0); 
+			}
+		}
 		LCD.clear(); 
-		LCD.drawString("Reseting...", 0, 3); 
-		LCD.drawString("Please don't", 0, 4); 
-		LCD.drawString("touch anything", 2, 5); 
+		DisplayUtil.drawStringCenter("RESETING...", 3); 
+		text = ti.getImage("DON'T TOUCH ANYTHING NOW!"); 
+		DisplayUtil.drawImageCenter(text, centerY, LCD.ROP_XOR); 
 		
 		Delay.msDelay(1000); 
 		
