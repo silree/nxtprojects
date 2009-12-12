@@ -91,7 +91,7 @@ public class GameLevel {
 		Rectangle firstObstacle = this.obstacleList.get(0); 
 		
 		this.initPosition.x = firstObstacle.x + this.rand.nextInt(firstObstacle.width); 
-		this.initPosition.y = this.rand.nextInt(FIRST_SPACE); 
+		this.initPosition.y = this.rand.nextInt(FIRST_SPACE >> 2); 
 		
 		this.gameValue = 0; 
 		
@@ -193,7 +193,7 @@ public class GameLevel {
 		g.autoRefresh(false); 
 
 		// To prevent the button event
-		Delay.msDelay(200); 
+		Delay.msDelay(500); 
 		
 		this.startTime = System.currentTimeMillis(); 
 		
@@ -210,11 +210,12 @@ public class GameLevel {
 		int markFactor = 10; 
 		
 		BGMBox box = BGMBox.getInstance(); 
-		box.playLoop(1000); 
+		box.playLoop(500); 
 		while (!stopCondition.isSatisfied()) {
 			long calcStartTime = System.currentTimeMillis(); 
 			if (pauseCondition != null && pauseCondition.isSatisfied()) {
 				// pause. 
+				box.setPause(true); 
 				long t = System.currentTimeMillis(); 
 				LCD.clear(); 
 				LCD.drawString("PAUSE", 5, 3); 
@@ -223,6 +224,7 @@ public class GameLevel {
 				this.startTime += System.currentTimeMillis() - t; 
 				continue; 
 			}
+			box.setPause(false); 
 			
 			util.updateAngle(); 
 			
