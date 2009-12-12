@@ -19,7 +19,11 @@ public class BGMBox {
 	private final static int EXT = 10; 
 	private final static int DEFAULT_TICK = 100; 
 	
-	private int vol = Sound.getVolume() >> 1; 
+	private boolean pause; 
+	
+	private int volRate = 50; 
+	private int oldSysVol; 
+	private int vol; 
 	private List<Music> musicList = new ArrayList<Music>(); 
 	
 	private int[] soundEffect = new int[4]; 
@@ -107,9 +111,14 @@ public class BGMBox {
 				break; 
 			}
 			
+			while(this.isPause()) {
+				Delay.msDelay(tick); 
+			}
+			
+			int vol = this.getVol(); 
 			// calculate beat volume. 
-			if (oldVol != this.vol && dvs.length > 1) {
-				oldVol = this.vol; 
+			if (oldVol != vol && dvs.length > 1) {
+				oldVol = vol; 
 				for (int i = 0; i < dvs.length; i++) {
 					dvs[i] = oldVol * beatStyle[i] / 100; 
 				}
@@ -148,7 +157,7 @@ public class BGMBox {
 				}
 				if (dNote > 0) {
 					if (note.getNote() > 0) {
-						Sound.playTone(note.getFreq(param.getPitchOffset()), dNote + EXT, this.vol + dvs[index]); 
+						Sound.playTone(note.getFreq(param.getPitchOffset()), dNote + EXT, vol + dvs[index]); 
 					}
 					Delay.msDelay(dNote); 
 					playTime += dNote; 
@@ -178,17 +187,37 @@ public class BGMBox {
 		return playing;
 	}
 	
-	/**
-	 * @return the vol
-	 */
 	public int getVol() {
-		return vol;
+		if (this.oldSysVol != Sound.getVolume()) {
+			this.vol = Sound.getVolume() * this.volRate / 100; 
+			this.oldSysVol = Sound.getVolume(); 
+		}
+		return this.vol; 
 	}
 	
 	/**
-	 * @param vol the vol to set
+	 * @return the volRate
 	 */
-	public void setVol(int vol) {
-		this.vol = vol;
+	public int getVolRate() {
+		return volRate;
+	}
+	
+	/**
+	 * @param volRate the volRate to set
+	 */
+	public void setVolRate(int vol) {
+		this.volRate = vol;
+	}
+	/**
+	 * @param pause the pause to set
+	 */
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
+	/**
+	 * @return the pause
+	 */
+	public boolean isPause() {
+		return pause;
 	}
 }
