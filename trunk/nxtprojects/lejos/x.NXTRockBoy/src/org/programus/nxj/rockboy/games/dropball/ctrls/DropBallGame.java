@@ -22,7 +22,6 @@ import org.programus.nxj.rockboy.games.bball.ctrls.MultiOrCondition;
 import org.programus.nxj.rockboy.games.bball.ctrls.TouchSwitchPauseCondition;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
-import org.programus.nxj.util.SoundUtil;
 import org.programus.nxj.util.music.Music;
 import org.programus.nxj.util.music.SheetParam;
 
@@ -81,7 +80,7 @@ public class DropBallGame {
 			public void run() {
 				new Music(new SheetParam(1200, 0, new int[]{20, 0, 10, 0}, false), new String[] {
 					"4c/4 4e/4 4g/4 5c/2", 
-				}).play(Sound.PIANO, 100); 
+				}).play(Sound.PIANO); 
 			}
 		}).start(); 
 		
@@ -138,16 +137,9 @@ public class DropBallGame {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				int duration = 100; 
-				SoundUtil.playNote(5, 1, false, duration, true); 
-				SoundUtil.playNote(5, 2, false, duration, true); 
-				SoundUtil.playNote(5, 3, false, duration, true); 
-				duration = 200; 
-				SoundUtil.playNote(5, 5, false, duration, true); 
-				duration = 100; 
-				SoundUtil.playNote(5, 3, false, duration, true); 
-				duration = 500; 
-				SoundUtil.playNote(5, 5, false, duration, true); 
+				new Music(new SheetParam(SheetParam.NORMAL_BEAT_DUR, 0, new int[]{20, 0, 10, 0}, false), new String[] {
+					"50/8 5c/8/16 5d/16 5e/8 5g/4 5e/8 5g/2/8", 
+				}).play(Sound.PIANO); 
 			}
 		}).start(); 
 		int row = 3; 
