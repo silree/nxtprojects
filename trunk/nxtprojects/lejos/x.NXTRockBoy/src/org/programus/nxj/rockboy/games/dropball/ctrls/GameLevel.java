@@ -187,7 +187,7 @@ public class GameLevel {
 	 * @param pauseCondition
 	 * @return true if this level is passed, and false if it is stopped. 
 	 */
-	public boolean play(Condition stopCondition, Condition pauseCondition) {
+	public boolean play(Condition stopCondition, Condition pauseCondition, Condition skipCondition) {
 		McUtil util = McUtil.getInstance(); 
 		Graphics g = new Graphics(); 
 		g.autoRefresh(false); 
@@ -306,7 +306,10 @@ public class GameLevel {
 				}
 			}).start(); 
 
-			for (int topLine = 0; !stopCondition.isSatisfied() && topLine < LIMIT; topLine++) {
+			for (int topLine = 0; topLine < LIMIT; topLine++) {
+				if (stopCondition.isSatisfied()) {
+					System.exit(0); 
+				}
 				g.fillRect(0, 0, g.getWidth(), topLine); 
 				g.fillRect(0, g.getHeight() - topLine - 1, g.getWidth(), topLine + 1); 
 				g.refresh(); 
@@ -314,7 +317,14 @@ public class GameLevel {
 			}
 			DisplayUtil.drawStringCenter("GAME OVER", 3 * LCD.CELL_HEIGHT, true); 
 			g.refresh(); 
-			Delay.msDelay(3000); 
+			long end = System.currentTimeMillis() + 2500; 
+			while (!skipCondition.isSatisfied() && end > System.currentTimeMillis()) {
+				if (stopCondition.isSatisfied()) {
+					System.exit(0); 
+				}
+				Thread.yield(); 
+			}
+			Delay.msDelay(500); 
 		}
 		
 		return over; 
