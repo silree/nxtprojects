@@ -35,6 +35,11 @@ public class DisplayUtil {
 		int x = (LCD.SCREEN_WIDTH - image.getWidth()) >> 1; 
 		g.drawImage(image, 0, 0, x, y, image.getWidth(), image.getHeight(), rop); 
 	}
+	
+	public static void drawImageRight(Image image, int y, int right, int rop) {
+		int x = (LCD.SCREEN_WIDTH - right - image.getWidth()); 
+		g.drawImage(image, 0, 0, x, y, image.getWidth(), image.getHeight(), rop); 
+	}
 
 	public static void drawImageCross(Image image, int x, int y, int flag, int rop) {
 		boolean loopX = (flag & X_FLAG) > 0; 
