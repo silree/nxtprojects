@@ -157,17 +157,15 @@ public class DropBallGame {
 		g.clear(); 
 		String prompt; 
 	
-		int y = LCD.CELL_HEIGHT; 
+		int y = LCD.CELL_HEIGHT << 1; 
 		prompt = "BEST SCORE:"; 
 		g.fillRect(0, y - 1, prompt.length() * LCD.CELL_WIDTH + 1, LCD.CELL_HEIGHT + 1); 
 		g.drawString(prompt, 1, y, true); 
-		y += LCD.CELL_HEIGHT; 
 		DisplayUtil.drawStringRight(String.valueOf(bestScore), y, 0, false); 
-		y += LCD.CELL_HEIGHT; 
+		y += LCD.CELL_HEIGHT << 1; 
 		prompt = "YOUR SCORE:"; 
 		g.fillRect(0, y - 1, prompt.length() * LCD.CELL_WIDTH + 1, LCD.CELL_HEIGHT + 1); 
 		g.drawString(prompt, 1, y, true); 
-		y += LCD.CELL_HEIGHT; 
 		DisplayUtil.drawStringRight(String.valueOf(this.totalValue), y, 0, false); 
 		
 		g.refresh(); 
@@ -188,12 +186,13 @@ public class DropBallGame {
 		boolean gameStopped = false; 
 		
 		Condition stopCondition = new KeyStopCondition(Button.ESCAPE); 
+		Condition skipCondition = new KeyStopCondition(Button.ENTER); 
 		Condition touchPauseCondition = new TouchSwitchPauseCondition(); 
 		Condition buttonPauseCondition = new ButtonSwitchPauseCondition(Button.ENTER); 
 		MultiOrCondition pauseCondition = new MultiOrCondition(); 
 		pauseCondition.addCondition(touchPauseCondition); 
 		pauseCondition.addCondition(buttonPauseCondition); 
-		gameStopped = !level.play(stopCondition, pauseCondition); 
+		gameStopped = !level.play(stopCondition, pauseCondition, skipCondition); 
 		this.totalValue = level.getGameValue(); 
 		if (!gameStopped) {
 			if (this.refreshRecords()) {
@@ -203,7 +202,10 @@ public class DropBallGame {
 				this.showBestRecord(); 
 			}
 			final int scoreTime = 3000; 
-			for (long t = System.currentTimeMillis(); !stopCondition.isSatisfied() && System.currentTimeMillis() < scoreTime + t;) {
+			for (long t = System.currentTimeMillis(); !skipCondition.isSatisfied() && System.currentTimeMillis() < scoreTime + t;) {
+				if (stopCondition.isSatisfied()) {
+					System.exit(0); 
+				}
 				Delay.msDelay(20); 
 			}
 		}
