@@ -78,31 +78,152 @@ public class NXTIO extends IOModule {
 		TextImage ti = new TextImage3x5(); 
 		R_MOTOR.setPower(0); 
 		R_MOTOR.setBrakePower(0); 
-		if (!R_TOUCH_S.isPressed()) {
-			Sound.buzz(); 
-		} else {
-			Sound.beep(); 
-		}
-		Image text = ti.getImage("PLS RESET NXT AND PRESS"); 
+		
 		int centerY = (LCD.SCREEN_HEIGHT >> 1); 
-		DisplayUtil.drawImageCenter(text, centerY - text.getHeight(), LCD.ROP_XOR); 
-		DisplayUtil.drawStringCenter("ENTER", centerY + 1, LCD.ROP_XOR); 
-		while (!R_TOUCH_S.isPressed()) {
+		Image pleasePress = ti.getImage("PLEASE PRESS"); 
+		Image releaseNxt = ti.getImage("AND THEN RELEASE NXT."); 
+		Image pleaseResetNxt = ti.getImage("PLEASE RESET NXT!"); 
+		Image exit = ti.getImage("PRESS ESC TO EXIT"); 
+		Image pic = new Image(100, 32, new byte[] { (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0xf0, (byte) 0xf0,
+				(byte) 0xf0, (byte) 0xf0, (byte) 0xf0, (byte) 0xf0,
+				(byte) 0x76, (byte) 0x36, (byte) 0x70, (byte) 0xf0,
+				(byte) 0xf0, (byte) 0x30, (byte) 0x30, (byte) 0x30,
+				(byte) 0x30, (byte) 0xf0, (byte) 0xf0, (byte) 0x00,
+				(byte) 0xf0, (byte) 0xf8, (byte) 0xfc, (byte) 0xee,
+				(byte) 0xde, (byte) 0xbe, (byte) 0x7e, (byte) 0xbe,
+				(byte) 0xde, (byte) 0xee, (byte) 0xfc, (byte) 0xf8,
+				(byte) 0xf0, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0xf8, (byte) 0xf8, (byte) 0x18,
+				(byte) 0x18, (byte) 0x1e, (byte) 0x1e, (byte) 0x18,
+				(byte) 0x18, (byte) 0x18, (byte) 0x18, (byte) 0xf8,
+				(byte) 0xf8, (byte) 0xf8, (byte) 0x0c, (byte) 0x0c,
+				(byte) 0xf8, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x80,
+				(byte) 0x40, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0xff, (byte) 0xff,
+				(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xf9,
+				(byte) 0xef, (byte) 0xc9, (byte) 0xe9, (byte) 0xff,
+				(byte) 0xff, (byte) 0xc0, (byte) 0xc0, (byte) 0xc0,
+				(byte) 0xc0, (byte) 0xff, (byte) 0xff, (byte) 0x00,
+				(byte) 0x07, (byte) 0x0f, (byte) 0x1f, (byte) 0x3b,
+				(byte) 0x3d, (byte) 0x3e, (byte) 0x3f, (byte) 0x3e,
+				(byte) 0x3d, (byte) 0x3b, (byte) 0x1f, (byte) 0x0f,
+				(byte) 0x07, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x20, (byte) 0x40, (byte) 0x80,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0xff, (byte) 0xff, (byte) 0xee,
+				(byte) 0xc6, (byte) 0xfe, (byte) 0xa6, (byte) 0xa6,
+				(byte) 0xfe, (byte) 0xc6, (byte) 0xee, (byte) 0xff,
+				(byte) 0xff, (byte) 0x01, (byte) 0x01, (byte) 0x01,
+				(byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0xff,
+				(byte) 0x40, (byte) 0x20, (byte) 0x10, (byte) 0x08,
+				(byte) 0x04, (byte) 0x02, (byte) 0x01, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0xe0, (byte) 0xe0,
+				(byte) 0xe0, (byte) 0xe0, (byte) 0xe0, (byte) 0xfe,
+				(byte) 0xfe, (byte) 0xfe, (byte) 0xfe, (byte) 0xfe,
+				(byte) 0xe0, (byte) 0xef, (byte) 0xe9, (byte) 0xe9,
+				(byte) 0xe9, (byte) 0xe9, (byte) 0x0f, (byte) 0x06,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01,
+				(byte) 0xf9, (byte) 0x69, (byte) 0xb9, (byte) 0x01,
+				(byte) 0xf9, (byte) 0xa9, (byte) 0xa9, (byte) 0x01,
+				(byte) 0x91, (byte) 0xa9, (byte) 0x49, (byte) 0x01,
+				(byte) 0xf9, (byte) 0xa9, (byte) 0xa9, (byte) 0x01,
+				(byte) 0x09, (byte) 0xf9, (byte) 0x09, (byte) 0x01,
+				(byte) 0x01, (byte) 0x09, (byte) 0x05, (byte) 0x03,
+				(byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0xe0,
+				(byte) 0xe0, (byte) 0xef, (byte) 0xef, (byte) 0xef,
+				(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+				(byte) 0xff, (byte) 0xef, (byte) 0xef, (byte) 0xef,
+				(byte) 0xef, (byte) 0xe0, (byte) 0xe0, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+				(byte) 0x00, (byte) 0x00, });
+		
+		boolean init = true; 
+		boolean reseted = R_TOUCH_S.isPressed(); 
+		
+		while (true) {
 			if (Button.ESCAPE.isPressed()) {
 				System.exit(0); 
 			}
-			Thread.yield(); 
-		}
-		int pressedButtonId = 0; 
-		while (pressedButtonId != Button.ID_ENTER) {
-			pressedButtonId = Button.waitForPress(); 
-			if (pressedButtonId == Button.ID_ESCAPE) {
-				System.exit(0); 
+			boolean nowreseted = R_TOUCH_S.isPressed(); 
+			if (nowreseted) {
+				if (Button.ENTER.isPressed()) {
+					break; 
+				}
+				if (init || nowreseted != reseted) {
+					LCD.clear(); 
+					DisplayUtil.drawImageCenter(pleasePress, centerY - pleasePress.getHeight() - LCD.CELL_HEIGHT - 1, LCD.ROP_XOR); 
+					DisplayUtil.drawStringCenter("ENTER", centerY - LCD.CELL_HEIGHT, LCD.ROP_XOR); 
+					DisplayUtil.drawImageCenter(releaseNxt, centerY + 1, LCD.ROP_XOR); 
+					DisplayUtil.drawImageRight(exit, LCD.SCREEN_HEIGHT - exit.getHeight(), 0, LCD.ROP_XOR); 
+					LCD.refresh(); 
+					Sound.beep(); 
+				}
+			} else {
+				if (init || nowreseted != reseted) {
+					LCD.clear(); 
+					DisplayUtil.drawImageCenter(pic, 0, LCD.ROP_XOR); 
+					DisplayUtil.drawImageCenter(pleaseResetNxt, centerY + 1, LCD.ROP_XOR); 
+					DisplayUtil.drawImageRight(exit, LCD.SCREEN_HEIGHT - exit.getHeight(), 0, LCD.ROP_XOR); 
+					LCD.refresh(); 
+					Sound.buzz(); 
+				}
 			}
+			reseted = nowreseted; 
+			init = false; 
 		}
+
 		LCD.clear(); 
 		DisplayUtil.drawStringCenter("RESETING...", 3); 
-		text = ti.getImage("DON'T TOUCH ANYTHING NOW!"); 
+		Image text = ti.getImage("DON'T TOUCH ANYTHING NOW!"); 
 		DisplayUtil.drawImageCenter(text, centerY, LCD.ROP_XOR); 
 		
 		Delay.msDelay(1000); 
