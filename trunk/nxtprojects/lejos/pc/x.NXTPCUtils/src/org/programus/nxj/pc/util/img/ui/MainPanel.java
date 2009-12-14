@@ -78,13 +78,13 @@ public class MainPanel extends JPanel {
 		JMenu menu; 
 		JMenuBar menuBar = new JMenuBar(); 
 		
-		// file menu
-		menu = new JMenu("File"); 
-		menu.setMnemonic(KeyEvent.VK_F);
+		// image menu
+		menu = new JMenu("Image"); 
+		menu.setMnemonic(KeyEvent.VK_I);
 		menuBar.add(menu); 
 		
 		// open
-		Action openFileAction = new AbstractAction("Open Image...") {
+		Action openFileAction = new AbstractAction("Import Image...") {
 			/**SN*/
 			private static final long serialVersionUID = -1915349463841717491L;
 

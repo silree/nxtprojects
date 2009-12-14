@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -22,7 +24,11 @@ public class PicturePanel extends JPanel {
 	public static final String IMAGE_UPDATE_PROP = "imageUpdated!"; 
 	
 	private JLabel imageLabel = new JLabel(); 
+	
+	private JLabel thresholdLabel = new JLabel("Threshold: "); 
 	private JSlider thresholdSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 0xff, 0xff >> 1); 
+	private SpinnerNumberModel thresholdSpinnerModel = new SpinnerNumberModel(0xff >> 1, 0, 0xff, 1); 
+	private JSpinner thresholdSpinner = new JSpinner(this.thresholdSpinnerModel); 
 	
 	private BufferedImage originImage; 
 	private BufferedImage blackwhiteImage; 
@@ -37,19 +43,42 @@ public class PicturePanel extends JPanel {
 	protected void allocateComponents() {
 		this.setLayout(new BorderLayout()); 
 		this.add(new JScrollPane(this.imageLabel), BorderLayout.CENTER); 
-		this.add(this.thresholdSlider, BorderLayout.SOUTH); 
+		JPanel panel = new JPanel(); 
+		panel.setLayout(new BorderLayout()); 
+		panel.add(this.thresholdSlider, BorderLayout.CENTER); 
+		panel.add(this.thresholdSpinner, BorderLayout.EAST); 
+		panel.add(this.thresholdLabel, BorderLayout.WEST); 
+		this.add(panel, BorderLayout.SOUTH); 
+		
+		this.enableThresholdControls(false); 
 
 		this.imageLabel.setHorizontalAlignment(SwingConstants.CENTER); 
 		this.thresholdSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				PicturePanel.this.setThreshold(PicturePanel.this.thresholdSlider.getValue()); 
+				int v = PicturePanel.this.thresholdSlider.getValue(); 
+				PicturePanel.this.setThreshold(v); 
+				PicturePanel.this.thresholdSpinnerModel.setValue(v); 
+			}
+		}); 
+		this.thresholdSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int v = PicturePanel.this.thresholdSpinnerModel.getNumber().intValue(); 
+				PicturePanel.this.setThreshold(v); 
+				PicturePanel.this.thresholdSlider.setValue(v); 
 			}
 		}); 
 	}
 	
+	protected void enableThresholdControls(boolean enabled) {
+		this.thresholdLabel.setEnabled(enabled); 
+		this.thresholdSlider.setEnabled(enabled); 
+		this.thresholdSpinner.setEnabled(enabled); 
+	}
+	
 	public void setImage(BufferedImage image) {
-		this.thresholdSlider.setEnabled(image.getType() != BufferedImage.TYPE_BYTE_BINARY); 
+		this.enableThresholdControls(image.getType() != BufferedImage.TYPE_BYTE_BINARY); 
 		this.originImage = image; 
 		this.convertImage(); 
 		this.updateImage(); 
