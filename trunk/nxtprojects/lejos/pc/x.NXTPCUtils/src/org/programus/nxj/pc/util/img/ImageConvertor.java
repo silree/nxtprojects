@@ -12,7 +12,7 @@ public class ImageConvertor {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final JFrame frame = new JFrame("Image Convertor"); 
+		final JFrame frame = new JFrame("LeJOS NXT Image Convertor"); 
 		MainPanel panel = new MainPanel(); 
 		frame.getContentPane().add(panel); 
 		frame.setJMenuBar(panel.getMenuBar(panel)); 
