@@ -2,8 +2,15 @@ package org.programus.nxj.pc.util.img.core;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Converter {
+	
+	private final static int WHITE = 0xffffffff; 
+	private final static int BLACK = 0; 
 	
 	public static BufferedImage removeColor(BufferedImage colorImage, int threshold) {
 		if (colorImage.getType() == BufferedImage.TYPE_BYTE_BINARY) {
@@ -14,7 +21,7 @@ public class Converter {
 		int[] argbs = colorImage.getRGB(0, 0, w, h, null, 0, w); 
 		int[] bws = new int[argbs.length]; 
 		for (int i = 0; i < argbs.length; i++) {
-			bws[i] = getH(argbs[i]) > threshold ? 0xffffffff : 0; 
+			bws[i] = getH(argbs[i]) > threshold ? WHITE : BLACK; 
 		}
 		BufferedImage image = new BufferedImage(colorImage.getWidth(), colorImage.getHeight(), BufferedImage.TYPE_BYTE_BINARY); 
 		image.setRGB(0, 0, w, h, bws, 0, w); 
@@ -70,9 +77,60 @@ public class Converter {
 			sb.append(", "); 
 		}
 		
-		sb.append("});"); 
+		sb.append("})"); 
 		
 		return sb.toString(); 
+	}
+	
+	public static BufferedImage getImageFromNxtImageCreateString(String string) {
+		Pattern statePattern = Pattern.compile(".*\\s*new\\s+Image\\s*\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*new\\s+byte\\s*\\[\\s*\\]\\s*" +
+			"\\{\\s*([^}]*)\\s*\\}\\s*\\)\\s*[;]?\\s*", Pattern.MULTILINE); 
+		Matcher stateMatcher = statePattern.matcher(string); 
+		if (!stateMatcher.matches()) {
+			return null; 
+		}
+		int w = Integer.parseInt(stateMatcher.group(1)); 
+		int h = Integer.parseInt(stateMatcher.group(2)); 
+		String byteArray = stateMatcher.group(3); 
+		Pattern byteDigitalPattern = Pattern.compile("\\s*(\\(\\s*byte\\s*\\))?\\s*((0x)?[0-9A-Fa-f]+)\\s*[,]?\\s*"); 
+		Matcher byteDigitalMatcher = byteDigitalPattern.matcher(byteArray); 
+		int start = 0; 
+		int end = 0; 
+		List<Byte> byteList = new LinkedList<Byte>(); 
+		while (byteDigitalMatcher.find(end)) {
+			start = byteDigitalMatcher.start(2); 
+			end = byteDigitalMatcher.end(2); 
+			String str = byteArray.substring(start, end); 
+			int i = str.startsWith("0x") ? Integer.parseInt(str.substring(2), 16) : str.startsWith("0") ? Integer.parseInt(str, 8) : Integer.parseInt(str); 
+			byteList.add((byte) i); 
+		}
+		
+		return NxtImageData2Image(byteList, w, h); 
+	}
+	
+	public static BufferedImage NxtImageData2Image(List<Byte> byteList, int w, int h) {
+		BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_BINARY); 
+		int x = 0; 
+		int y = 0; 
+		int[] bws = new int[w * h]; 
+		for (byte data : byteList) {
+			for (int dy = 0; dy < 8; dy++) {
+				int yy = y + dy; 
+				if (yy >= h) {
+					break; 
+				}
+				int index = yy * w + x; 
+				bws[index] = (data & 0x01) > 0 ? BLACK : WHITE; 
+				data >>>= 1; 
+			}
+			x++; 
+			if (x >= w) {
+				x = 0; 
+				y += 8; 
+			}
+		}
+		image.setRGB(0, 0, w, h, bws, 0, w); 
+		return image; 
 	}
 	
 	private static int getH(int argb) {

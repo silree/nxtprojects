@@ -33,8 +33,6 @@ public class PicturePanel extends JPanel {
 	private BufferedImage originImage; 
 	private BufferedImage blackwhiteImage; 
 	
-	private int counter = 0; 
-	
 	public PicturePanel() {
 		super(); 
 		this.allocateComponents(); 
@@ -100,7 +98,7 @@ public class PicturePanel extends JPanel {
 		if (this.blackwhiteImage != null) {
 			this.imageLabel.setIcon(new ImageIcon(this.blackwhiteImage)); 
 			this.imageLabel.validate(); 
-			this.firePropertyChange(IMAGE_UPDATE_PROP, counter++, counter); 
+			this.firePropertyChange(IMAGE_UPDATE_PROP, false, true); 
 		}
 	}
 	
