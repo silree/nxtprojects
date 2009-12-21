@@ -139,7 +139,10 @@ public class Converter {
 		int g = (argb & 0xff); 
 		argb >>>= 8; 
 		int r = (argb & 0xff); 
-		int max = b > g ? b : g; 
-		return max > r ? max : r; 		
+		r <<= 16; 
+		g <<= 16; 
+		b <<= 16; 
+		int h = (r>>2) + (r>>4) + (g>>1) + (g>>4) + (b>>3); 
+		return h >> 16; 		
 	}
 }
