@@ -6,6 +6,12 @@ import lejos.util.Delay;
 import org.programus.nxj.util.music.Music;
 import org.programus.nxj.util.music.MusicNote;
 
+/**
+ * Sound utility. A collection of some sound related functions. 
+ * @author Programus
+ * @see org.programus.nxj.util.music.Music
+ * @see org.programus.nxj.util.music.MusicNote
+ */
 public class SoundUtil {
 
 	public static void playNote(MusicNote note, int beatDuration, boolean block) {
