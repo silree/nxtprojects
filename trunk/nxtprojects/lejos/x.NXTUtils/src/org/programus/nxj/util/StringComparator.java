@@ -1,5 +1,10 @@
 package org.programus.nxj.util;
 
+/**
+ * A comparator to compare strings.
+ * @author Programus
+ *
+ */
 public class StringComparator implements Comparator<String> {
 
 	@Override
