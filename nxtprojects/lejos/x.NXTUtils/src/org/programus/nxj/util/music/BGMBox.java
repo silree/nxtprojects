@@ -7,9 +7,45 @@ import java.util.Random;
 import lejos.nxt.Sound;
 import lejos.util.Delay;
 
+/**
+ * BGMBox is the abbreviation of Background Music Box. It is a background music playing engine. 
+ * <p>Normally, you use it like below:</p>
+ * <div>First, initialize a BGMBox for your system</div>
+ * <code><pre>
+ * BGMBox box = BGMBox.getInstance(); 
+ * box.setVolRate(50); 
+ * for (Music music : musics) { // musics is a collection of musics. 
+ *   box.addMusic(music); 
+ * }
+ * </pre></code>
+ * <div>Then, call playLoop() method to play and stop method to stop(). setPause() method allow you to temporary pause the music. </div>
+ * <code><pre>
+ * BGMBox box = BGMBox.getInstance(); 
+ * box.playLoop(0); 
+ * // other code...
+ * boolean pause = .....; 
+ * box.setPause(pause); 
+ * // other code...
+ * box.stop(); 
+ * </pre></code>
+ * <div>If you want to play some other sound effect, use playSound() method of BGMBox instead of Sound class. </div>
+ * <code><pre>
+ * BGMBox box = BGMBox.getInstance(); 
+ * box.playSound(4000, 10, 100); // the parameters are just the same as Sound.playTone() method. 
+ * </pre></code>
+ * @author Programus
+ * @see Music
+ * @see Sound
+ * @see Sound#playTone(int, int, int)
+ *
+ */
 public class BGMBox {
 	private static BGMBox instance = new BGMBox(); 
 	private BGMBox() {}
+	/**
+	 * Get a BGMBox instance. BGMBox using a singleton design, so there is always the same instance. 
+	 * @return a BGMBox instance.
+	 */
 	public static BGMBox getInstance() {
 		return instance; 
 	}
@@ -30,10 +66,28 @@ public class BGMBox {
 	
 	private boolean playing; 
 	
+	/**
+	 * Add a new music. 
+	 * @param music
+	 */
 	public void addMusic(Music music) {
 		this.musicList.add(music); 
 	}
 	
+	/**
+	 * Clear all musics. 
+	 */
+	public void clearMusic() {
+		this.musicList.clear(); 
+	}
+	
+	/**
+	 * Play a sound. This will temporary interrupt the music and the music will continue after the sound is played. 
+	 * @param freq
+	 * @param duration
+	 * @param vol
+	 * @see Sound#playTone(int, int, int)
+	 */
 	public void playSound(int freq, int duration, int vol) {
 		if (this.isPlaying()) {
 			synchronized (this.soundEffect) {
@@ -47,17 +101,39 @@ public class BGMBox {
 		}
 	}
 	
+	/**
+	 * Play all musics after specified delay time. Musics will be played shuffled. 
+	 * @param delay the music will begin after the delay time (ms). 
+	 */
 	public synchronized void playLoop(final int delay) {
+		this.playLoop(delay, true); 
+	}
+	
+	/**
+	 * Play all musics after specified delay time. 
+	 * @param delay the music will begin after the delay time (ms). 
+	 * @param shuffled specify the musics will be played shuffled or not. 
+	 */
+	public synchronized void playLoop(final int delay, final boolean shuffled) {
 		if (this.isPlaying()) {
 			return; 
 		} else {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
+					int index = 0; 
 					Delay.msDelay(delay); 
 					playing = true; 
 					while (isPlaying()) {
-						Music music = BGMBox.this.musicList.get(rand.nextInt(musicList.size())); 
+						if (shuffled) {
+							index = rand.nextInt(musicList.size()); 
+						} else {
+							index++; 
+							if (index >= BGMBox.this.musicList.size()) {
+								index = 0; 
+							}
+						}
+						Music music = BGMBox.this.musicList.get(index); 
 						play(music); 
 					}
 				}
@@ -67,10 +143,18 @@ public class BGMBox {
 		}
 	}
 	
+	/**
+	 * Stop play. 
+	 */
 	public synchronized void stop() {
 		this.playing = false; 
 	}
 	
+	/**
+	 * Play a particular music by specify its index. 
+	 * @param index
+	 * @return true if the music begin playing, false if there is another music is playing. 
+	 */
 	public synchronized boolean play(int index) {
 		if (this.isPlaying()) {
 			return false; 
@@ -181,12 +265,17 @@ public class BGMBox {
 	}
 
 	/**
+	 * Indicate whether the background musics is playing. 
 	 * @return the playing
 	 */
 	public boolean isPlaying() {
 		return playing;
 	}
 	
+	/**
+	 * Return the volume for background music. 
+	 * @return the volume for background music. 
+	 */
 	public int getVol() {
 		if (this.oldSysVol != Sound.getVolume()) {
 			this.vol = Sound.getVolume() * this.volRate / 100; 
@@ -196,6 +285,7 @@ public class BGMBox {
 	}
 	
 	/**
+	 * Return the volume rate for the background music. The background music will be played with volume = volRate * system volume / 100. 
 	 * @return the volRate
 	 */
 	public int getVolRate() {
@@ -203,18 +293,22 @@ public class BGMBox {
 	}
 	
 	/**
+	 * Set the volume rate. It is a percentage value. 
+	 * The background music will be played with volume = volRate * system volume / 100. 
 	 * @param volRate the volRate to set
 	 */
-	public void setVolRate(int vol) {
-		this.volRate = vol;
+	public void setVolRate(int volRate) {
+		this.volRate = volRate;
 	}
 	/**
-	 * @param pause the pause to set
+	 * Pause or continue the background music. 
+	 * @param pause set true if you want to pause the background music, otherwise set false to continue. 
 	 */
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
 	/**
+	 * Indicate whether the background music is paused. 
 	 * @return the pause
 	 */
 	public boolean isPause() {

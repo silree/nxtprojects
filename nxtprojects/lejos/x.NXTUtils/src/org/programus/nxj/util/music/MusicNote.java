@@ -3,6 +3,42 @@ package org.programus.nxj.util.music;
 import lejos.nxt.Sound;
 import lejos.util.Delay;
 
+/**
+ * <p>
+ * MusicNote class represents a note in music. 
+ * A note has its pitch (music scale), name, and duration. 
+ * </p>
+ * <p>
+ * <div>In one pitch there are 7 note names - C, D, E, F, G, A, B or 1, 2, 3, 4, 5, 6, 7 for numbered musical notation. 
+ * Besides these 7 names, there is another special name - 0 which represents rest. </div>
+ * <div>MusicNote class support the pitches from 0 to 9. </div>
+ * </p>
+ * <p>
+ * There is another aspect of note name is the # and b mark. MusicNote support only # mark. Db is the same as C#. 
+ * </p>
+ * <p>
+ * The duration in MusicNote class is not an absolute number of second or microsecond. Instead, it is a rate of the beatDuration. 
+ * A beatDuration is the time length of whole note. The beatDuration information will be stored in SheetParam object. 
+ * </p>
+ * <p>
+ * <div>You can create a MusicNote object by specify all the parameters above as well as by a note description string. </div>
+ * <div>A note description string have a format below:</div>
+ * <div>nX[#]/d1/d2...</div>
+ * <ul>
+ * <li>n - pitch</li>
+ * <li>X - note name (0, C, D, ... , A, B or 0, 1, 2, 3, ... , 6, 7)</li>
+ * <li># - add this if it is a note with # mark</li>
+ * <li>/dn - duration. dn is the denominator. /2 means half note, /4 means quarter note, etc. 
+ * You can use the format like /4/8 to represent a quarter dotted note. </li>
+ * </ul>
+ * <div>For example, </div>
+ * <div>4C/4 or 41/4 means a pitch 4, C (do), quarter note. </div>
+ * <div>4C#/2/4 means a pitch 4, C#, dotted half note. </div>
+ * </p>
+ * @author Programus
+ * @see SheetParam
+ *
+ */
 public class MusicNote {
 	public static int BOTTOM_PITCH = 0; 
 	public static int[][][] NOTE_FREQ = {
@@ -109,20 +145,40 @@ public class MusicNote {
 	private boolean alt;
 	private int[] duration; 
 	
+	/**
+	 * Construction of MusicNote. 
+	 * @param pitch
+	 * @param note
+	 * @param alt
+	 */
 	public MusicNote(int pitch, int note, boolean alt) {
 		this.setPitch(pitch); 
 		this.setNote(note); 
 		this.setAlt(alt); 
 	}
 	
+	/**
+	 * Construction of MusicNote. 
+	 * @param note note description string
+	 */
 	public MusicNote(String note) {
 		this(note.toCharArray()); 
 	}
 	
+	/**
+	 * Construction of MusicNote. 
+	 * @param note note description string characters
+	 */
 	public MusicNote(char[] note) {
 		this(note, 0, note.length); 
 	}
 	
+	/**
+	 * Construction of MusicNote. 
+	 * @param note
+	 * @param start
+	 * @param end
+	 */
 	public MusicNote(char[] note, int start, int end) {
 		int i = start; 
 		end = Math.min(end, note.length); 
@@ -180,8 +236,9 @@ public class MusicNote {
 	}
 	
 	/**
-	 * Return frequency of this note. 
-	 * @return frequency of this note
+	 * Return frequency of this note after offset pitch
+	 * @param pitchOffset
+	 * @return frequency of this note after offset pitch
 	 */
 	public int getFreq(int pitchOffset) {
 		int p = this.pitch + pitchOffset; 
@@ -219,6 +276,7 @@ public class MusicNote {
 	}
 	
 	/**
+	 * Return the pitch of this note
 	 * @return the pitch
 	 */
 	public int getPitch() {
@@ -236,6 +294,7 @@ public class MusicNote {
 		}
 	}
 	/**
+	 * Return the note as integer. The returned integer value is the number of this note in the numbered musical notation
 	 * @return the note
 	 */
 	public int getNote() {
@@ -253,7 +312,7 @@ public class MusicNote {
 		}
 	}
 	/**
-	 * @return the alt
+	 * @return true if this is a note with # mark
 	 */
 	public boolean isAlt() {
 		return alt;
@@ -279,6 +338,15 @@ public class MusicNote {
 		return duration;
 	}
 	
+	/**
+	 * Play this note using the specified instrument. 
+	 * This method will block current thread. 
+	 * @param inst instrument
+	 * @param beatDuration beat duration
+	 * @see Sound#PIANO
+	 * @see Sound#XYLOPHONE
+	 * @see Sound#FLUTE
+	 */
 	public void play(int[] inst, int beatDuration) {
 		int dur = this.getDuration(beatDuration); 
 		if (this.note < 0) {
@@ -293,6 +361,16 @@ public class MusicNote {
 		}
 	}
 	
+	/**
+	 * Play this note after pitch offset using the specified instrument. 
+	 * This method will block current thread. 
+	 * @param inst instrument
+	 * @param beatDuration beat duration
+	 * @param pitchOffset
+	 * @see Sound#PIANO
+	 * @see Sound#XYLOPHONE
+	 * @see Sound#FLUTE
+	 */
 	public void play(int[] inst, int beatDuration, int pitchOffset) {
 		int dur = this.getDuration(beatDuration); 
 		if (this.note < 0) {
@@ -307,6 +385,13 @@ public class MusicNote {
 		}
 	}
 	
+	/**
+	 * Play this note after pitch offset using the specified volume. 
+	 * @param beatDuration beat duration
+	 * @param pitchOffset
+	 * @param vol
+	 * @param block specify whether you want this method to block
+	 */
 	public void play(int beatDuration, int pitchOffset, int vol, boolean block) {
 		int dur = this.getDuration(beatDuration); 
 		if (this.note >= 0) {
@@ -317,25 +402,52 @@ public class MusicNote {
 		}
 	}
 
+	/**
+	 * Play this note. Please reference other play method help. 
+	 * @param beatDuration
+	 * @param vol
+	 * @param block
+	 */
 	public void play(int beatDuration, int vol, boolean block) {
 		this.play(beatDuration, 0, vol, block); 
 	}
+	
+	/**
+	 * Play this note. Please reference other play method help. 
+	 * @param beatDuration
+	 * @param vol
+	 */
 	public void play(int beatDuration, int vol) {
 		this.play(beatDuration, vol, true); 
 	}
 	
+	/**
+	 * Play this note. Please reference other play method help. 
+	 * @param beatDuration
+	 * @param block
+	 */
 	public void play(int beatDuration, boolean block) {
 		this.play(beatDuration, Sound.getVolume(), block); 
 	}
 	
+	/**
+	 * Play this note. Please reference other play method help. 
+	 * @param beatDuration
+	 */
 	public void play(int beatDuration) {
 		this.play(beatDuration, true); 
 	}
 	
+	/**
+	 * Play this note. Please reference other play method help. 
+	 */
 	public void play() {
 		this.play(SheetParam.NORMAL_BEAT_DUR); 
 	}
 
+	/**
+	 * Return the note description string of this note. 
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(); 
@@ -349,9 +461,5 @@ public class MusicNote {
 		}
 		
 		return sb.toString(); 
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(new MusicNote("40#/4/8/64/1")); 
 	}
 }
