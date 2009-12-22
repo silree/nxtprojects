@@ -7,23 +7,70 @@ import java.util.StringTokenizer;
 import lejos.nxt.Sound;
 import lejos.util.Delay;
 
-
+/**
+ * <p>
+ * Music class represents a music. It contains a note sequence and a SheetParam object. 
+ * The note sequence let the processor know what to play and SheetParam tell the processor how to play. 
+ * </p>
+ * <p>
+ * You can create a new music object by using an array of MusicNote as well as a music description String. 
+ * <div>Just arrange some note description strings together and separated by single spaces, there comes a music description string.</div>
+ * <div>But LeJOS had a bug about String class that a constant string too long may be cut some time, 
+ * so there is another constructor support String[] so that you can divide a string into some. </div>
+ * </p>
+ * <p>
+ * <div>An music description string example: </div>
+ * <div><code>4E/8 4A/4 4B/8 5C/1 4A/4 4B/8 5C/4 4F/8 4F/1</code></div>
+ * (A part of the Transformers '84 cartoon theme music. )
+ * </p>
+ * <p>
+ * When you play a music by invoke any of the play method, your thread will be blocked. 
+ * </p>
+ * @author Programus
+ * @see MusicNote
+ * @see SheetParam
+ *
+ */
 public class Music {
 	public final static int DEFAULT_TICK = 100; 
 	
 	private SheetParam param; 
 	private MusicNote[] notes;
 	
+	/**
+	 * Music Constructor. 
+	 * @param param
+	 * @param notes
+	 */
 	public Music(SheetParam param, MusicNote[] notes) {
 		this.param = param; 
 		this.notes = notes; 
 	}
 	
+	/**
+	 * Music Constructor. 
+	 * @param param
+	 * @param sheet music description string
+	 */
+	public Music(SheetParam param, String sheet) {
+		this.param = param; 
+		this.readSheet(new String[]{sheet}); 
+	}
+	
+	/**
+	 * Music Constructor. 
+	 * @param param
+	 * @param sheets divide your music description string into an array to prevent LeJOS String bug. 
+	 */
 	public Music(SheetParam param, String[] sheets) {
 		this.param = param; 
 		this.readSheet(sheets); 
 	}
 	
+	/**
+	 * Update note sequence in this music by reading a new music description string. 
+	 * @param sheets divide your music description string into an array to prevent LeJOS String bug. 
+	 */
 	public void readSheet(String[] sheets) {
 		List<MusicNote> noteList = new ArrayList<MusicNote>(); 
 //		this.notes = new MusicNote[sheet.length() / 5]; 
@@ -42,6 +89,9 @@ public class Music {
 		}
 	}
 	
+	/**
+	 * Return the music description string of this music. 
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(); 
@@ -54,6 +104,14 @@ public class Music {
 		return sb.toString(); 
 	}
 	
+	/**
+	 * Play the music by using the specified instrument with the specified volume. 
+	 * @param inst instrument
+	 * @param vol volume
+	 * @see Sound#PIANO
+	 * @see Sound#XYLOPHONE
+	 * @see Sound#FLUTE
+	 */
 	public void play(int[] inst, int vol) {
 		for (MusicNote note : this.notes) {
 			if (inst != null && inst.length > 0) {
@@ -64,10 +122,19 @@ public class Music {
 		}
 	}
 	
+	/**
+	 * Play the music by using the specified instrument. 
+	 * Volume will use system volume
+	 * @param inst instrument
+	 */
 	public void play(int[] inst) {
 		this.play(inst, Sound.getVolume()); 
 	}
 	
+	/**
+	 * Play the music with the specified volume. 
+	 * @param vol volume
+	 */
 	public void play(int vol) {
 		final int EXT = 10; 
 		int[] beatStyle = param.getBeatStyle(); 
@@ -127,6 +194,9 @@ public class Music {
 		}
 	}
 	
+	/**
+	 * Play the music. 
+	 */
 	public void play() {
 		this.play(Sound.getVolume()); 
 	}

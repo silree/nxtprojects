@@ -2,8 +2,25 @@ package org.programus.nxj.util.txtimg;
 
 import javax.microedition.lcdui.Image;
 
+/**
+ * An abstract base class for all Text Image classes. Please extend this class to implement your own TextImage classes. 
+ * <p>Normally, we use this like below. 
+ * <code><pre>
+ * TextImage ti = new TextImage3x5(); 
+ * Image message = ti.getImage("MESSAGE"); 
+ * DisplayUtil.drawImageCenter(message, (LCD.SCREEN_HEIGHT >> 1), LCD.ROP_XOR); 
+ * </pre></code>
+ * </p>
+ * @author Programus
+ *
+ */
 public abstract class TextImage {
 	
+	/**
+	 * Return an image for the specified text string. 
+	 * @param text
+	 * @return an image for the specified text string. 
+	 */
 	public Image getImage(String text) {
 		int size = text.length(); 
         int step = this.getCharWidth() + 1; 
@@ -19,10 +36,21 @@ public abstract class TextImage {
         return new Image(step * size - 1, this.getCharHeight(), data); 
 	}
 	
+	/**
+	 * Return the image for the specified character. 
+	 * @param c the specified character. 
+	 * @return the image for the specified character. 
+	 */
 	public Image getImage(char c) {
 		return new Image(this.getCharWidth(), this.getCharHeight(), this.getImageData(c)); 
 	}
 	
+	/**
+	 * Return the image for the specified number. 
+	 * This is normally faster than getImage(String.valueOf(n)) and using less memory. 
+	 * @param n
+	 * @return the image for the specified number. 
+	 */
 	public Image getImage(int n) {
 		Image ret = null; 
 		if (n >= 0 && n < 10) {
@@ -49,10 +77,29 @@ public abstract class TextImage {
 		return ret; 
 	}
 	
+	/**
+	 * Return the image data for the specified number. 
+	 * This method should use only the last digital of the specified number if it is greater than 10. 
+	 * @param i
+	 * @return the image data for the specified number. 
+	 */
 	protected abstract byte[] getImageData(int i); 	
+	/**
+	 * Return the image data for the specified character. 
+	 * @param c
+	 * @return the image data for the specified character. 
+	 */
 	protected abstract byte[] getImageData(char c); 
 	
+	/**
+	 * Return the width of the character. 
+	 * @return the height of the character. 
+	 */
 	protected abstract int getCharWidth(); 
+	/**
+	 * Return the height of the character. 
+	 * @return the height of the character. 
+	 */
 	protected abstract int getCharHeight(); 
 
     final static int [] sizeTable = { 9, 99, 999, 9999, 99999, 999999, 9999999,

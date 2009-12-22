@@ -1,6 +1,18 @@
 package org.programus.nxj.util.txtimg;
 
 
+/**
+ * A 3x5 font implementation of TextImage. 
+ * <p>Normally, we use this like below. 
+ * <code><pre>
+ * TextImage ti = new TextImage3x5(); 
+ * Image message = ti.getImage("MESSAGE"); 
+ * DisplayUtil.drawImageCenter(message, (LCD.SCREEN_HEIGHT >> 1), LCD.ROP_XOR); 
+ * </pre></code>
+ * </p>
+ * @author Programus
+ * @see TextImage
+ */
 public class TextImage3x5 extends TextImage {
 	
 	private final static int ASCII_OFFSET = ' '; 
