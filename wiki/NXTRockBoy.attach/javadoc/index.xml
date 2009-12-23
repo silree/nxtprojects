@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
-<Module>
-  <ModulePrefs title="Gadget Form Example" />
-  <Content type="html">
-  	<![CDATA[
-  		<iframe src="http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/javadoc/index.html" />
-  	]]>
-  </Content>
-</Module>
