@@ -20,3 +20,5 @@ NXTRockBoy所使用的传感器如下：
 
 NXTRockBoy游戏列表：
   * [BBall]
+
+http://nxtprojects.googlecode.com/svn/wiki/NXTRockBoy.attach/javadoc/index.xml
