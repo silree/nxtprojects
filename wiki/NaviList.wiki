@@ -1,11 +1,11 @@
-* LeJOS
-  * NXT Works
-    * [NXTMusic]
-    * [NXTRockBoy]
-      * [BBall]
-      * [Drop Ball]
-  * NXT Utilities
-    * [NXTUtils]
-    * [NXTPCUtils]
-      * [LeJOS NXT Image Converter]
+  * LeJOS
+    * NXT Works
+      * [NXTMusic]
+      * [NXTRockBoy]
+        * [BBall]
+        * [Drop Ball]
+    * NXT Utilities
+      * [NXTUtils]
+      * [NXTPCUtils]
+        * [LeJOS NXT Image Converter]
       
