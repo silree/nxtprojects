@@ -45,7 +45,7 @@ public class McAngle extends McObject {
 	/**
 	 * Return the internal stored radian value. 
 	 * It is the value in LCD coordinate or nature coordinate according to the staticInLcd property. 
-	 * @return
+	 * @return the internal stored radian value. 
 	 */
 	public double getRawRadian() {
 		return this.radian;
@@ -53,7 +53,7 @@ public class McAngle extends McObject {
 	
 	/**
 	 * Return the angle value of the internal stored radian. 
-	 * @return
+	 * @return the angle value of the internal stored radian. 
 	 */
 	public double getRawAngle() {
 		return util.radian2angle(this.radian); 
@@ -149,7 +149,7 @@ public class McAngle extends McObject {
 	 * The angle of this angle add another angle and return the result as a new McAngle object. 
 	 * This angle won't be changed. 
 	 * @param angle
-	 * @return
+	 * @return the result
 	 * @see #add(McAngle)
 	 */
 	public McAngle addNew(McAngle angle) {
@@ -159,7 +159,7 @@ public class McAngle extends McObject {
 	/**
 	 * subtraction an angle. 
 	 * @param angle
-	 * @return
+	 * @return the object itself
 	 * @see #add(McAngle)
 	 */
 	public McAngle sub(McAngle angle) {
@@ -170,7 +170,7 @@ public class McAngle extends McObject {
 	/**
 	 * subtranction an angle and return a new object
 	 * @param angle
-	 * @return
+	 * @return result as a new object
 	 * @see #addNew(McAngle)
 	 */
 	public McAngle subNew(McAngle angle) {
@@ -209,7 +209,7 @@ public class McAngle extends McObject {
 	/**
 	 * Turn clockwise
 	 * @param radian
-	 * @return
+	 * @return itself
 	 */
 	public McAngle turnCw(double radian) {
 		if (this.isStaticInLcd()) {
@@ -231,7 +231,7 @@ public class McAngle extends McObject {
 	/**
 	 * Turn counter-clockwise
 	 * @param radian
-	 * @return
+	 * @return itself
 	 */
 	public McAngle turnCc(double radian) {
 		return this.turnCw(-radian); 
@@ -264,7 +264,7 @@ public class McAngle extends McObject {
 	 * <li>368 degree -> 8 degree</li>
 	 * <li>-735 degree -> -15 degree</li>
 	 * </ul>
-	 * @return
+	 * @return the equivalent angle between 0 - +-360
 	 */
 	public McAngle ltRound() {
 		this.radian %= R; 

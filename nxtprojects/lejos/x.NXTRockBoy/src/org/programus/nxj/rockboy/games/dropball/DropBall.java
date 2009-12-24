@@ -14,9 +14,15 @@ import org.programus.nxj.util.music.BGMBox;
 import org.programus.nxj.util.music.Music;
 import org.programus.nxj.util.music.SheetParam;
 
+/**
+ * Drop Ball game main class
+ * @author Programus
+ *
+ */
 public class DropBall {
 
 	/**
+	 * Program entrance. 
 	 * @param args
 	 */
 	public static void main(String[] args) {
