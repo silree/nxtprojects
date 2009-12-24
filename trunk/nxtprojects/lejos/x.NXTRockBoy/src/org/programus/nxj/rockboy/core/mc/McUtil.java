@@ -32,7 +32,7 @@ public class McUtil {
 	
 	/**
 	 * Return the rotation angle of the NXT brick. 
-	 * @return
+	 * @return the rotation angle of the NXT brick. 
 	 */
 	public int getAngle() {
 		return this.angle; 
@@ -40,7 +40,7 @@ public class McUtil {
 	
 	/**
 	 * Return the rotation radian of the NXT brick. 
-	 * @return
+	 * @return the rotation radian of the NXT brick. 
 	 */
 	public double getRadian() {
 		return this.angle2radian(this.angle); 

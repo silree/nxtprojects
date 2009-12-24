@@ -32,7 +32,6 @@ public class McPoint extends McObject {
 		this.copy(point); 
 	}
 	
-	
 	public void copy(McPoint point) {
 		this.vectorValue = new McVector(point.vectorValue);  
 	}
@@ -85,7 +84,7 @@ public class McPoint extends McObject {
 	/**
 	 * Return the vector start from this point to the specified point. 
 	 * @param p
-	 * @return
+	 * @return the vector start from this point to the specified point. 
 	 */
 	public McVector getVectorTo(McPoint p) {
 		return p.vectorValue.subNew(this.vectorValue); 
@@ -94,7 +93,7 @@ public class McPoint extends McObject {
 	/**
 	 * Return the distance to the specified point. 
 	 * @param p
-	 * @return
+	 * @return the distance to the specified point. 
 	 */
 	public double getDistanceTo(McPoint p) {
 		return this.getVectorTo(p).getValue(); 
@@ -109,7 +108,7 @@ public class McPoint extends McObject {
 	 * Return the distance from this point to the line which passes through the specified two points. 
 	 * @param p1 one point in the line
 	 * @param p2 another point in the line
-	 * @return
+	 * @return the distance from this point to the line which passes through the specified two points. 
 	 */
 	public double getDistanceToLine(McPoint p1, McPoint p2) {
 		McVector v1 = p2.getVectorTo(p1); 
@@ -124,7 +123,7 @@ public class McPoint extends McObject {
 	/**
 	 * Move this point along the specified vector. 
 	 * @param vector
-	 * @return
+	 * @return itself
 	 */
 	public McPoint move(McVector vector) {
 		this.vectorValue.add(vector); 
