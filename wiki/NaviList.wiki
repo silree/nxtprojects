@@ -1,12 +1,12 @@
   * LeJOS
     * NXT Works
-      * [NXTMusic]
+      * [NXTMusic NXTMusic]
       * [NXTRockBoy NXTRockBoy - A game machine]
-        * [BBall]
-        * [Drop Ball]
+        * [BBall BBall Game]
+        * [DropBall Drop Ball Game]
     * NXT Utilities
       * [NXTUtils NXT Utilities for LeJOS]
       * [NXTPCUtils NXT PC Utilities for LeJOS]
-        * [LeJOS NXT Image Converter]
+        * [NXTImageConverter LeJOS NXT Image Converter]
         
 ---------------------------------------
