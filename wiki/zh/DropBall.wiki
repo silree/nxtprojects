@@ -3,7 +3,7 @@
 Drop Ball是[NXTRockBoy]上运行的一款游戏。它也是此平台上的第二款游戏。
 
 ----
- * [DropBall#简介 简介]
+ * <a href="#简介">简介</a>
  * [DropBall#特色 特色]
   * [DropBall#游戏模式 游戏模式]
   * [DropBall#背景音乐 背景音乐]
