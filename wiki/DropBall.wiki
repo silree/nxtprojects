@@ -3,12 +3,12 @@
 Drop Ball is a game in [NXTRockBoy] platform. And it is the second game. 
 
 ----
-* [#Introduction Introduction]
-* [#Features Features]
+ * [#Introduction Introduction]
+ * [#Features Features]
   * [#Game_Modes Game Modes]
   * [#Background_Music Background Music]
-* [#Play_Manual Play Manual]
-* [#Download Download]
+ * [#Play_Manual Play Manual]
+ * [#Download Download]
 ----
 
 = Introduction =
