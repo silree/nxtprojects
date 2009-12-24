@@ -12,7 +12,7 @@ You can find javadoc API document of NXTUtils here: http://dl.dropbox.com/u/3644
 
 There are some general utilities in NXTUtils package. These utilities are organized into classes according to their function. 
 
-== DisplayUtil ==
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/DisplayUtil.html DisplayUtil] ==
 
 This class contains some screen display related functions. 
  * drawXxxxCenter() methods allow you to draw images, strings on the screen horizontal center, and you determine the vertical position. 
