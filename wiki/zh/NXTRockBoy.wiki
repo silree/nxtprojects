@@ -18,5 +18,8 @@ NXTRockBoy所使用的传感器如下：
 
 你可以从Download页面找到搭建NXTRockBoy的指导和基本核心程序的下载。
 
+NXTRockBoy的Javadoc文档在此(英文)： http://dl.dropbox.com/u/3644101/NXT_Docs/NXTRockBoy/javadoc/index.html
+
 NXTRockBoy游戏列表：
   * [BBall]
+  * [Drop Ball]

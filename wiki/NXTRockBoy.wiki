@@ -20,5 +20,8 @@ The sensors are attached are blow:
 
 You can download the building guide of NXTRockBoy from the download page. 
 
+The Javadoc for NXTRockBoy is here: http://dl.dropbox.com/u/3644101/NXT_Docs/NXTRockBoy/javadoc/index.html
+
 Games for NXTRockBoy are below: 
   * [BBall]
+  * [Drop Ball]
