@@ -53,7 +53,7 @@ I made an big effort to make the javadoc clear, so please refer to javadoc to kn
 = Small Font Text Support =
 NXT LCD use 5x8 characters for display. It is too huge for me. So I made 3x5 character set. 
 
-http://nxtprojects.googlecode.com/svn/wiki/NXTUtils.attach/3x5chars.gif
+original size: http://nxtprojects.googlecode.com/svn/wiki/NXTUtils.attach/3x5chars.gif 2x size: <img src="http://nxtprojects.googlecode.com/svn/wiki/NXTUtils.attach/3x5chars.gif" width="96" height="96" />
 
 (All standard displayable ascii characters supported. )
 
