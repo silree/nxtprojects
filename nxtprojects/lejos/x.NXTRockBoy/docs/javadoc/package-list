@@ -5,3 +5,6 @@ org.programus.nxj.rockboy.core.thing
 org.programus.nxj.rockboy.games.bball
 org.programus.nxj.rockboy.games.bball.ctrls
 org.programus.nxj.rockboy.games.bball.objects
+org.programus.nxj.rockboy.games.dropball
+org.programus.nxj.rockboy.games.dropball.ctrls
+org.programus.nxj.rockboy.games.dropball.objects
