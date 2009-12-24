@@ -28,7 +28,8 @@ There are two modes of this game:
  * - Mode: The environment light will affect the length of bars. The lighter the longer bars are. 
 
 == Background Music ==
-This game have a full background music suport. There are 3 musics now: The Final Countdown, Smooth Crimial, and The Transformers Cartoon Theme. You can add your favorite musics by modifying the source code. To know how to write a music in the source, please refer to [BGMBox] in [NXTUtils]. 
+This game have a full background music suport. The game will repeat musics in a shffled order. You can use the arrow keys on NXT brick to adjust the volume. 
+There are 3 musics now: The Final Countdown, Smooth Crimial, and The Transformers Cartoon Theme. You can add your favorite musics by modifying the source code. To know how to write a music in the source, please refer to [BGMBox] in [NXTUtils]. 
 
 = Play Manual =
 

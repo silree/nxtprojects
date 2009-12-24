@@ -30,7 +30,8 @@ Drop Ball游戏作为NXTRockBoy的第二款游戏，比第一款[BBall]增加了
  * - Mode: 游戏及所在地的环境光亮度将会影响到平台宽度。越亮平台越宽。
 
 == 背景音乐 ==
-游戏提供了背景音乐支持。目前内嵌三段音乐：The Final Countdown、Smooth Crimial和变形金刚动画片主题曲。你也可以通过修改源代码来加入你喜爱的音乐。代码中的音乐写法，请参看[NXTUtils]中的[BGMBox]。
+游戏提供了背景音乐支持。游戏进行中，会循环随机播放。通过NXT上的左右箭头键，可以调节音量。
+目前内嵌三段音乐：The Final Countdown、Smooth Crimial和变形金刚动画片主题曲。你也可以通过修改源代码来加入你喜爱的音乐。代码中的音乐写法，请参看[NXTUtils]中的[BGMBox]。
 
 
 = 游戏方法 =
