@@ -1,0 +1,48 @@
+#labels Phase-Deploy
+#sidebar NaviList
+Drop Ball是[NXTRockBoy]上运行的一款游戏。它也是此平台上的第二款游戏。
+
+----
+ * [#简介 简介]
+ * [#特色 特色]
+  * [#游戏模式 游戏模式]
+  * [#背景音乐 背景音乐]
+ * [#游戏方法 游戏方法]
+ * [#下载 下载]
+----
+
+= 简介 =
+
+Drop Ball游戏的主角，还是我们那个小球。他一如既往地受重力作用，不断下落。幸运的是，不断有平台升起托住他；不幸的是，小球只能在屏幕可见范围内活动，出屏即死！你的任务就是保证他不会掉出屏幕。每下一层可以得一分，中间跳过的层也算分。
+
+加油吧！看谁能得到一百分！
+
+这里是一个视频演示 (视频音效未加任何后期处理，所有声音都是原始声音): 
+
+[http://v.youku.com/v_show/id_XMTM5OTEwNDA0.html http://i141.photobucket.com/albums/r60/programus/th_DropBall.jpg]
+
+= 特色 =
+Drop Ball游戏作为NXTRockBoy的第二款游戏，比第一款[BBall]增加了很多新的特性。
+
+== 游戏模式 ==
+游戏有两种模式：
+ * | Mode: 游戏机所在地的环境光亮度将会影响到平台之间的距离。越亮平台间距越小。
+ * - Mode: 游戏及所在地的环境光亮度将会影响到平台宽度。越亮平台越宽。
+
+== 背景音乐 ==
+游戏提供了背景音乐支持。目前内嵌三段音乐：The Final Countdown、Smooth Crimial和变形金刚动画片主题曲。你也可以通过修改源代码来加入你喜爱的音乐。代码中的音乐写法，请参看[NXTUtils]中的[BGMBox]。
+
+
+= 游戏方法 =
+
+当你启动游戏后，[NXTRockBoy]会初始化NXT的旋转角度。遵从液晶屏上的提示进行即可。
+
+之后，游戏会提示你选择一种游戏模式。你可以根据情况选择|模式或者-模式。
+
+接下来，就请享受游戏吧！
+
+= 下载 =
+[http://nxtprojects.googlecode.com/files/NXTRockBoy.DropBall_v1.0.zip NXTRockBoy.DropBall_v1.0.zip]
+
+= 最后 =
+祝你好运！
