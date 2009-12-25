@@ -85,5 +85,5 @@ You can also find details in [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/
 
 
 = Download =
-Binary lib - [http://nxtprojects.googlecode.com/files/NXTUtils-bin_v1.0.jar NXTUtils-bin_v1.0.jar]
-Lib with source - [http://nxtprojects.googlecode.com/files/NXTUtils-src_v1.0.jar NXTUtils-src_v1.0.jar]
+ * Binary lib - [http://nxtprojects.googlecode.com/files/NXTUtils-bin_v1.0.jar NXTUtils-bin_v1.0.jar]
+ * Lib with source - [http://nxtprojects.googlecode.com/files/NXTUtils-src_v1.0.jar NXTUtils-src_v1.0.jar]
