@@ -1,4 +1,4 @@
-#labels Phase-Deploy
+#labels Featured,Phase-Deploy
 #sidebar NaviList
 Drop Ball is a game in [NXTRockBoy] platform. And it is the second game. 
 

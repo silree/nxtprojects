@@ -1,4 +1,4 @@
-#labels Phase-Implementation
+#labels Featured,Phase-Implementation
 #sidebar NaviList
 LeJOS NXT Image Converter is an image converting tool which can convert general format images into LeJOS NXJ source code or LeJOS NXT format images. 
 ----
@@ -33,7 +33,7 @@ In the Image menu, there are some menu items:
 ||Export LeJOS NXT Image File...||Export the converted image and save it as an LeJOS NXT Image file. File extension would be lni. ||
 ||Exit||OK, let's shutdown the tool||
 
-== Using Example ==
+== Using Scenarios ==
  * Import an image stored in your PC and copy the code into your LeJOS NXJ program. 
  * Click Edit button to make the code panel editable, and then paste the image constructing code into it and click Execute. You now know what the image is. 
  * Save image as lni file and upload it into NXT brick. Use [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/ImageUtil.html#readImage(java.io.File) ImageUtil.readImage()] method to read it and display it on the NXT LCD. 

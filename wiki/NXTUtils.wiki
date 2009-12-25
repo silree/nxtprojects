@@ -1,4 +1,4 @@
-#labels Phase-Implementation
+#labels Featured,Phase-Implementation
 #sidebar NaviList
 NXTUtils Contains a set of advanced toolkit to make your development with LeJOS easier. 
 ----
