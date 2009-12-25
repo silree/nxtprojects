@@ -1,0 +1,134 @@
+#labels Phase-Implementation
+#sidebar NaviList
+NXTUtils包含了一套让你使用LeJOS开发机器人更加方便、快捷、容易的工具函数。
+----
+= 简介 =
+NXTUtils提供了高级的图像、显示、声音等支持。
+在名如XxxxUtil类中的方法，大多为静态方法，你可以直接使用类名调用。
+
+你可以在如下网址找到NXTUtils的API文档：
+http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/index.html
+
+= 一般工具 =
+
+在NXTUtils包中包含了一些一般性的工具。这些工具被根据功能分别归入了不同的类中。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/DisplayUtil.html DisplayUtil] ==
+
+这个类里面包含了和屏幕显示相关的函数。
+ * drawXxxxCenter() 方法让你可以在屏幕中水平居中绘制图片、字符串，竖直方向的位置还是要由你来决定并作为参数传入。
+ * drawXxxxRight() 方法让你可以在屏幕中靠右绘制图片、字符串。同时如果你不希望被绘制的物体紧靠屏幕右壁，你还可以指定右边留白的大小。
+ * xxxxCross() 方法让你可以穿越屏幕绘制矩形或者图片。穿越屏幕的意思是，如果图片过大，超出了屏幕边界，它会被从屏幕的另一侧边界继续绘出。比如设定为水平穿越时，图片超出屏幕的右边界，便会从左边画出超出的部分。详细使用方法可以参看[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/DisplayUtil.html#drawRectCross(int,%20int,%20int,%20int,%20int) javadoc]。
+ 
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/ImageUtil.html ImageUtil] ==
+
+这个类中包含了与图像处理相关的方法。目前只有一个方法。
+
+ * readImage() 方法可以从一个文件中读取图片。图片文件可以通过[NXTImageConverter LeJOS NXT图片转换器]生成。详细的图片格式可以参看[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/ImageUtil.html#readImage(java.io.File) javadoc]。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/SoundUtil.html SoundUtil] ==
+
+这个类包含了声音播放相关的加强方法。不过此类中的方法基本都可以使用音乐支持部分的方法替代，所以请参看后面的音乐支持章节。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/TimeUtil.html TimeUtil] ==
+
+此类包含了与时间处理相关的方法。目前只包含一个方法。
+
+ * getHMSms() 方法将long型的时间数据转换成一个4个元素的数组，包含了小时、分钟、秒、毫秒的数据。这里是[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/TimeUtil.html#getHMSms(long) javadoc]。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/Condition.html Condition] ==
+
+这个接口用来表示一个条件。非常简单。至于应用场合，请参看NXTRockBoy源代码。
+
+= 系统补丁 =
+
+由于LeJOS只是部分地实现了Java SE的API。一部分在Java SE中很有用的特性便没有被支持。所以，我就自己写了一些。
+同时，在LeJOS中也有一些小bug，为了避开bug，也自行写了一些函数。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/Comparator.html Comparator] ==
+
+这个接口跟标准Java中的[http://java.sun.com/javase/6/docs/api/java/util/Comparator.html java.util.Comparator]完全一样。
+
+=== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/StringComparator.html StringComparator] ===
+
+这是一个对Comparator的实现，用来比较字符串。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/MathUtil.html MathUtil] ==
+
+在LeJOS的Math.round()方法中存在一个bug。当你传入比如-0.6作为参数时，方法会返回0。（实际应该是-1）
+所以我重写了round()方法，放在这个类中。
+
+= 音乐支持 =
+
+一个没有音乐的游戏，该是一个多么无聊的游戏啊！所以，我开发了一套音乐支持类。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/music/MusicNote.html MusicNote] ==
+在这套类中，最基本的音乐单位是MusicNote——音符。
+
+一个MusicNote对象包含了音阶、唱名、以及持续时间三项信息。
+ * 音阶 - 代表的是音乐的八度，这里支持0-9的10个八度。（不过到了9的时候，基本都是超声波了……）
+ * 唱名 - 就是哆来咪。在MusicNote内部，使用的是简谱数字的1-7进行存储。解析时，也支持C/D/E/F/G/A/B的标准名称。
+   * 升降半音 - 本系统中不支持降半音，只支持升半音，用#符号表示。所有的降半音，请转换成对应的升半音。对象属性alt为true的时候，表示该音符为升半音音符。
+ *持续时间 - MusicNote对象中存储的持续时间并非绝对的几秒几秒的时间长度，而是存储了相对于一个全音符的时间长度比。
+
+你可以用一个个参数来构造一个MusicNote对象，也可以用一个音符描述字符串来构造一个MusicNote对象。我更推荐使用第二种，因为易操作、可读性好。
+
+一个音符描述字符串符合如下格式：
+
+    nX[#]/d1/d2...
+
+ * n - 音阶
+ * X - 唱名，可以使用标准的C/D/E/F/G/A/B，也可以使用简谱的数字：1-7
+ * # - 升半音时加上，否则不需要
+ * /d<i>n</i> - 持续时间。d<i>n</i>为数字，代表的是音符时长分母。例如四分音符就是4，八分音符就是8，以此类推。全音符是1。可以连续写多个/d<i>n</i>用来表示各种长度，比如/4/8代表附点四分音符；/1/1则表示两个全音符时长。
+这里是两个音符描述字符串的例子：
+ * 4C/4 或 41/4：音阶为4的哆的四分音符
+ * 4C#/2/4：音阶为4的升哆的二分附点音符
+ 
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/music/Music.html Music] ==
+Music是音乐支持库中的核心类，它包含了一个音符的序列和一个乐谱参数对象。
+
+音符的序列就是一个音符的数组，乐谱参数对象在下一小节有详细介绍。
+
+你可以自行构造一个音符数组来构造一个Music对象，也可以使用乐谱字符串。乐谱字符串的格式很简单，以空格分隔开的一串音符描述就是一个乐谱字符串。
+例如：
+  
+  4E/8 4A/4 4B/8 5C/1 4A/4 4B/8 5C/4 4F/8 4F/1
+  
+  这是变形金刚动画主题曲中的一段片段。
+  
+因为LeJOS底层对字符串常量支持上的限制，太长的常量字符串会被意外截断。而完整的乐谱往往很长，所以Music类也提供了一个支持字符串数组的构造函数接口。只需要将字符串按顺序打散成数个字符串作为数组即可。
+
+== [http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/music/SheetParam.html SheetParam] ==
+SheetParam，乐谱参数，存储了如何演奏一段音乐的信息。
+
+主要内容包括：
+ * beatDuration - 拍长度，即一个全音符的时长，单位毫秒。
+ * beatStyle - 节拍强弱风格。此参数为一个int数组，顺序存储了一拍(小节)内声音的强弱关系。演奏时，会将一个beatDuration长度的时间平均分配，并用数组中的每个值来设定音量强弱。数组中的值表示音量的增量，可以为负数(即减弱)。
+ * pitchOffset - 音乐播放时，相对标准的乐谱的音阶差。即可以升或者降若干个八度演奏乐谱。
+ * continueNote - 连音符设定。此参数设为true的时候，音符和音符之间将没有停顿；设为false时，音符之间会有微小的停顿。比如：设定为true时，"4C/4 4C/8 4C/4"这段音乐就会播放成与"4C/4/8/4"或者"4C/2/8"同样的效果。只能听到一个4C的音在持续；设定为false时，则可以听到三个音符。此参数仅在使用纯电声不使用乐器播放时有效，使用乐器时会因为乐器的弹奏自动区分音符。
+
+
+更多信息，请参看[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/music/package-summary.html javadoc]。
+
+= 小字体字符支持 =
+
+NXT的液晶显示器使用5x8大小的字符显示文字。屏幕中可以显示的字符数非常有限。为了可以更加有效地利用屏幕，我设计了3x5的字符集。
+
+原始大小: http://nxtprojects.googlecode.com/svn/wiki/NXTUtils.attach/3x5chars.gif 2倍大小: <img src="http://nxtprojects.googlecode.com/svn/wiki/NXTUtils.attach/3x5chars.gif" width="96" height="96" />
+
+(支持所有可显示的ASCII字符，字母全部为大写。)
+
+你可以通过调用TextImage类的方法得到一个图片，图片中包含了指定文字对应的小字体信息。然后你就可以把图片绘制在屏幕任意位置了。TextImage支持将字符串、整数转换成小字体文字图片。
+这里是一个如何使用的例子：
+{{{
+ TextImage ti = new TextImage3x5();				// 构造小字体工具类对象
+ Image message = ti.getImage("MESSAGE"); 		// 得到"MESSAGE"文字对应的图片
+ Image number = ti.getImage(359); 				// 得到数字359对应的图片
+ DisplayUtil.drawImageCenter(message, (LCD.SCREEN_HEIGHT >> 1), LCD.ROP_XOR); 								// 在屏幕中央绘制小字体MESSAGE文字
+ DisplayUtil.drawImageCenter(number, (LCD.SCREEN_HEIGHT >> 1) + message.getHeight() + 1, LCD.ROP_XOR); 		// 在MESSAGE文字下绘制数字359
+}}}
+
+详细信息，还是请参考[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/txtimg/package-summary.html javadoc]。
+
+
