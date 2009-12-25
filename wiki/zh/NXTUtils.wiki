@@ -74,9 +74,9 @@ http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/index.html
 你可以用一个个参数来构造一个MusicNote对象，也可以用一个音符描述字符串来构造一个MusicNote对象。我更推荐使用第二种，因为易操作、可读性好。
 
 一个音符描述字符串符合如下格式：
-
+{{{
     nX[#]/d1/d2...
-
+}}}
  * n - 音阶
  * X - 唱名，可以使用标准的C/D/E/F/G/A/B，也可以使用简谱的数字：1-7
  * # - 升半音时加上，否则不需要
