@@ -122,11 +122,11 @@ NXT的液晶显示器使用5x8大小的字符显示文字。屏幕中可以显�
 你可以通过调用TextImage类的方法得到一个图片，图片中包含了指定文字对应的小字体信息。然后你就可以把图片绘制在屏幕任意位置了。TextImage支持将字符串、整数转换成小字体文字图片。
 这里是一个如何使用的例子：
 {{{
- TextImage ti = new TextImage3x5();				// 构造小字体工具类对象
- Image message = ti.getImage("MESSAGE"); 		// 得到"MESSAGE"文字对应的图片
- Image number = ti.getImage(359); 				// 得到数字359对应的图片
- DisplayUtil.drawImageCenter(message, (LCD.SCREEN_HEIGHT >> 1), LCD.ROP_XOR); 								// 在屏幕中央绘制小字体MESSAGE文字
- DisplayUtil.drawImageCenter(number, (LCD.SCREEN_HEIGHT >> 1) + message.getHeight() + 1, LCD.ROP_XOR); 		// 在MESSAGE文字下绘制数字359
+ TextImage ti = new TextImage3x5();            // 构造小字体工具类对象
+ Image message = ti.getImage("MESSAGE");       // 得到"MESSAGE"文字对应的图片
+ Image number = ti.getImage(359);              // 得到数字359对应的图片
+ DisplayUtil.drawImageCenter(message, (LCD.SCREEN_HEIGHT >> 1), LCD.ROP_XOR);                           // 在屏幕中央绘制小字体MESSAGE文字
+ DisplayUtil.drawImageCenter(number, (LCD.SCREEN_HEIGHT >> 1) + message.getHeight() + 1, LCD.ROP_XOR);  // 在MESSAGE文字下绘制数字359
 }}}
 
 详细信息，还是请参考[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/txtimg/package-summary.html javadoc]。
