@@ -132,3 +132,6 @@ NXT的液晶显示器使用5x8大小的字符显示文字。屏幕中可以显�
 详细信息，还是请参考[http://dl.dropbox.com/u/3644101/NXT_Docs/NXTUtils/javadoc/org/programus/nxj/util/txtimg/package-summary.html javadoc]。
 
 
+= 下载 =
+Java字节码库 - [http://nxtprojects.googlecode.com/files/NXTUtils-bin_v1.0.jar NXTUtils-bin_v1.0.jar]
+包含源代码的库 - [http://nxtprojects.googlecode.com/files/NXTUtils-src_v1.0.jar NXTUtils-src_v1.0.jar]
