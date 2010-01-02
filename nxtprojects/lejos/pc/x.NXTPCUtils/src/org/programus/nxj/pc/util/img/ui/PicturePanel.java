@@ -3,6 +3,8 @@ package org.programus.nxj.pc.util.img.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -33,6 +35,8 @@ public class PicturePanel extends JPanel {
 	private BufferedImage originImage; 
 	private BufferedImage blackwhiteImage; 
 	
+	private TimerTask thresholdTask; 
+	
 	public PicturePanel() {
 		super(); 
 		this.allocateComponents(); 
@@ -51,20 +55,32 @@ public class PicturePanel extends JPanel {
 		this.enableThresholdControls(false); 
 
 		this.imageLabel.setHorizontalAlignment(SwingConstants.CENTER); 
+		
+		final Timer timer = new Timer("Threshold Timer", true); 
 		this.thresholdSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				int v = PicturePanel.this.thresholdSlider.getValue(); 
-				PicturePanel.this.setThreshold(v); 
+				final int v = PicturePanel.this.thresholdSlider.getValue(); 
 				PicturePanel.this.thresholdSpinnerModel.setValue(v); 
 			}
 		}); 
 		this.thresholdSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				int v = PicturePanel.this.thresholdSpinnerModel.getNumber().intValue(); 
-				PicturePanel.this.setThreshold(v); 
+				final int v = PicturePanel.this.thresholdSpinnerModel.getNumber().intValue(); 
 				PicturePanel.this.thresholdSlider.setValue(v); 
+				
+				if (thresholdTask != null) {
+					thresholdTask.cancel(); 
+					timer.purge(); 
+				}
+				thresholdTask = new TimerTask() {
+					@Override
+					public void run() {
+						PicturePanel.this.setThreshold(v); 
+					}
+				}; 
+				timer.schedule(thresholdTask, 100); 
 			}
 		}); 
 	}
