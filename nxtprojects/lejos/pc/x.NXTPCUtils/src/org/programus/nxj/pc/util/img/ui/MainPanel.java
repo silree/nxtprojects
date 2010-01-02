@@ -7,6 +7,9 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -104,11 +107,15 @@ public class MainPanel extends JPanel {
 	}
 	
 	protected void saveImage(File file) throws IOException {
-		FileOutputStream out = new FileOutputStream(file, false); 
+		DataOutputStream out = new DataOutputStream(new FileOutputStream(file, false)); 
 		try {
-			out.write(this.currSize.width); 
-			out.write(this.currSize.height); 
-			out.write(0); 
+			// byte size -> int size. 
+//			out.write(this.currSize.width); 
+//			out.write(this.currSize.height); 
+//			out.write(0); 
+			out.writeInt(this.currSize.width); 
+			out.writeInt(this.currSize.height); 
+			out.writeByte(0); 
 			out.write(this.currData); 
 		} catch (IOException e) {
 			throw e; 
@@ -118,19 +125,26 @@ public class MainPanel extends JPanel {
 	}
 	
 	protected void readNxtImage(File file) throws IOException {
-		FileInputStream in = new FileInputStream(file); 
+		DataInputStream in = new DataInputStream(new FileInputStream(file)); 
 		int w;
 		int h;
 		List<Byte> byteList = new LinkedList<Byte>(); 
 		try {
-			w = in.read(); 
-			if (w < 0) {
-				throw new IOException("File format error!"); 
-			}
-			h = in.read(); 
-			if (h < 0) {
-				throw new IOException("File format error!"); 
-			}
+			// byte size -> int size. 
+//			w = in.read(); 
+//			if (w < 0) {
+//				throw new IOException("File format error!"); 
+//			}
+//			h = in.read(); 
+//			if (h < 0) {
+//				throw new IOException("File format error!"); 
+//			}
+			try {
+				w = in.readInt(); 
+				h = in.readInt();
+			} catch (EOFException e) {
+				throw new IOException("File format error!", e); 
+			} 
 			int i = in.read(); 
 			if (i != 0) {
 				throw new IOException("File format error!"); 
