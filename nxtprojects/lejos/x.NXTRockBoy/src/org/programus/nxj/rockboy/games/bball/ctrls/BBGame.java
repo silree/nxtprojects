@@ -15,6 +15,7 @@ import lejos.nxt.Sound;
 import lejos.util.Delay;
 import lejos.util.TextMenu;
 
+import org.programus.nxj.rockboy.core.Game;
 import org.programus.nxj.rockboy.core.World;
 import org.programus.nxj.util.Condition;
 import org.programus.nxj.util.DisplayUtil;
@@ -26,7 +27,7 @@ import org.programus.nxj.util.TimeUtil;
  * @author Programus
  *
  */
-public class BBGame {
+public class BBGame extends Game {
 	public final static int TIME_MODE = 0; 
 	public final static int SCORE_MODE = 1; 
 	
@@ -94,7 +95,7 @@ public class BBGame {
 		TextMenu modeMenu = new TextMenu(GAME_MODES, row, "SELECT A MODE:"); 
 		this.gameMode = modeMenu.select(); 
 		if (this.gameMode < 0) {
-			System.exit(0); 
+			quit(); 
 		}
 	}
 	

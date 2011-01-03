@@ -15,6 +15,7 @@ import lejos.nxt.Sound;
 import lejos.util.Delay;
 import lejos.util.TextMenu;
 
+import org.programus.nxj.rockboy.core.Game;
 import org.programus.nxj.rockboy.core.World;
 import org.programus.nxj.rockboy.games.bball.ctrls.ButtonSwitchPauseCondition;
 import org.programus.nxj.rockboy.games.bball.ctrls.KeyStopCondition;
@@ -30,7 +31,7 @@ import org.programus.nxj.util.music.SheetParam;
  * @author Programus
  *
  */
-public class DropBallGame {
+public class DropBallGame extends Game {
 	private final static String[] GAME_MODES = {
 		"| MODE", "- MODE", 
 	};
@@ -88,7 +89,7 @@ public class DropBallGame {
 		TextMenu modeMenu = new TextMenu(GAME_MODES, row, "PLEASE SELECT:"); 
 		this.mode = modeMenu.select(this.mode); 
 		if (this.mode < 0) {
-			System.exit(0); 
+			quit(); 
 		}
 	}
 	
