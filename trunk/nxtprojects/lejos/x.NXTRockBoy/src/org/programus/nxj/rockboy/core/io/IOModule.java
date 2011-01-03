@@ -31,7 +31,8 @@ public abstract class IOModule {
 				Class.forName("java.lang.ClassLoader");
 				usingInput = new PcIO(); 
 			} catch (ClassNotFoundException e) {
-				usingInput = new NXTIO(); 
+//				usingInput = new NXTIO(); 
+				usingInput = new WiiIO(); 
 			} 
 		}
 		return usingInput; 
@@ -80,4 +81,6 @@ public abstract class IOModule {
 	public abstract int getRawLightValue(); 	
 	
 	public abstract boolean isUsingColorLightSensor(); 
+	
+	public void stop(){}; 
 }

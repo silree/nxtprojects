@@ -43,6 +43,7 @@ public class DropBall {
 					break; 
 				}
 			} while (againMenu.select() == 0); 
+			game.quit();
 		} catch (IOException e) {
 			Sound.buzz(); 
 			LCD.clear(); 
