@@ -1,7 +1,5 @@
 package org.programus.nxj.rockboy.pc.comm;
 
-import java.io.IOException;
-
 import wiiusej.WiiUseApiManager;
 
 public class ShutdownHook implements Runnable {
