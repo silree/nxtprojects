@@ -1,5 +1,7 @@
 package org.programus.nxj.util;
 
+import java.io.File;
+
 import lejos.nxt.Sound;
 import lejos.util.Delay;
 
@@ -157,5 +159,30 @@ public class SoundUtil {
 	 */
 	public static void playMusic(Music music) {
 		music.play(); 
+	}
+	
+	/**
+	 * Play a sound file, could be asynchronous. 
+	 * @param file
+	 * @param vol
+	 * @param isDaemon
+	 */
+	public static void playSampleAsync(final File file, final int vol, boolean isDaemon) {
+		Thread soundPlayer = new Thread(new Runnable() {
+			public void run() {
+				Sound.playSample(file, vol); 
+			}
+		}); 
+		soundPlayer.setDaemon(isDaemon); 
+		soundPlayer.start(); 
+	}
+
+	/**
+	 * Play a sound file, could be asynchronous. 
+	 * @param file
+	 * @param isDaemon
+	 */
+	public static void playSampleAsync(final File file, boolean isDaemon) {
+		playSampleAsync(file, Sound.getVolume(), isDaemon); 
 	}
 }
