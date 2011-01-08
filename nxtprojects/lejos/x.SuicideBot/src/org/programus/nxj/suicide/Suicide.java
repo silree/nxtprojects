@@ -5,21 +5,34 @@ import java.io.File;
 import javax.microedition.lcdui.Image;
 
 import lejos.nxt.Button;
+import lejos.nxt.ColorLightSensor;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.NXT;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
 import lejos.nxt.TouchSensor;
-import lejos.util.Delay;
 
 import org.programus.nxj.util.DisplayUtil;
 import org.programus.nxj.util.SoundUtil;
 
+/**
+ * A program for SuicideBot. 
+ * <p>
+ * <ul>
+ * <li>Port A - Motor</li>
+ * <li>Port 2 - Touch sensor</li>
+ * <li>Port 1 - Color light sensor (only for entering LeJOS system)</li>
+ * </ul>
+ * </p>
+ * @author Programus
+ *
+ */
 public class Suicide {
 	
 	private final static Motor motor = Motor.A; 
 	private final static SensorPort touchPort = SensorPort.S2; 
+	private final static SensorPort stopPort = SensorPort.S1; 
 	
 	private final static Image ahh = new Image(100, 64, new byte[] {
 			(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
@@ -675,13 +688,14 @@ public class Suicide {
 		DisplayUtil.drawImageCenter(ahh, 0, LCD.ROP_COPY); 
 		final File aliveSound = new File("Alive.wav");
 		final File deadSound = new File("Dead.wav"); 
-		final File endSound = new File("End.wav"); 
 		if (aliveSound.exists()) {
 			SoundUtil.playSampleAsync(aliveSound, Sound.VOL_MAX, true); 
 		} else {
 			Sound.beepSequenceUp(); 
 		}
 		TouchSensor ts = new TouchSensor(touchPort); 
+		ColorLightSensor stopSensor = new ColorLightSensor(stopPort, ColorLightSensor.TYPE_COLORNONE); 
+		
 		LCD.refresh();
 		motor.setSpeed(120); 
 		motor.backward(); 
@@ -709,10 +723,13 @@ public class Suicide {
 		}
 		while(!ts.isPressed()); 
 		motor.rotate(-10);
-		if (endSound.exists()) {
-			Sound.playSample(endSound, Sound.VOL_MAX); 
-			Delay.msDelay(500); 
+//		if (endSound.exists()) {
+//			Sound.playSample(endSound, Sound.VOL_MAX); 
+//			Delay.msDelay(500); 
+//		}
+		
+		if (stopSensor.readRawValue() < 0) {
+			NXT.shutDown();
 		}
-		NXT.shutDown();
 	}
 }
