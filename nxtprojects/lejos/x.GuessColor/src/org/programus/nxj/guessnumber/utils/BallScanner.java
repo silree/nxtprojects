@@ -27,22 +27,22 @@ public class BallScanner {
 	private Runnable scanTask = new Runnable() {
 		public void run() {
 			while(keepScanning) {
-				for (int i = 0; i < 20 || !startScanSensor.isPressed();) {
+				final int WAIT_TIME = 1000;
+				for (long t = System.currentTimeMillis(); !startScanSensor.isPressed() || System.currentTimeMillis() - t < WAIT_TIME;) {
 					if (!keepScanning) {
 						return;
 					} else if (startScanSensor.isPressed()) {
-						Delay.msDelay(25); 
-						i++;
+						continue;
 					} else {
-						i = 0;
+						t = System.currentTimeMillis();
 					}
 				}
 				int[] colors = new int[Constants.BALL_NUM]; 
 				for (int i = 0; i < colors.length; i++) {
 					MOVE_MOTOR.rotateTo(Constants.MOVE_STEP * i); 
-					colors[i] = colorSensor.readValue(); 
+					colors[colors.length - i - 1] = colorSensor.readValue(); 
 				}
-				MOVE_MOTOR.rotateTo(0); 
+				MOVE_MOTOR.rotateTo(0, true); 
 				while(true) {
 					if (!keepScanning) {
 						return;
@@ -52,9 +52,13 @@ public class BallScanner {
 						break;
 					}
 				}
-				while(startScanSensor.isPressed()) {
+				for (long t = System.currentTimeMillis(); startScanSensor.isPressed() || System.currentTimeMillis() - t < WAIT_TIME;) {
 					if (!keepScanning) {
-						return; 
+						return;
+					} else if (!startScanSensor.isPressed()) {
+						continue;
+					} else {
+						t = System.currentTimeMillis();
 					}
 				}
 			}
@@ -82,6 +86,10 @@ public class BallScanner {
 	
 	public void stopScanThread() {
 		keepScanning = false; 
+	}
+	
+	public void waitStart() {
+		while(!this.startScanSensor.isPressed());
 	}
 	
 	public ColorCombination getColorCombination() {
