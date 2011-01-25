@@ -41,6 +41,10 @@ public class ScoreDisplay {
 		}
 	}
 	
+	public void reset() {
+		motor.rotateTo(0, true); 
+	}
+	
 	public void congratulationWin() {
 		new Thread() {
 			public void run() {

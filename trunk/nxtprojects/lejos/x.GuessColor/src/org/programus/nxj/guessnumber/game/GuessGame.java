@@ -373,7 +373,7 @@ public class GuessGame {
 		boolean ret = false;
 		for (int i = 0; i < Constants.CHANGES; i++) {
 			ColorCombination guess = ballScanner.getColorCombination(); 
-			CompareResult result = answer.compareTo(guess); 
+			CompareResult result = guess.compareTo(answer); 
 			if (result.exactCorrect == Constants.BALL_NUM) {
 				exactScoreDisplay.congratulationWin(); 
 				existScoreDisplay.congratulationWin(); 
@@ -391,8 +391,8 @@ public class GuessGame {
 			LCD.refresh();
 		}
 		if (!ret) {
-			exactScoreDisplay.displayScore(0); 
-			existScoreDisplay.displayScore(0); 
+			exactScoreDisplay.reset(); 
+			existScoreDisplay.reset(); 
 			this.playLoseSound();
 			this.drawLose(answer); 
 		}
@@ -450,8 +450,7 @@ public class GuessGame {
 			@Override
 			public void run() {
 				int duration = 300; 
-				int i = chance + 1;
-				SoundUtil.playNote(5 + i / 7, i % 7, false, duration, true); 
+				SoundUtil.playNote(5 + chance / 7, chance % 7 + 1, false, duration, true); 
 			}
 		}).start(); 
 	}
