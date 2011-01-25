@@ -39,7 +39,7 @@ public class BallScanner {
 				}
 				int[] colors = new int[Constants.BALL_NUM]; 
 				for (int i = 0; i < colors.length; i++) {
-					MOVE_MOTOR.rotateTo(Constants.MOVE_STEP * i); 
+					MOVE_MOTOR.rotateTo(Constants.MOVE_STEP * i + Constants.MOVE_OFFSET); 
 					colors[colors.length - i - 1] = colorSensor.readValue(); 
 				}
 				MOVE_MOTOR.rotateTo(0, true); 

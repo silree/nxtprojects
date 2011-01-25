@@ -50,22 +50,28 @@ public class ColorCombination {
 	
 	public CompareResult compareTo(ColorCombination cc) {
 		CompareResult r = new CompareResult(); 
+		boolean[] thisHadCompared = new boolean[this.colorIndices.length]; 
+		boolean[] otherHadCompared = new boolean[cc.colorIndices.length]; 
 		for (int i = 0; i < this.colorIndices.length; i++) {
-			boolean exact = false;
-			boolean exist = false;
-			for (int j = 0; j < cc.colorIndices.length; j++) {
-				if (this.colorIndices[i] == cc.colorIndices[j]) {
-					if (i == j) {
-						exact = true; 
-					} else {
-						exist = true;
-					}
-				}
+			if (this.colorIndices[i] == cc.colorIndices[i]) {
+				r.exactCorrect++;
+				thisHadCompared[i] = true;
+				otherHadCompared[i] = true;
 			}
-			if (exact) {
-				r.exactCorrect++; 
-			} else if (exist) {
-				r.existCorrect++;
+		}
+		for (int i = 0; i < this.colorIndices.length; i++) {
+			if (thisHadCompared[i]) {
+				continue;
+			}
+			for (int j = 0; j < cc.colorIndices.length; j++) {
+				if (otherHadCompared[j]) {
+					continue;
+				}
+				if (this.colorIndices[i] == cc.colorIndices[j]) {
+					r.existCorrect++;
+					otherHadCompared[j] = true; 
+					break;
+				}
 			}
 		}
 		return r; 
